@@ -1,8 +1,8 @@
 	<div style="font-size:87%;margin:0 auto;width:40%;">
 		<ul>
-			<li><a href="about.html#help" target="_blank"><span class="fl_le">Help&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
-			<li><a href="about.html#terms" target="_blank"><span class="fl_le">Terms&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
-			<li><a href="about.html#contact" target="_blank"><span class="fl_le">Contact&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
+			<li><a href="about.php#help" target="_blank"><span class="fl_le">Help&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
+			<li><a href="about.php#terms" target="_blank"><span class="fl_le">Terms&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
+			<li><a href="about.php#contact" target="_blank"><span class="fl_le">Contact&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
 			<li class="last">
 				<a href="https://plus.google.com/118335972259503633372/posts" target="_blank">
 					<span class="">Google+</span>
@@ -16,6 +16,6 @@
 					})();
 				</script>								
 			</li>
-			<li><a href="about.html#about" target="_blank"><span class="fl_le">About Us</span></a></li></br></br>
+			<li><a href="about.php#about" target="_blank"><span class="fl_le">About Us</span></a></li></br></br>
 		</ul>
 	</div>

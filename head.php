@@ -4,7 +4,7 @@
 		<?php if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandler"); else ob_start(); ?>
 				
 		<link rel="stylesheet" href="assets/css/global.css" type="text/css" media="screen" />
-		<link rel="stylesheet" href="http://lyfeon.com/fonts/font.css">
+		<link rel="stylesheet" href="assets/fonts/font.css">
 		<link rel="shortcut icon" type="image/png" href="assets/logos/favicon.png"/>
 		<link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/ddpmfmlfaonpbigeobfkjeklaloplepn">  
 		

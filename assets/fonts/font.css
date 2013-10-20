@@ -1,0 +1,17 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* =============IMPORT FONTS ========================*/
+@font-face { font-family:Roboto-Regular;src: url(Roboto-Regular.ttf) format("truetype");   }
+
+@font-face { font-family:Roboto-Bold;	src: url(Roboto-Bold.ttf) format("truetype"); }
+
+@font-face { font-family:Roboto-BoldCondensed;	src: url(Roboto-BoldCondensed.ttf) format("truetype"); }
+
+@font-face { font-family:Roboto-Light;	src: url(Roboto-Light.ttf) format("truetype"); }
+
+@font-face { font-family:Roboto-Medium;	src: url(Roboto-Medium.ttf) format("truetype"); }
+
+@font-face { font-family:Roboto-Thin;	src: url(Roboto-Thin.ttf) format("truetype"); }
+
+@font-face { font-family:Roboto-LightItalic;	src: url(Roboto-LightItalic.ttf) format("truetype"); }
