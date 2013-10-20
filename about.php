@@ -1,16 +1,17 @@
-<?php
-$metatitle='LyfeOn - Help, Terms and About Us !';
-$metadescription='LyfeOn Terms of Service, Privacy, Security, About, Contact and Help';
-$metaabstract='LyfeOn - About, Terms and Help';
-$metasubject='LyfeOn - About, Terms and Help';
-$metapagename='LyfeOn - About, Terms and Help';
-$metasubtitle='LyfeOn - Documentation';
-$metacopyright='LyfeOn';
+<?php 
+	$metatitle='LyfeOn - Help, Terms and About Us !';
+	$metadescription='LyfeOn Terms of Service, Privacy, Security, About, Contact and Help';
+	$metaabstract='LyfeOn - About, Terms and Help';
+	$metasubject='LyfeOn - About, Terms and Help';
+	$metapagename='LyfeOn - About, Terms and Help';
+	$metasubtitle='LyfeOn - Documentation';
+	$metacopyright='LyfeOn';
 ?>
 <?php include_once 'head.php'; ?>
 <body>
 <?php include_once 'header.php'; ?>
 <div class="mw45em center">
+        </br>
 	<section>
 	<details open>
 		<summary style="font-size:150%;"><a name="about">About LyfeOn</a></summary>
@@ -204,7 +205,7 @@ $metacopyright='LyfeOn';
 			<h4>Development Labs</h4>
 				<p>38 Citation Drive, Freehold</br>New Jersey, US, 07728</br>Phone: +1 248 256 5085</br></p>
 			<h4>Business Center</h4>
-				<p>RA Regency, Flat No: T-2</br>Thimmareddy Layout, Opp 27th Cross</br>Kaggadaspura, Bangalore</br>Phone: +91 779 556 6972</br></br></p>
+				<p>Kaggadasapura Main Road</br>Kaggadaspura, Bangalore</br>Phone: +91 779 556 6972</br></br></p>
 	</details>
 	<p>Last Modified: September 25, 2013.</br></br> &#174; 2013 LyfeOn.  &#9400; All Rights Reserved.</br></br></br></br></br></br></br></br></br></br><p>
 </div>

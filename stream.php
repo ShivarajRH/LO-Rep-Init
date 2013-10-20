@@ -1,3 +1,12 @@
+<?php 
+	$metatitle='LyfeOn - Your Stuff !';
+	$metadescription='LyfeOn - Access your notes, reminders and expenses and manage them across devices.';
+	$metaabstract='LyfeOn - your notes, reminders and expenses';
+	$metasubject='LyfeOn - your notes, reminders and expenses';
+	$metapagename='LyfeOn - your notes, reminders and expenses';
+	$metasubtitle='LyfeOn - Manage your stuff';
+	$metacopyright=' $fname . &nbsp; . $lname ';
+?>
 <?php include_once 'head.php'; ?>
 <body>
 	<?php include_once 'header.php'; ?>

@@ -12,6 +12,9 @@ handlers:
   
 - url: /about.php
   script: about.php
+
+- url: /stream.php
+  script: stream.php
   
 - url: /.*
   script: welcome_page.php

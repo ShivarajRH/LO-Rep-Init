@@ -1,11 +1,11 @@
-<?php
-$metatitle='LyfeOn - Help, Terms and About Us !';
-$metadescription='LyfeOn Terms of Service, Privacy, Security, About, Contact and Help';
-$metaabstract='LyfeOn - About, Terms and Help';
-$metasubject='LyfeOn - About, Terms and Help';
-$metapagename='LyfeOn - About, Terms and Help';
-$metasubtitle='LyfeOn - Documentation';
-$metacopyright='LyfeOn';
+<?php 
+	$metatitle='LyfeOn - Turn your life back ON !';
+	$metadescription='LyfeOn helps you do things quickly and easily. Manage your notes, reminders and expenses across all your devices.';
+	$metaabstract='LyfeOn - Login / Signup';
+	$metasubject='LyfeOn - Login / Signup';
+	$metapagename='LyfeOn - Login / Signup';
+	$metasubtitle='LyfeOn - Manage your life';
+	$metacopyright='LyfeOn';
 ?>
 <?php include_once 'head.php'; ?>
 
@@ -43,7 +43,9 @@ $metacopyright='LyfeOn';
 							<script>
 								if (chrome.app.isInstalled) {
 								  document.getElementById('install-button').style.display = 'none';
+                                                                  $('#install-button img').css({"opacity":0.3});
 								}
+                                                                
 							</script>
 						</div>
 						</br>
