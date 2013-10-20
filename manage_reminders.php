@@ -6,7 +6,7 @@
 		<div id="wrapper"> <!-- http://cssdeck.com/labs/css-only-pinterest-style-columns-layout -->
 			<ul id="columns">
 				
-				<?php include_once 'cards/expenses_list_card.php'; ?>
+				<?php include_once 'cards/reminder_list_card.php'; ?>
 				
 			</ul>
 		</div>

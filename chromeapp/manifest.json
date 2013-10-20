@@ -1,0 +1,22 @@
+{
+	"name": "LyfeOn",
+	"description": "Turn your life back On !",
+	"version": "0.1.1.1",
+	"manifest_version": 2,
+	"app": {
+		"launch": {
+			"web_url": "http://www.lyfeon.com/"
+		}
+	},
+	"icons": {
+		"128": "lyfeon_128.png"
+	},
+	"permissions": [
+		"unlimitedStorage",
+		"notifications",
+		"geolocation",
+		"clipboardWrite",
+		"clipboardRead",
+		"background"
+	]
+}

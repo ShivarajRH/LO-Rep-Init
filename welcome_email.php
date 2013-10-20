@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>LyfeOn : Get Started</title>
-	<meta name="description" content="Welcome to LyfeOn">
-	<link rel="stylesheet" href="assets/css/global.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="http://lyfeon.com/fonts/font.css">
-	<link rel="shortcut icon" type="image/png" href="assets/logos/favicon.png"/>
-    </style>   
-	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> -->
-</head>	
+<?php include_once 'head.php'; ?>
 <body>
 	<div class="mw45em center">
 		<div>

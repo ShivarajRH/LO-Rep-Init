@@ -9,11 +9,9 @@ handlers:
   
 - url: /assets
   static_dir: assets
-
-
   
-- url: /about.html
-  script: about.html
+- url: /about.php
+  script: about.php
   
 - url: /.*
   script: welcome_page.php

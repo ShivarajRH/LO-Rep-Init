@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>LyfeOn : Terms of Service & Privacy Policy</title>
-	<meta name="description" content="Terms of Service and Privacy Policy across all LyfeOn Services.">
-	<link rel="stylesheet" href="assets/css/global.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="http://lyfeon.com/fonts/font.css">
-	<link rel="shortcut icon" type="image/png" href="assets/logos/favicon.png"/>
-    </style>   
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-</head>	
+<?php include_once 'head.php'; ?>
 <body>
+<?php include_once 'header.php'; ?>
 <div class="mw45em center">
 	<section>
 	<details open>
@@ -208,4 +199,5 @@
 	</details>
 	<p>Last Modified: September 25, 2013.</br></br> &#174; 2013 LyfeOn.  &#9400; All Rights Reserved.</br></br></br></br></br></br></br></br></br></br><p>
 </div>
+<?php include_once 'footer_reg.php'; ?>
 </body>
