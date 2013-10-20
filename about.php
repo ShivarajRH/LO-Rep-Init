@@ -1,3 +1,12 @@
+<?php
+$metatitle='LyfeOn - Help, Terms and About Us !';
+$metadescription='LyfeOn Terms of Service, Privacy, Security, About, Contact and Help';
+$metaabstract='LyfeOn - About, Terms and Help';
+$metasubject='LyfeOn - About, Terms and Help';
+$metapagename='LyfeOn - About, Terms and Help';
+$metasubtitle='LyfeOn - Documentation';
+$metacopyright='LyfeOn';
+?>
 <?php include_once 'head.php'; ?>
 <body>
 <?php include_once 'header.php'; ?>
