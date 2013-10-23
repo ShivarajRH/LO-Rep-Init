@@ -42,8 +42,7 @@
 							</span>
 							<script>
 								if (chrome.app.isInstalled) {
-								  document.getElementById('install-button').style.display = 'none';
-                                                                  $('#install-button img').css({"opacity":0.3});
+								  $('#install-button img').css({"opacity":0.3});
 								}
                                                                 
 							</script>
