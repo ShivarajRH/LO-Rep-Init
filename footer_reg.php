@@ -19,3 +19,4 @@
 			</li>
 		</ul>
 	</div>
+<?php include '/includes/db_connection.php'; ?>
