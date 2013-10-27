@@ -1,9 +1,9 @@
-<div style="font-size:87%;margin:0 auto;width:50%;border-top: 1px solid #E7CECE;padding-left: 25%;">
+	<div style="font-size:87%;margin:0 auto;width:50%;border-top: 1px solid #E7CECE;padding-left: 25%;">
 		<ul>
-			<li><a href="about.php#help" target="_blank"><span class="fl_le">Help&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
-			<li><a href="about.php#terms" target="_blank"><span class="fl_le">Terms&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
-			<li><a href="about.php#contact" target="_blank"><span class="fl_le">Contact&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
-			<li><a href="about.php#about" target="_blank"><span class="fl_le">About Us&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
+			<li><a href="/co/services/help.php" target="_blank"><span class="fl_le">Help&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
+			<li><a href="/co/services/terms.php" target="_blank"><span class="fl_le">Terms&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
+			<li><a href="/co/services/contact.php" target="_blank"><span class="fl_le">Contact&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
+			<li><a href="/co/services/company.php" target="_blank"><span class="fl_le">Co.&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
 			<li class="last">
 				<a href="https://plus.google.com/118335972259503633372/posts" target="_blank">
 					<span class="fl_le">Google+&nbsp;&nbsp;&nbsp;&nbsp;</span>

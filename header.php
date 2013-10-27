@@ -3,17 +3,17 @@
 	<div class="header">
 		<div class="logo">
 			<a href="">
-				<img class="fl_le" src="assets/logos/lyfeon.png" style="padding-left:1%;width:30px;margin-top:-0.3%;height:24px;"></img>
+				<img class="fl_le" src="/assets/logos/lyfeon.png" style="padding-left:1%;width:30px;margin-top:-0.3%;height:24px;"></img>
 				<span class="fl_le" style="padding-left:0.6%;">LyfeOn</span>
 			</a>
 		</div>
 		<div class="fl_ri menu_drop">
 			<ul>
-				<li class="menu_drop_list fl_ri"><a href=""><img class="" src="assets/images/info.png" alt="About" title="About" /></a>
+				<li class="menu_drop_list fl_ri"><a href=""><img class="" src="/assets/images/info.png" alt="About" title="About" /></a>
 					<ul>
-						<li><a href="about.php#help" target="_blank"><span class="">Help</span></a></li>
-						<li><a href="about.php#terms" target="_blank"><span class="">Terms</span></a></li>
-						<li><a href="about.php#contact" target="_blank"><span class="">Contact</span></a></li>
+						<li><a href="/co/services/help.php" target="_blank"><span class="">Help</span></a></li>
+						<li><a href="/co/services/terms.php" target="_blank"><span class="">Terms</span></a></li>
+						<li><a href="/co/services/contact.php" target="_blank"><span class="">Contact</span></a></li>
 						<li class="last">
 							<a href="https://plus.google.com/118335972259503633372/posts" target="_blank">
 								<span class="">Google+</span>
@@ -27,17 +27,17 @@
 								})();
 							</script>								
 						</li>
-						<li><a href="about.php#about" target="_blank"><span class="">About</span></a></li>
+						<li><a href="/co/services/company.php" target="_blank"><span class="">Co.</span></a></li>
 					</ul>
 				</li>
-				<li class="menu_drop_list last fl_ri"><a href=""><img class="" src="assets/images/settings.png" alt="Settings" title="Settings"></img></a>
+				<li class="menu_drop_list last fl_ri"><a href=""><img class="" src="/assets/images/settings.png" alt="Settings" title="Settings"></img></a>
 					<ul>
 						<li><a href=""><span class="">Account</span></a></li>
 						<li class="last"><a href=""><span class="">Logout</span></a></li>
 					</ul>
 				</li>
 				<li class="menu_drop_list last fl_ri">
-					<?php //include_once 'google_plus_signin_button.php'; ?>
+					<?php //include_once '/google_plus_signin_button.php'; ?>
 				</li>
 			</ul>
 		</div>

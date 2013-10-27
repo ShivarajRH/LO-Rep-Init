@@ -6,7 +6,7 @@
 $dbhost=":/cloudsql/lyfeon-init:lyfeondb";
 $dbusername="root";
 $dbpasswd="";
-$database="lyfeon_db";
+$database="oneapp_db";
 
 $linkid = @mysql_connect($dbhost,$dbusername,$dbpasswd) or die ('<br/><span style="color:red;font-weight:bold;padding:5px 0 50px 10px">Could not connect to the database server. Contact IT Support Team.</span>');
 

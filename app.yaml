@@ -9,7 +9,17 @@ handlers:
   
 - url: /assets
   static_dir: assets
+
+- url: /apis
+  static_dir: apis
+
+- url: /co/.*
+  static_files: co/co.html
+  upload: co/co.html
   
+#- url: /co/services/company.php
+#  script: /co/services/company.php
+
 - url: /about.php
   script: about.php
 
