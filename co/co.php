@@ -1,4 +1,3 @@
-<p>ndbfasdfhkjasdhkjfh</p>
 <?php 
 	$metatitle='LyfeOn - About Company and People';
 	$metadescription='LyfeOn - About Company, Investor Relations, Incorporation, People Management and Internal Management';
@@ -28,7 +27,7 @@
 		<div id="wrapper" style="max-width:1400px"> <!-- http://cssdeck.com/labs/css-only-pinterest-style-columns-layout -->
 			<ul id="columns">
 				<li class="pin single_note_card">
-					<a href="company/company.php">
+					<a href="services/company/company.php">
 						<img src="/images/company.png" />
 						<h1>About Company</h1>
 					</a>

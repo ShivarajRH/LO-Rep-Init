@@ -7,6 +7,6 @@ if(mysql_errno()) {
 }
 $rslt_arr = mysql_affected_rows($linkid);
 
-//echo $rslt_arr."";
+echo $rslt_arr."";
 
 ?>

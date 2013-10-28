@@ -10,26 +10,41 @@ handlers:
 - url: /assets
   static_dir: assets
 
-- url: /apis
-  static_dir: apis
-
-- url: /co/.*
-  static_files: co/co.html
-  upload: co/co.html
+- url: /apis/(.*?)
+  script: apis/index.php
   
-#- url: /co/services/company.php
-#  script: /co/services/company.php
+- url: /co/analytics/analytics.php
+  script: co/analytics/analytics.php
+
+- url: /co/investors/investors.php
+  script: co/investors/investors.php
+  
+
+- url: /co/people/people.php
+  script: co/people/people.php
+  
+
+- url: /co/services/company.php
+  script: co/services/company.php
+  
+
+- url: /co/services/contact.php
+  script: co/services/contact.php
+  
+
+- url: /co/services/help.php
+  script: co/services/help.php
+  
+
+- url: /co/services/terms.php
+  script: co/services/terms.php
+  
+- url: /co
+  script: co/co.php
+  
 
 - url: /about.php
   script: about.php
 
 - url: /stream.php
   script: stream.php
-  
-- url: /.*
-  script: welcome_page.php
-  
-#- url: /
-#  static_files: assets/index.html
-#  upload: assets/index.html
-
