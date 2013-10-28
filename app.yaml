@@ -15,30 +15,30 @@ handlers:
   script: apis/index.php
   
   # Co url
-- url: /co/analytics/analytics.php
+- url: /co/analytics/analytics
   script: co/analytics/analytics.php
 
-- url: /co/investors/investors.php
+- url: /co/investors/investors
   script: co/investors/investors.php
   
 
-- url: /co/people/people.php
+- url: /co/people/people
   script: co/people/people.php
   
 
-- url: /co/services/company.php
+- url: /co/services/company
   script: co/services/company.php
   
 
-- url: /co/services/contact.php
+- url: /co/services/contact
   script: co/services/contact.php
   
 
-- url: /co/services/help.php
+- url: /co/services/help
   script: co/services/help.php
   
 
-- url: /co/services/terms.php
+- url: /co/services/terms
   script: co/services/terms.php
   
 - url: /co(/?.*?)
