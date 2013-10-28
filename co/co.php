@@ -8,7 +8,7 @@
 	$metacopyright='LyfeOn';
 ?>
 
-<?php include_once '/head.php'; ?>
+<?php include_once '../head.php'; ?>
 
 <!-- Google+ Signin -->
 <script type="text/javascript">
@@ -20,7 +20,7 @@
 </script>
 	
 <body>
-	<?php include_once '/header.php'; ?>
+	<?php include_once '../header.php'; ?>
 	</br>
 	<div class="center">
 		</br>
@@ -62,5 +62,5 @@
 			<a class="back" href="http://lyfeon.com"><button class="button" style="border-radius: .3em;padding-bottom: 5%;margin-right:5%;">Back to LyfeOn</button></a>
 		</div>
 	</div>
-	<?php include_once '/footer_reg.php'; ?>
+	<?php include_once '../footer_reg.php'; ?>
 </body>

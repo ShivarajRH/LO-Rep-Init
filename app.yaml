@@ -9,10 +9,12 @@ handlers:
   
 - url: /assets
   static_dir: assets
-
-- url: /apis/(.*?)
+  
+#Apis url
+- url: /apis/(/?.*?)
   script: apis/index.php
   
+  # Co url
 - url: /co/analytics/analytics.php
   script: co/analytics/analytics.php
 
@@ -39,7 +41,7 @@ handlers:
 - url: /co/services/terms.php
   script: co/services/terms.php
   
-- url: /co
+- url: /co(/?.*?)
   script: co/co.php
   
 
