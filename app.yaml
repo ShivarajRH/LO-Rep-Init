@@ -50,3 +50,6 @@ handlers:
 
 - url: /stream.php
   script: stream.php
+
+- url: /?.*
+  script: welcome_page.php

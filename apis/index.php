@@ -1,4 +1,5 @@
 <?php
-//print_r($_GET);
-echo 'hi';
+$get = ($_GET);
+print_r($get);
+
 ?>
