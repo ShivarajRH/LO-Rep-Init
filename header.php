@@ -11,9 +11,9 @@
 			<ul>
 				<li class="menu_drop_list fl_ri"><a href=""><img class="" src="/assets/images/info.png" alt="About" title="About" /></a>
 					<ul>
-						<li><a href="/co/services/help.php" target="_blank"><span class="">Help</span></a></li>
-						<li><a href="/co/services/terms.php" target="_blank"><span class="">Terms</span></a></li>
-						<li><a href="/co/services/contact.php" target="_blank"><span class="">Contact</span></a></li>
+						<li><a href="/co/services/help" target="_blank"><span class="">Help</span></a></li>
+						<li><a href="/co/services/terms" target="_blank"><span class="">Terms</span></a></li>
+						<li><a href="/co/services/contact" target="_blank"><span class="">Contact</span></a></li>
 						<li class="last">
 							<a href="https://plus.google.com/118335972259503633372/posts" target="_blank">
 								<span class="">Google+</span>
@@ -27,7 +27,7 @@
 								})();
 							</script>								
 						</li>
-						<li><a href="/co/services/company.php" target="_blank"><span class="">Co.</span></a></li>
+						<li><a href="/co/services/company" target="_blank"><span class="">Co.</span></a></li>
 					</ul>
 				</li>
 				<li class="menu_drop_list last fl_ri"><a href=""><img class="" src="/assets/images/settings.png" alt="Settings" title="Settings"></img></a>

@@ -27,5 +27,5 @@
 			</details>
 		</section>
 	</div>
-	<?php include_once '/footer_reg.php'; ?>
+	<?php include_once '../../footer_reg.php'; ?>
 </body>

@@ -19,5 +19,7 @@
 			<a class="back" href="http://lyfeon.com"><button class="button" style="border-radius: .3em;padding-bottom: 5%;margin-right:5%;">Back to LyfeOn</button></a>
 		</div>
 	</div>
-	<?php include_once '/footer_reg.php'; ?>
+	<?php 
+        $a1 = '../../footer_reg.php';
+        include_once $a1; ?>
 </body>

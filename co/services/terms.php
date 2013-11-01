@@ -11,6 +11,7 @@
 <?php include_once '../../head.php'; ?>
 <body>
 <?php include_once '../../header.php'; ?>
+    <br />
 <div class="mw45em center">
 	<section>
 		<details open>
@@ -142,5 +143,5 @@
 	</br>
 	<p>Last Modified: September 25, 2013.</br></br> &#174; 2013 LyfeOn.  &#9400; All Rights Reserved.</br></br></br></br></br></br></br></br></br></br><p>
 </div>
-<?php include_once '/footer_reg.php'; ?>
+<?php include_once '../../footer_reg.php'; ?>
 </body>

@@ -11,6 +11,7 @@
 <?php include_once '../../head.php'; ?>
 <body>
 <?php include_once '../../header.php'; ?>
+    <br />
 <div class="mw45em center">
 	
 	<section>
@@ -24,5 +25,5 @@
 	</br>
 	</br></br></br></br></br></br></br></br>
 </div>
-<?php include_once '/footer_reg.php'; ?>
+<?php include_once '../../footer_reg.php'; ?>
 </body>

@@ -11,8 +11,18 @@ handlers:
   static_dir: assets
   
 #Apis url
-- url: /apis/(/?.*?)
-  script: apis/index.php
+#- url: /apis/(/?.*?)
+- url: /apis/write/.*
+  script: apis/write.php
+
+- url: /apis/search/.*
+  script: apis/search.php
+
+- url: /apis/delete/.*
+  script: apis/delete.php
+
+- url: /apis/modify/.*
+  script: apis/modify.php
   
   # Co url
 - url: /co/analytics/analytics
@@ -45,7 +55,7 @@ handlers:
   script: co/co.php
   
 
-- url: /about.php
+- url: /about
   script: about.php
 
 - url: /stream.php
