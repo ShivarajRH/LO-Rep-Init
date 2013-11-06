@@ -5,34 +5,17 @@ $get = ($_GET);
 switch($get['action_object']) {
     case 'user_profile': 
                     if(!isset($get['uid'])) print_error(array("status"=>"fail","response"=>"Undefined uid."));
-                    
                     $output = put_user_details($get);
         break;
         
     case 'table_actions': $output = table_actions($get);
         break;
     
-    case 'list_content': 
-                    if(!isset($get['uid'])) {
-                        $output= array("status"=>"fail","response"=>"Undefined uid.");
-                    }
-                    else {
-                        $output = put_contents($get);
-                    }
-        break;
     case 'single_content': 
-                    if(!isset($get['uid'])) {
-                        $output= array("status"=>"fail","response"=>"Undefined uid.");
-                    }
-                    elseif(!isset($get['field_name'])) {
-                        $output= array("status"=>"fail","response"=>"Undefined required field name.");
-                    }
-                    elseif(!isset($get['field_value'])) {
-                        $output= array("status"=>"fail","response"=>"Undefined field value.");
-                    }
-                    else {
-                        put_single_content_info($get);
-                    }
+                    if(!isset($get['uid'])) print_error(array("status"=>"fail","response"=>"Undefined uid."));
+                    if(!isset($get['content_type'])) print_error(array("status"=>"fail","response"=>"Undefined content type."));
+                    $output = put_single_content_info($get);
+                   
         break;
     default : $output = unknown();
         break;
@@ -43,79 +26,7 @@ echo json_encode($output);
 function put_single_content_info($get) {
     include "paths.php";
     include $db_file_url;
-    //http://localhost:13080/apis/search/?action_object=single_content&uid=65858778973333&content_id=2&content_type=note
-    $output=array(); $con='';
-    $uid=mysql_real_escape_string($get['uid']);
-    $content_id=mysql_real_escape_string($get['content_id']);
-    $content_type=mysql_real_escape_string($get['content_type']);
-        
-    if($content_type == 'note') {
-        $arr_res=array();
-        
-        $sql = "select c.*,n.*
-                from generic_profile g
-                left join tbl_content c using(uid)
-                join tbl_notes n on n.content_id=c.content_id
-                where c.uid='$uid' and c.content_id=$content_id and c.content_type='$content_type'";
-        //echo '<pre>';die($sql);
-        $rslt = mysql_query($sql,$linkid) or print_error(mysql_error($linkid));
-        
-        
-            if(mysql_errno($linkid)) {
-                $output=array("status"=>"fail","response"=>mysql_error($linkid));
-            }
-            else {
-                while($row = mysql_fetch_assoc($rslt)) {
-                    $arr_res[]=$row;
-                }
-                
-                $output['notes'] = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>$arr_res);
-            }
-    }
-    if($content_type == 'expense') {
-        
-        $rslt = mysql_query("select c.*,e.* 
-                    from generic_profile g
-                    join tbl_content c  on c.uid=g.uid
-                    join tbl_expenses e on e.content_id=c.content_id
-                    where c.uid=$uid  and c.content_id=$content_id and c.content_type='$content_type'",$linkid) or print_error(mysql_error($linkid));
-            if(mysql_errno($linkid)) {
-                $output=array("status"=>"fail","response"=>mysql_error($linkid));
-            }
-            else {
-                while($row = mysql_fetch_assoc($rslt)) {
-                    $arr_res[]=$row;
-                }
-                $output['expenses'] = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>$arr_res);
-            }
-    }
-    if($content_type == 'reminder') {
-        $sql="select c.*,r.* 
-                    from generic_profile g
-                    join tbl_content c  on c.uid=g.uid
-                    join tbl_reminders r on r.content_id=c.content_id
-                    where c.uid=$uid  and c.content_id=$content_id and c.content_type='$content_type'";
-        
-        $rslt = mysql_query($sql,$linkid) or print_error(mysql_error($linkid));
-//                    echo '<pre>';die($sql);
-            if(mysql_errno($linkid)) {
-                $output=array("status"=>"fail","response"=>mysql_error($linkid));
-            }
-            else {
-                while($row = mysql_fetch_assoc($rslt)) {
-                    $arr_res[]=$row;
-                }
-                $output['reminders'] = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>$arr_res);
-            }
-    }
-    return $output;
-}
-
-function put_contents($get) {
-    include "paths.php";
-    include $db_file_url;
-    //http://localhost:13080/apis/write/?action_object=list_content&uid=6585877897&content_type=note&
-    //note_text=jdsjfkhdsfsdf&lat=77&long=33&timestamp=2013-02-01%2022:11:00
+    //http://localhost:13080/api/write/?action_object=single_content&uid=6585877897&content_type=note&note_text=jdsjfkhdsfsdf&lat=77&long=33&timestamp=2013-02-01%2022:11:00
     $uid=mysql_real_escape_string(urldecode($get['uid']));
     $content_type=mysql_real_escape_string(urldecode($get['content_type']));
     
@@ -137,7 +48,7 @@ function put_contents($get) {
             mysql_query("update `tbl_notes` set `note_id`='".$insert_id."' where `sno`=$insert_id") or print_error(mysql_error($linkid));
             
             if(mysql_errno($linkid)) {
-                $rslt_arr=array("status"=>"fail","response"=>mysql_error($linkid));
+                print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
             }
             else { 
                 $rslt_arr = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>"Note info has inserted.");
@@ -153,7 +64,7 @@ function put_contents($get) {
             mysql_query("update `tbl_expenses` set `expense_id`='".$insert_id."' where `sno`=$insert_id") or print_error(mysql_error($linkid));
             
             if(mysql_errno($linkid)) {
-                $rslt_arr=array("status"=>"fail","response"=>mysql_error($linkid));
+                print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
             }
             else { 
                 $rslt_arr = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>"Expense info has inserted.");
@@ -169,7 +80,7 @@ function put_contents($get) {
             mysql_query("update `tbl_reminders` set `reminder_id`='".$insert_id."' where `sno`=$insert_id") or print_error(mysql_error($linkid));;
             
             if(mysql_errno($linkid)) {
-                $rslt_arr=array("status"=>"fail","response"=>mysql_error($linkid));
+                print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
             }
             else { 
                 $rslt_arr = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>"Reminder info has inserted.");
@@ -179,7 +90,6 @@ function put_contents($get) {
 }
 
 function put_user_details($get) {
-    
     
     include "paths.php";
     include $db_file_url;
@@ -203,7 +113,7 @@ function put_user_details($get) {
     mysql_query("insert into `generic_profile`(`sno`,`uid`,`gid`,`fname`,`mname`,`lname`,`name`,`uname`,`email`,`phone`,`verification`,`lat`,`long`,`timezone`) values 
                     ( NULL,'".$uid."','".$gid."','".$fname."','".$mname."','".$lname."','".$name."','".$uname."','".$email."','".$phone."','".$verification."',".$lat.",".$long.",".$timezone.")",$linkid);
     if(mysql_errno($linkid)) {
-        $rslt_arr=array("status"=>"fail","response"=>mysql_error($linkid));
+        print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
     }
     else { 
         $rslt_arr = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>"User info has inserted.");
@@ -218,12 +128,26 @@ function table_actions() {
     //mysql_query('alter table `oneapp_db`.`generic_profile` change `slno` `sno` bigint (20)  NOT NULL AUTO_INCREMENT;',$linkid);
     //mysql_query('alter table `oneapp_db`.`generic_profile` change `uid` `uid` bigint(20) NOT NULL UNIQUE;',$linkid);
     if(mysql_errno($linkid)) {
-        $rslt_arr=array("status"=>"fail","response"=>mysql_error($linkid));
+        print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
     }
     else { 
         $rslt_arr = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>"User info has inserted.");
     }
     return $rslt_arr;
+}
+function check_uid($uid) {
+    include "paths.php";
+    include $db_file_url;
+    $rslt=mysql_query('select * from `oneapp_db`.`generic_profile` where uid="'.$uid.'" limit 1',$linkid);
+    
+    $rslt_arr=mysql_fetch_row($rslt);
+    if(mysql_num_rows($rslt)) {
+        return TRUE; //uid exits
+    }
+    else { 
+        return FALSE;//uid doen't exits
+    }
+    
 }
 function print_error($error) {
     if(is_array($error)) {

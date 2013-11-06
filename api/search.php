@@ -3,42 +3,23 @@ $output= '';
 $get = ($_GET);
 switch($get['action_object']) {
     case 'user_profile':
-                        if(!isset($get['uid'])) {
-                            $output= array("status"=>"fail","response"=>"Undefined uid.");
-                        }
-                        else {    
-                            $output= get_user_profile($get['uid']); 
-
-                        }
+                        if(!isset($get['uid'])) print_error(array("status"=>"fail","response"=>"Undefined uid."));
+                        $output= get_user_profile($get['uid']); 
         break;
     case 'list_content': 
-                        if(!isset($get['uid'])) {
-                            $output= array("status"=>"fail","response"=>"Undefined uid.");
-                        }
-                        elseif(!isset($get['content_type'])) { 
-                            $output= array("status"=>"fail","response"=>"Undefined content type.");
-                        }
-                        elseif(!isset($get['filter_type'])) { 
-                            $output= array("status"=>"fail","response"=>"Undefined filter type."); 
-
-                        }
-                        else {
-                            $output= get_list_content_info($get); 
-                        }
-                
+                        if(!isset($get['uid'])) print_error(array("status"=>"fail","response"=>"Undefined uid."));
+                        if(!isset($get['content_type'])) print_error(array("status"=>"fail","response"=>"Undefined content type.")); 
+                        if(!isset($get['filter_type'])) print_error(array("status"=>"fail","response"=>"Undefined filter type.")); 
+                        $output= get_list_content_info($get); 
         break;
     case 'single_content': 
                         if(!isset($get['uid'])) print_error(array("status"=>"fail","response"=>"Undefined uid."));
-                        
                         if(!isset($get['content_id'])) print_error(array("status"=>"fail","response"=>"Undefined content id."));
-                        
                         if(!isset($get['content_type'])) print_error(array("status"=>"fail","response"=>"Undefined content type.")); 
                         $output= get_single_content_info($get); 
-                        
         break;
     default : unknown();
         break;
-    
 }
 #echo '<pre>'; 
 echo json_encode($output); 

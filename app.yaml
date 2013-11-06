@@ -12,17 +12,17 @@ handlers:
   
 #Apis url
 #- url: /apis/(/?.*?)
-- url: /apis/write/.*
-  script: apis/write.php
+- url: /api/write/.*
+  script: api/write.php
 
-- url: /apis/search/.*
-  script: apis/search.php
+- url: /api/search/.*
+  script: api/search.php
 
-- url: /apis/delete/.*
-  script: apis/delete.php
+- url: /api/delete/.*
+  script: api/delete.php
 
-- url: /apis/modify/.*
-  script: apis/modify.php
+- url: /api/modify/.*
+  script: api/modify.php
   
   # Co url
 - url: /co/analytics/analytics
