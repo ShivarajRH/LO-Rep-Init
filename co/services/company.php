@@ -37,6 +37,14 @@
 				<p>Feedback ? Comments ? Business ? Or simply saying &#39;hello&#39; ?</br></br>Email: <a href="contact@lyfeon.com">contact@lyfeon.com</a></br></br>We love to hear what you think about us, our products and services. And your ideas !</p>
 			</details>
 		</section>
+                <section>
+                    <details open>
+                    <summary style="font-size:150%;"><a name="contact">Team</a></summary>
+                    <div style="clear:both;"><img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Fyamini.png" class="fl_le"><p class="fl_le"><strong>Yamini Chopra, CEO & Chairman</strong></br></br>Yamini, born in India and broughtup in the United States, is a travel freak and is also the CEO and Chairman of LyfeOn. She is the glue that brings LyfeOn its cohesiveness. Being a strict perfectionist, no detail is too small for her to ignore.</br></br>Reach Yamini Chopra on <a href="https://plus.google.com/103342215599292992888/about">Google+</a></p></div></br></br>
+                    <div style="clear:both;"><img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Fneal.png" class="fl_le"><p class="fl_le"><strong>Neal Smith, Business Development Director</strong></br></br>Neal is a seasoned photograher, writer, musician and is well renowned for sales and business development accumen. Neal handles user acquisition efforts, marketing, sales and business development operations at LyfeOn.</br></br>Reach Neal Smith on <a href="https://plus.google.com/101651219808545508511/about">Google+</a></p></div></br></br>
+                    <div style="clear:both;"><img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Fsarah.png" class="fl_le"><p class="fl_le"><strong>Sarah Collin, Engineering Director</strong></br></br>Sarah is a travel bug with an entrepreneurial itch and her interest for engineering and technology solutions to real life problems is what drew her to LyfeOn. Sarah handles engineering and platform development efforts at LyfeOn.</br></br>Reach Sarah Collin on <a href="https://plus.google.com/110936693132595308509/about">Google+</a></p></div></br></br>
+                    </details>
+                </section>
 	</div>
 	<?php include_once '../../footer_reg.php'; ?>
 </body>

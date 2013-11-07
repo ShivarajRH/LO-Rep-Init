@@ -5,6 +5,9 @@ $get = ($_GET);
 switch($get['action_object']) {
     case 'user_profile': 
                     if(!isset($get['uid'])) print_error(array("status"=>"fail","response"=>"Undefined uid."));
+                    if(!isset($get['gid'])) print_error(array("status"=>"fail","response"=>"Undefined gid."));
+                    if(!isset($get['name'])) print_error(array("status"=>"fail","response"=>"Undefined name."));
+                    if(!isset($get['email'])) print_error(array("status"=>"fail","response"=>"Undefined email."));
                     $output = put_user_details($get);
         break;
         
@@ -12,9 +15,10 @@ switch($get['action_object']) {
         break;
     
     case 'single_content': 
-                    if(!isset($get['uid'])) print_error(array("status"=>"fail","response"=>"Undefined uid."));
-                    if(!isset($get['content_type'])) print_error(array("status"=>"fail","response"=>"Undefined content type."));
-                    $output = put_single_content_info($get);
+                if(!isset($get['uid'])) print_error(array("status"=>"fail","response"=>"Undefined uid."));
+                if(!isset($get['content_type'])) print_error(array("status"=>"fail","response"=>"Undefined content type."));
+                if(!isset($get['timestamp'])) print_error(array("status"=>"fail","response"=>"Undefined content type."));
+                $output = put_single_content_info($get);
                    
         break;
     default : $output = unknown();
@@ -30,17 +34,21 @@ function put_single_content_info($get) {
     $uid=mysql_real_escape_string(urldecode($get['uid']));
     $content_type=mysql_real_escape_string(urldecode($get['content_type']));
     
-    $lat=mysql_real_escape_string(urldecode($get['lat']));
-    $long=mysql_real_escape_string(urldecode($get['long']));
+    $lat=(!isset($get['lat']))? '' : mysql_real_escape_string(urldecode($get['lat']));
+    $long=(!isset($get['long']))? '' : mysql_real_escape_string(urldecode($get['long']));
+    
     $timestamp=strtotime(mysql_real_escape_string(urldecode($get['timestamp'])));//Unix timestamp
     
     mysql_query("insert into `tbl_content`(`sno`,`content_id`,`uid`,`timestamp`,`lat`,`long`,`content_type`) 
                         values ( NULL,NULL,'".$uid."','".$timestamp."','".$lat."','".$long."','".$content_type."')",$linkid) or print_error(mysql_error($linkid));
-    $content_id = mysql_insert_id(); //"cnt".rand(8,getrandmax());
+    $slno = $content_id = mysql_insert_id(); //"cnt".rand(8,getrandmax());
     
-    mysql_query("update `tbl_content` set `content_id`='$content_id' where `sno`=$content_id") or print_error(mysql_error($linkid));
+    mysql_query("update `tbl_content` set `content_id`='$content_id' where `sno`=$slno") or print_error(mysql_error($linkid));
     
     if($content_type == 'note') {
+        if(!isset($get['note_text'])) print_error(array("status"=>"fail","response"=>"Undefined note text."));
+        if(!isset($get['content_type'])) print_error(array("status"=>"fail","response"=>"Undefined content type."));
+                
             $note_text=urldecode($get['note_text']);
             mysql_query("insert into `tbl_notes`(`sno`,`note_id`,`content_id`,`note_text`,`file_id`) 
                                 values ( NULL,NULL,'".$content_id."','".$note_text."',NULL);",$linkid) or print_error(mysql_error($linkid));
@@ -51,13 +59,18 @@ function put_single_content_info($get) {
                 print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
             }
             else { 
-                $rslt_arr = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>"Note info has inserted.");
+                $rslt_arr = array("status"=>"success","content_id"=>$content_id);
             }
     }
     elseif($content_type == 'expense') {
+        if(!isset($get['title'])) print_error(array("status"=>"fail","response"=>"Please specify expense title."));
+        if(!isset($get['desc'])) print_error(array("status"=>"fail","response"=>"Please specify expense description."));
+        if(!isset($get['amount'])) print_error(array("status"=>"fail","response"=>"Please specify amount."));
+            
             $title=mysql_real_escape_string(urldecode($get['title']));
             $desc=mysql_real_escape_string(urldecode($get['desc']));
             $amount=mysql_real_escape_string(urldecode($get['amount']));
+            
             mysql_query("insert into `tbl_expenses`(`sno`,`expense_id`,`content_id`,`title`,`desc`,`amount`) 
                                 values ( NULL,NULL,'".$content_id."','".$title."','".$desc."','".$amount."');",$linkid) or print_error(mysql_error($linkid));
             $insert_id = mysql_insert_id();
@@ -67,10 +80,13 @@ function put_single_content_info($get) {
                 print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
             }
             else { 
-                $rslt_arr = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>"Expense info has inserted.");
+                $rslt_arr = array("status"=>"success","content_id"=>$content_id);
             }
     }
     elseif($content_type == 'reminder') {
+        if(!isset($get['remind_time'])) print_error(array("status"=>"fail","response"=>"Please specify remind time."));
+        if(!isset($get['reminder_name'])) print_error(array("status"=>"fail","response"=>"Please specify reminder name."));
+        
             $remind_time=strtotime(mysql_real_escape_string(urldecode($get['remind_time'])));
             $reminder_name=mysql_real_escape_string(urldecode($get['reminder_name']));
             
@@ -83,31 +99,32 @@ function put_single_content_info($get) {
                 print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
             }
             else { 
-                $rslt_arr = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>"Reminder info has inserted.");
+                $rslt_arr = array("status"=>"success","content_id"=>$content_id);
             }
     }
     return $rslt_arr;
 }
 
 function put_user_details($get) {
-    
     include "paths.php";
     include $db_file_url;
     #uid=6647586&gid=6647586&fname=Shiva&mname=R&lname=H&name=shivaraj&uname=ShivarajRH&email=shiv@test.net
     //&phone=99776559966&verification=0&lat=77&long=23&time=2013-02-01+22%3A11%3A00
-    $uid=mysql_real_escape_string(urldecode($get['uid']));
-    $gid=mysql_real_escape_string(urldecode($get['gid']));
-    $fname=mysql_real_escape_string(urldecode($get['fname']));
-    $mname=mysql_real_escape_string(urldecode($get['mname']));
-    $lname=mysql_real_escape_string(urldecode($get['lname']));
-    $name=mysql_real_escape_string(urldecode($get['name']));
-    $uname=mysql_real_escape_string(urldecode($get['uname']));
-    $email=mysql_real_escape_string(urldecode($get['email']));
-    $phone=mysql_real_escape_string(urldecode($get['phone']));
-    $verification=mysql_real_escape_string(urldecode($get['verification']));
-    $lat=mysql_real_escape_string(urldecode($get['lat']));
-    $long=mysql_real_escape_string(urldecode($get['long']));
-    $timezone=  strtotime(mysql_real_escape_string(urldecode($get['time']))); //Unix timestamp
+    $uid=mysql_real_escape_string(urldecode($get['uid'])); //req
+    $gid=mysql_real_escape_string(urldecode($get['gid'])); //req
+    $name=mysql_real_escape_string(urldecode($get['name'])); //req
+    $email=mysql_real_escape_string(urldecode($get['email'])); //req
+    
+    $content_type=(!isset($get['content_type']))? '' : mysql_real_escape_string(urldecode($get['content_type']));
+    $fname=(!isset($get['fname']))? '' : mysql_real_escape_string(urldecode($get['fname']));
+    $mname=(!isset($get['mname']))? '' : mysql_real_escape_string(urldecode($get['mname']));
+    $lname=(!isset($get['lname']))? '' : mysql_real_escape_string(urldecode($get['lname']));
+    $uname=(!isset($get['uname']))? '' : mysql_real_escape_string(urldecode($get['uname']));
+    $phone=(!isset($get['phone']))? '' : mysql_real_escape_string(urldecode($get['phone']));
+    $verification=(!isset($get['verification']))? '' : mysql_real_escape_string(urldecode($get['verification']));
+    $lat=(!isset($get['lat']))? '' : mysql_real_escape_string(urldecode($get['lat']));
+    $long=(!isset($get['long']))? '' : mysql_real_escape_string(urldecode($get['long']));
+    $timezone=  (!isset($get['time']))? '' : strtotime(mysql_real_escape_string(urldecode($get['time']))); //Unix timestamp
     
     
     mysql_query("insert into `generic_profile`(`sno`,`uid`,`gid`,`fname`,`mname`,`lname`,`name`,`uname`,`email`,`phone`,`verification`,`lat`,`long`,`timezone`) values 
@@ -116,7 +133,7 @@ function put_user_details($get) {
         print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
     }
     else { 
-        $rslt_arr = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>"User info has inserted.");
+        $rslt_arr = array("success");
     }
     return $rslt_arr;
 }

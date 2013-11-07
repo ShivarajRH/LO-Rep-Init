@@ -189,7 +189,12 @@ function get_user_profile($uid) {
         $rslt_arr=array("status"=>"fail","response"=>mysql_error($linkid));
     }
     else {
-        $rslt_arr = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>mysql_fetch_assoc($rslt));
+        while($row = mysql_fetch_assoc($rslt)) {
+            $result['uid']=$row['uid'];
+            $result['gid']=$row['gid'];
+            $result['name']=$row['name'];
+        }
+        $rslt_arr = array($result);
     }
     return $rslt_arr;
 }

@@ -11,8 +11,8 @@ switch($get['action']) {
         break;
     default : unknown();
         break;
-    
 }
+
 function put_single_content_info($get) {
     include "paths.php";
     include $db_file_url;
