@@ -9,7 +9,7 @@ switch($get['action_object']) {
     case 'list_content': 
                         if(!isset($get['uid'])) print_error(array("status"=>"fail","response"=>"Undefined uid."));
                         if(!isset($get['content_type'])) print_error(array("status"=>"fail","response"=>"Undefined content type.")); 
-                        if(!isset($get['filter_type'])) print_error(array("status"=>"fail","response"=>"Undefined filter type.")); 
+                        //if(!isset($get['filter_type'])) print_error(array("status"=>"fail","response"=>"Undefined filter type.")); 
                         $output= get_list_content_info($get); 
         break;
     case 'single_content': 
@@ -33,7 +33,7 @@ function get_single_content_info($get) {
     $uid=mysql_real_escape_string($get['uid']);
     $content_id=mysql_real_escape_string($get['content_id']);
     $content_type=mysql_real_escape_string($get['content_type']);
-        
+    
     if($content_type == 'note') {
         $arr_res=array();
         
@@ -102,17 +102,44 @@ function get_list_content_info($get) {
     //&content_type=all&filter_type=time&filter_from=2013-08-12&filter_to=2013-10-01
     $output=array(); $con='';
     $uid=mysql_real_escape_string($get['uid']);
-    
-    
-    if($get['filter_type']=='time') {
+       
+    if($get['content_type'] == 'all') {
+        $arr_res=array();
         
-        $from= strtotime(urldecode($get['filter_from']));
-        $to= strtotime(urldecode($get['filter_to']));
-        $con .= ' and c.timestamp between '.$from.' and '.$to.' ';
+        $rslt = mysql_query("select sum(amount) as ttl_expense from tbl_expenses where `uid`=$uid",$linkid) or print_error(mysql_error($linkid));
+        $row = mysql_fetch_array($rslt);
+        $output['expense_total'] = $row['ttl_expense'];
         
+        $rslt = mysql_query("select remind_time,reminder_name from tbl_reminders where `uid`=$uid",$linkid) or print_error(mysql_error($linkid));
+        $arr_rslt = mysql_fetch_array($rslt);
+        foreach ($arr_res as $row) {
+            $output[]['reminder_name'] = $row['reminder_name'];
+            $output[]['remind_time'] = $row['remind_time'];
+        }
+//http://localhost:13080/api/search/?action_object=list_content&uid=54694568990687&content_type=all
+        
+        /*$sql = "select *
+                from generic_profile g
+                left join tbl_content c using(uid)
+                join tbl_notes n on n.content_id=c.content_id
+                where c.uid=$uid $con";
+        //echo '<pre>';die($sql);
+        
+        $rslt = mysql_query($sql,$linkid) or print_error(mysql_error($linkid));
+        
+        
+            if(mysql_errno($linkid)) {
+                $output=array("status"=>"fail","response"=>mysql_error($linkid));
+            }
+            else {
+                while($row = mysql_fetch_assoc($rslt)) {
+                    $arr_res[]=$row;
+                }
+                
+                $output['notes'] = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>$arr_res);
+            }
+         */
     }
-    $filter_from_str = urlencode(strtolower($get['filter_from']));
-    
     if($get['content_type'] == 'note' || $get['content_type'] == 'all') {
         $arr_res=array();
         if($get['filter_type']=='value') {
@@ -139,6 +166,13 @@ function get_list_content_info($get) {
             }
     }
     if($get['content_type'] == 'expense' || $get['content_type'] == 'all') {
+        if($get['filter_type']=='time') {
+            $from= strtotime(urldecode($get['filter_from']));
+            $to= strtotime(urldecode($get['filter_to']));
+            $con .= ' and c.timestamp between '.$from.' and '.$to.' ';
+        }
+        $filter_from_str = urlencode(strtolower($get['filter_from']));
+
         if($get['filter_type']=='value') {
             $con = ' and e.title like "%'.$filter_from_str.'%" or e.desc like "%'.$filter_from_str.'%" ';
         }
