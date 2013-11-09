@@ -104,43 +104,37 @@ function get_list_content_info($get) {
     $uid=mysql_real_escape_string($get['uid']);
        
     if($get['content_type'] == 'all') {
-        $arr_res=array();
-        
+        //expense total
         $rslt = mysql_query("select sum(amount) as ttl_expense from tbl_expenses where `uid`=$uid",$linkid) or print_error(mysql_error($linkid));
         $row = mysql_fetch_array($rslt);
         $output['expense_total'] = $row['ttl_expense'];
-        
-        $rslt = mysql_query("select remind_time,reminder_name from tbl_reminders where `uid`=$uid",$linkid) or print_error(mysql_error($linkid));
-        $arr_rslt = mysql_fetch_array($rslt);
-        foreach ($arr_res as $row) {
-            $output[]['reminder_name'] = $row['reminder_name'];
-            $output[]['remind_time'] = $row['remind_time'];
+        //reminders
+        $rslt = mysql_query("select reminder_id,remind_time,reminder_name from tbl_reminders where `uid`=$uid",$linkid) or print_error(mysql_error($linkid));
+        $i=0;
+        while ($row=mysql_fetch_array($rslt)) {
+            
+            $data_array[$i]['reminder_id'] = $row['reminder_id'];
+            $data_array[$i]['reminder_name'] = $row['reminder_name'];
+            $data_array[$i]['remind_time'] = date("Y-m-d H:i:s",$row['remind_time']);
+            $i++;
         }
-//http://localhost:13080/api/search/?action_object=list_content&uid=54694568990687&content_type=all
+        $output['reminders'] = $data_array;
+        //Notes
+        $rslt = mysql_query("select n.note_id,n.note_text,c.timestamp from tbl_notes n
+                            join tbl_content c on c.content_id=n.content_id
+                            where n.`uid`=$uid",$linkid) or print_error(mysql_error($linkid));
+        $i=0;$data_array=array();
+        while ($row=mysql_fetch_array($rslt)) {
+            
+            $data_array[$i]['note_id'] = $row['note_id'];
+            $data_array[$i]['note_text'] = $row['note_text'];
+            $data_array[$i]['timestamp'] = date("Y-m-d H:i:s",$row['timestamp']);
+            $i++;
+        }
         
-        /*$sql = "select *
-                from generic_profile g
-                left join tbl_content c using(uid)
-                join tbl_notes n on n.content_id=c.content_id
-                where c.uid=$uid $con";
-        //echo '<pre>';die($sql);
-        
-        $rslt = mysql_query($sql,$linkid) or print_error(mysql_error($linkid));
-        
-        
-            if(mysql_errno($linkid)) {
-                $output=array("status"=>"fail","response"=>mysql_error($linkid));
-            }
-            else {
-                while($row = mysql_fetch_assoc($rslt)) {
-                    $arr_res[]=$row;
-                }
-                
-                $output['notes'] = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>$arr_res);
-            }
-         */
+        $output['notes'] = $data_array;
     }
-    if($get['content_type'] == 'note' || $get['content_type'] == 'all') {
+    if($get['content_type'] == 'note') {
         $arr_res=array();
         if($get['filter_type']=='value') {
             $con .= ' and n.note_text like "%'.$filter_from_str.'%" ';
@@ -165,7 +159,7 @@ function get_list_content_info($get) {
                 $output['notes'] = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>$arr_res);
             }
     }
-    if($get['content_type'] == 'expense' || $get['content_type'] == 'all') {
+    if($get['content_type'] == 'expense') {
         if($get['filter_type']=='time') {
             $from= strtotime(urldecode($get['filter_from']));
             $to= strtotime(urldecode($get['filter_to']));
@@ -192,7 +186,7 @@ function get_list_content_info($get) {
                 $output['expenses'] = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>$arr_res);
             }
     }
-    if($get['content_type'] == 'reminder' || $get['content_type'] == 'all') {
+    if($get['content_type'] == 'reminder') {
         if($get['filter_type']=='value') {
             $con = ' and r.reminder_name like "%'.$filter_from_str.'%" ';
         }
