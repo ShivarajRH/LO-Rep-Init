@@ -35,63 +35,53 @@ function get_single_content_info($get) {
     $content_type=mysql_real_escape_string($get['content_type']);
     
     if($content_type == 'note') {
-        $arr_res=array();
-        
-        $sql = "select c.*,n.*
-                from generic_profile g
-                left join tbl_content c using(uid)
-                join tbl_notes n on n.content_id=c.content_id
-                where c.uid='$uid' and c.content_id=$content_id and c.content_type='$content_type'";
-        //echo '<pre>';die($sql);
-        $rslt = mysql_query($sql,$linkid) or print_error(mysql_error($linkid));
-        
-        
-            if(mysql_errno($linkid)) {
-                $output=array("status"=>"fail","response"=>mysql_error($linkid));
-            }
-            else {
-                while($row = mysql_fetch_assoc($rslt)) {
-                    $arr_res[]=$row;
-                }
-                
-                $output['notes'] = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>$arr_res);
-            }
+        //Notes
+        $rslt = mysql_query("select n.note_id,n.note_text,c.timestamp from tbl_notes n
+                            join tbl_content c on c.content_id=n.content_id
+                            where n.`content_id`=$content_id",$linkid) or print_error(mysql_error($linkid));
+        $i=0;$data_array=array();
+        while ($row=mysql_fetch_array($rslt)) {
+            
+            $data_array[$i]['note_id'] = $row['note_id'];
+            $data_array[$i]['note_text'] = $row['note_text'];
+            $data_array[$i]['timestamp'] = date("Y-m-d H:i:s",$row['timestamp']);
+            $i++;
+        }
+        $output['notes'] = $data_array;
     }
     if($content_type == 'expense') {
-        
-        $rslt = mysql_query("select c.*,e.* 
-                    from generic_profile g
-                    join tbl_content c  on c.uid=g.uid
-                    join tbl_expenses e on e.content_id=c.content_id
-                    where c.uid=$uid  and c.content_id=$content_id and c.content_type='$content_type'",$linkid) or print_error(mysql_error($linkid));
+            $rslt = mysql_query("select * from tbl_expenses e
+            join tbl_content c on c.content_id=e.content_id
+            where e.content_id=$content_id $con",$linkid) or print_error(mysql_error($linkid));
+
             if(mysql_errno($linkid)) {
-                $output=array("status"=>"fail","response"=>mysql_error($linkid));
+                print_error(mysql_error($linkid));
             }
             else {
+                $i=0;$data_array=array();
                 while($row = mysql_fetch_assoc($rslt)) {
-                    $arr_res[]=$row;
+                    
+                    $data_array[$i]['expense_id']=$row['expense_id'];
+                    $data_array[$i]['content_id']=$row['content_id'];
+                    $data_array[$i]['expense_title']=$row['title'];
+                    $data_array[$i]['expense_amount']=$row['amount'];
+                    $i++;
                 }
-                $output['expenses'] = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>$arr_res);
+                $output['expenses'] = $data_array;
             }
     }
     if($content_type == 'reminder') {
-        $sql="select c.*,r.* 
-                    from generic_profile g
-                    join tbl_content c  on c.uid=g.uid
-                    join tbl_reminders r on r.content_id=c.content_id
-                    where c.uid=$uid  and c.content_id=$content_id and c.content_type='$content_type'";
-        
-        $rslt = mysql_query($sql,$linkid) or print_error(mysql_error($linkid));
-//                    echo '<pre>';die($sql);
-            if(mysql_errno($linkid)) {
-                $output=array("status"=>"fail","response"=>mysql_error($linkid));
+        $rslt = mysql_query("select reminder_id,remind_time,reminder_name 
+            from tbl_reminders where `content_id`=$content_id",$linkid) or print_error(mysql_error($linkid));
+            $i=0;
+            while ($row=mysql_fetch_array($rslt)) {
+
+                $data_array[$i]['reminder_id'] = $row['reminder_id'];
+                $data_array[$i]['reminder_name'] = $row['reminder_name'];
+                $data_array[$i]['remind_time'] = date("Y-m-d H:i:s",$row['remind_time']);
+                $i++;
             }
-            else {
-                while($row = mysql_fetch_assoc($rslt)) {
-                    $arr_res[]=$row;
-                }
-                $output['reminders'] = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>$arr_res);
-            }
+            $output['reminders'] = $data_array;
     }
     return $output;
 }
@@ -155,8 +145,10 @@ function get_list_content_info($get) {
             $output['expense_total'] = $row['ttl_expense'];
 
         if($get['filter_type']=='time') {
+            if(!isset($get['filter_from'])) print_error(array("status"=>"fail","response"=>"Please specify filter from."));
+            //if(!isset($get['filter_to'])) print_error(array("status"=>"fail","response"=>"Please specify filter to."));
             $from= strtotime(urldecode($get['filter_from']));
-            $to= strtotime(urldecode($get['filter_to']));
+            $to= isset($get['filter_to'])? strtotime(urldecode($get['filter_to'])) : time();
             $con .= ' and c.timestamp between '.$from.' and '.$to.' ';
         }
         /*$filter_from_str = urlencode(strtolower($get['filter_from']));
@@ -174,9 +166,7 @@ function get_list_content_info($get) {
             else {
                 $i=0;$data_array=array();
                 while($row = mysql_fetch_assoc($rslt)) {
-                    /*$data_array[$i]['expense_id']=$row['expense_id'];
-                    $data_array[$i]['content_id']=$row['content_id'];
-                    $data_array[$i]['expense_title']=$row['title'];
+                    /*$data_array[$i]['expense_title']=$row['title'];
                     $data_array[$i]['expense_amount']=$row['amount'];
                     $data_array[$i]['timestamp']=date("Y-m-d H:i:s",$row['timestamp']);
                     */

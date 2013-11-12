@@ -4,7 +4,7 @@ $get = ($_GET);
 switch($get['action']) {
     case 'user_profile':  delete_user_profile();
         break;
-    case 'search': 
+    case 'single_content': del_single_content($get);
         break;
     case 'delete': 
         break;

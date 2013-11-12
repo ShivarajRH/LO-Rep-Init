@@ -39,6 +39,10 @@ function put_single_content_info($get) {
     
     $timestamp=strtotime(mysql_real_escape_string(urldecode($get['timestamp'])));//Unix timestamp
     
+    $rslt = mysql_query("select uid from generic_profile where `uid`=$uid",$linkid) or print_error(mysql_error($linkid));
+    $row = mysql_fetch_array($rslt);
+    if($row['uid']!='') { print_error("User/uid does not exits."); }
+    
     mysql_query("insert into `tbl_content`(`sno`,`content_id`,`uid`,`timestamp`,`lat`,`long`,`content_type`) 
                         values ( NULL,NULL,'".$uid."','".$timestamp."','".$lat."','".$long."','".$content_type."')",$linkid) or print_error(mysql_error($linkid));
     $slno = $content_id = mysql_insert_id(); //"cnt".rand(8,getrandmax());
