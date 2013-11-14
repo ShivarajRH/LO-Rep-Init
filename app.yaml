@@ -23,6 +23,9 @@ handlers:
 
 - url: /api/modify/.*
   script: api/modify.php
+
+- url: /api/analytics/.*
+  script: api/analytics.php
   
   # Co url
 - url: /co/analytics/analytics

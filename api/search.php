@@ -49,7 +49,7 @@ function get_single_content_info($get) {
         }
         $output['notes'] = $data_array;
     }
-    if($content_type == 'expense') {
+    elseif($content_type == 'expense') {
             $rslt = mysql_query("select * from tbl_expenses e
             join tbl_content c on c.content_id=e.content_id
             where e.content_id=$content_id $con",$linkid) or print_error(mysql_error($linkid));
@@ -70,7 +70,7 @@ function get_single_content_info($get) {
                 $output['expenses'] = $data_array;
             }
     }
-    if($content_type == 'reminder') {
+    elseif($content_type == 'reminder') {
         $rslt = mysql_query("select reminder_id,remind_time,reminder_name 
             from tbl_reminders where `content_id`=$content_id",$linkid) or print_error(mysql_error($linkid));
             $i=0;
@@ -83,6 +83,7 @@ function get_single_content_info($get) {
             }
             $output['reminders'] = $data_array;
     }
+    else { $output = unknown(); }
     return $output;
 }
 function get_list_content_info($get) {
@@ -99,7 +100,8 @@ function get_list_content_info($get) {
         $row = mysql_fetch_array($rslt);
         $output['expense_total'] = $row['ttl_expense'];
         //reminders
-        $rslt = mysql_query("select reminder_id,remind_time,reminder_name from tbl_reminders where `uid`=$uid",$linkid) or print_error(mysql_error($linkid));
+        $rslt = mysql_query("select reminder_id,remind_time,reminder_name from tbl_reminders 
+            where `uid`='$uid'",$linkid) or print_error(mysql_error($linkid));
         $i=0;
         while ($row=mysql_fetch_array($rslt)) {
             
@@ -112,7 +114,7 @@ function get_list_content_info($get) {
         //Notes
         $rslt = mysql_query("select n.note_id,n.note_text,c.timestamp from tbl_notes n
                             join tbl_content c on c.content_id=n.content_id
-                            where n.`uid`=$uid",$linkid) or print_error(mysql_error($linkid));
+                            where n.`uid`='$uid'",$linkid) or print_error(mysql_error($linkid));
         $i=0;$data_array=array();
         while ($row=mysql_fetch_array($rslt)) {
             
@@ -123,11 +125,11 @@ function get_list_content_info($get) {
         }
         $output['notes'] = $data_array;
     }
-    if($get['content_type'] == 'note') {
+    elseif($get['content_type'] == 'note') {
         //Notes
         $rslt = mysql_query("select n.note_id,n.note_text,c.timestamp from tbl_notes n
                             join tbl_content c on c.content_id=n.content_id
-                            where n.`uid`=$uid",$linkid) or print_error(mysql_error($linkid));
+                            where n.`uid`='$uid'",$linkid) or print_error(mysql_error($linkid));
         $i=0;$data_array=array();
         while ($row=mysql_fetch_array($rslt)) {
             
@@ -138,7 +140,7 @@ function get_list_content_info($get) {
         }
         $output['notes'] = $data_array;
     }
-    if($get['content_type'] == 'expense') {
+    elseif($get['content_type'] == 'expense') {
             //expense total
             $rslt = mysql_query("select sum(amount) as ttl_expense from tbl_expenses where `uid`=$uid",$linkid) or print_error(mysql_error($linkid));
             $row = mysql_fetch_array($rslt);
@@ -158,7 +160,7 @@ function get_list_content_info($get) {
         
             $rslt = mysql_query("select * from tbl_expenses e
                     join tbl_content c on c.content_id=e.content_id
-                    where e.uid=$uid $con",$linkid) or print_error(mysql_error($linkid));
+                    where e.uid='$uid' $con",$linkid) or print_error(mysql_error($linkid));
       
             if(mysql_errno($linkid)) {
                 print_error(mysql_error($linkid));
@@ -166,10 +168,6 @@ function get_list_content_info($get) {
             else {
                 $i=0;$data_array=array();
                 while($row = mysql_fetch_assoc($rslt)) {
-                    /*$data_array[$i]['expense_title']=$row['title'];
-                    $data_array[$i]['expense_amount']=$row['amount'];
-                    $data_array[$i]['timestamp']=date("Y-m-d H:i:s",$row['timestamp']);
-                    */
                     /*****/
                     $month=date("M",$row['timestamp']);
                     $data_array[$month][$i]['expense_id']=$row['expense_id'];
@@ -182,8 +180,9 @@ function get_list_content_info($get) {
                 $output['expenses'] = $data_array;
             }
     }
-    if($get['content_type'] == 'reminder') {
-            $rslt = mysql_query("select reminder_id,remind_time,reminder_name from tbl_reminders where `uid`=$uid",$linkid) or print_error(mysql_error($linkid));
+    elseif($get['content_type'] == 'reminder') {
+            $rslt = mysql_query("select reminder_id,remind_time,reminder_name from tbl_reminders 
+                where `uid`='$uid'",$linkid) or print_error(mysql_error($linkid));
             $i=0;
             while ($row=mysql_fetch_array($rslt)) {
 
@@ -195,6 +194,7 @@ function get_list_content_info($get) {
             $output['reminders'] = $data_array;
         
     }
+    else { $output = unknown(); }
     return $output;
 }
 
@@ -202,16 +202,23 @@ function get_user_profile($uid) {
     include "paths.php";
     include $db_file_url;
     
-    $rslt=mysql_query("select * from generic_profile where uid=$uid",$linkid);
+    $rslt=mysql_query("SELECT * FROM `generic_profile` WHERE `uid`='$uid'",$linkid);
     if(mysql_errno($linkid)) {
         $rslt_arr=array("status"=>"fail","response"=>mysql_error($linkid));
     }
     else {
-        while($row = mysql_fetch_assoc($rslt)) {
-            $result['uid']=$row['uid'];
-            $result['gid']=$row['gid'];
-            $result['name']=$row['name'];
+        if(mysql_affected_rows($linkid) > 0) {
+            while($row = mysql_fetch_assoc($rslt)) {
+                $result['uid']=$row['uid'];
+                $result['gid']=$row['gid'];
+                $result['name']=$row['name'];
+            }
         }
+        else {
+            $result['fail']="No Records found.";
+        }
+        //$result['rows']=mysql_affected_rows($linkid);
+        
         $rslt_arr = array($result);
     }
     return $rslt_arr;
@@ -221,7 +228,7 @@ function print_error($error) {
         echo json_encode($error);
     }
     else {
-        echo json_encode('{"status":"fail","response":"'.$error.'"}');
+        echo json_encode(array("status"=>"fail","response"=>$error));
     }
     die();
 }

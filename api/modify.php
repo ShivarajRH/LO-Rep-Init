@@ -1,44 +1,60 @@
 <?php
 $get = ($_GET);
 //print_r($get);
-switch($get['action']) {
-    case 'single_content': 
+switch($get['action_object']) {
+    case 'single_content':
                     if(!isset($get['uid'])) print_error(array("status"=>"fail","response"=>"Undefined uid."));
                     if(!isset($get['content_type'])) print_error(array("status"=>"fail","response"=>"Undefined content type."));
-                    if(!isset($get['field_name'])) print_error(array("status"=>"fail","response"=>"Undefined required field name."));
-                    if(!isset($get['field_value'])) print_error(array("status"=>"fail","response"=>"Undefined field value."));
-                    $output = put_single_content_info($get);
+                    if(!isset($get['content_id'])) print_error(array("status"=>"fail","response"=>"Undefined content id."));
+//                    if(!isset($get['field_name'])) print_error(array("status"=>"fail","response"=>"Undefined required field name."));
+//                    if(!isset($get['field_value'])) print_error(array("status"=>"fail","response"=>"Undefined field value."));
+                    $output = modify_single_content_info($get);
         break;
     default : unknown();
         break;
 }
-
-function put_single_content_info($get) {
+echo json_encode($output);
+function modify_single_content_info($get) {
     include "paths.php";
     include $db_file_url;
     $cond='';
     //http://localhost:13080/apis/write/?action_object=single_content&uid=6585877897&field_name=note_text&field_value=gsdfhgdsf%20asagfadslgfaeew%20v%20sadfjasdfsdkjfhadsf&content_id=2&content_type=note
     $output=array();
-    $uid=mysql_real_escape_string($get['uid']);
-    $content_id=mysql_real_escape_string($get['content_id']);
-    $content_type=mysql_real_escape_string($get['content_type']);
+    $uid=mysql_real_escape_string(urldecode($get['uid']));
+    $content_type=mysql_real_escape_string(urldecode($get['content_type']));
+    $content_id=mysql_real_escape_string(urldecode($get['content_id']));
     
-    //Check uid 
-    if(!check_uid($uid)) print_error(array("status"=>"fail","response"=>"Invalid uid."));
-    $field_name=mysql_real_escape_string($get['field_name']); // required
-    $field_value=mysql_real_escape_string($get['field_value']); // required
+    $lat=(!isset($get['lat']))? '' : mysql_real_escape_string(urldecode($get['lat']));
+    $long=(!isset($get['long']))? '' : mysql_real_escape_string(urldecode($get['long']));
     
-    if($uid != '') {       $cond .= " and c.uid=$uid "; }
-    if($content_type != '') { $cond .= " and c.content_type='$content_type' ";  }
+    $timestamp=(!isset($get['timestamp']))? '' : strtotime(mysql_real_escape_string(urldecode($get['timestamp'])));//Unix timestamp
+    
+    $rslt = mysql_query("select `uid` from generic_profile where `uid`='$uid'",$linkid) or print_error(mysql_error($linkid));
+    $row = mysql_fetch_array($rslt);
+    if($row['uid']=='') { print_error("User/uid does not exits."); }
+    
+    $rslt = mysql_query("select `content_id` from `tbl_content` where `content_id`=$content_id",$linkid) or print_error(mysql_error($linkid));
+    $row = mysql_fetch_array($rslt);
+    if($row['content_id']=='') { print_error("Content id does not exits in contents record."); }
+        
     
     if($content_type == 'note') {
-        $arr_res=array();
+        $note_text =(!isset($get['note_text']))? '' : mysql_real_escape_string(urldecode($get['note_text']));
+
+        $rslt = mysql_query("select `content_id` from `tbl_notes` where `content_id`='$content_id'",$linkid) or print_error(mysql_error($linkid));
+        $row = mysql_fetch_array($rslt);
+        if($row['content_id']=='') { print_error("Content id does not exits in notes record."); }
+        
+        if($note_text != '') {    if($cond!='') $cond .= ",";    $cond .= "n.note_text='".$note_text."'";        }
+        if($lat != '') {     if($cond!='') $cond .= ",";         $cond .= "c.lat=".$lat;        }
+        if($long != '') {     if($cond!='') $cond .= ",";        $cond .= "c.long=".$long;        }
+        if($timestamp != '') {     if($cond!='') $cond .= ",";        $cond .= "c.timestamp=".$timestamp;        }
         
         $sql = "UPDATE 
             `tbl_notes` n
             JOIN `tbl_content` c on c.content_id=n.content_id
-            SET n.{$field_name} = '$field_value'
-            WHERE c.content_id =$content_id $cond ";
+            SET $cond
+            WHERE c.content_id =$content_id";
         //echo '<pre>';die($sql);
         $rslt = mysql_query($sql,$linkid) or print_error(mysql_error($linkid));
         
@@ -48,43 +64,76 @@ function put_single_content_info($get) {
             }
             else {
                 
-                $output['notes'] = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>"Field is Updated.");
+                $output = array("status"=>"success","result"=>"Content is Updated.");
             }
     }
-    if($content_type == 'expense') {
+    elseif($content_type == 'expense') {
+                
+        $title =(!isset($get['title']))? '' : mysql_real_escape_string(urldecode($get['title']));
+        $desc =(!isset($get['desc']))? '' : mysql_real_escape_string(urldecode($get['desc']));
+        $amount =(!isset($get['amount']))? '' : mysql_real_escape_string(urldecode($get['amount']));
+        
+        $rslt = mysql_query("select `content_id` from `tbl_expenses` where `content_id`='$content_id'",$linkid) or print_error(mysql_error($linkid));
+        $row = mysql_fetch_array($rslt);
+        if($row['content_id']=='') { print_error("Content id does not exits in expenses record."); }
+        
+        if($title != '') {   if($cond!='') $cond .= ",";     $cond .= "e.title='".$title."'";        }
+        if($desc != '') {       if($cond!='') $cond .= ",";       $cond .= "e.desc='".$desc."'";        }
+        if($amount != '') {      if($cond!='') $cond .= ",";       $cond .= "e.amount='".$amount."'";        }
+        if($timestamp != '') {    if($cond!='') $cond .= ",";    $cond .= "c.timestamp='".$timestamp."'";        }
         
         $sql = "UPDATE 
             `tbl_expenses` e
             JOIN `tbl_content` c on c.content_id=e.content_id
-            SET e.{$field_name} = '$field_value'
-            WHERE c.content_id =$content_id $cond ";
+            SET $cond
+            WHERE c.content_id =$content_id";
+            //echo '<pre>';die($sql);
+            $rslt = mysql_query($sql,$linkid) or print_error(mysql_error($linkid));
         
-            $rslt = mysql_query("$sql",$linkid) or print_error(mysql_error($linkid));
             if(mysql_errno($linkid)) {
                 print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
             }
             else {
-                $output['expenses'] = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>"Field is Updated.");
+                $output = array("status"=>"success","result"=>"Content is Updated.");
             }
     }
-    if($content_type == 'reminder') {
-        $sql = "UPDATE 
+    elseif($content_type == 'reminder') {
+        $remind_time =(!isset($get['remind_time'])) ? '' : mysql_real_escape_string(urldecode($get['remind_time']));
+        $reminder_name =(!isset($get['reminder_name'])) ? '' : mysql_real_escape_string(urldecode($get['reminder_name']));
+        
+        $rslt = mysql_query("select `content_id` from `tbl_reminders` where `content_id`='$content_id'",$linkid) or print_error(mysql_error($linkid));
+        $row = mysql_fetch_array($rslt);
+        if($row['content_id']=='') { print_error("Content id does not exits in reminders record."); }
+        
+        if($remind_time != '') {      $cond .= "r.remind_time='".$remind_time."'";        }
+        if($reminder_name != '') {     
+            if($cond!='') $cond .= ",";
+            $cond .= "r.reminder_name='".$reminder_name."'";
+        }
+        if($amount != '') {   if($cond!='') $cond .= ",";  $cond .= "r.amount='".$amount."'";        }
+        if($timestamp != '') {  if($cond!='') $cond .= ",";  $cond .= "c.timestamp='".$timestamp."'";        }
+        
+        $sql = "UPDATE
             `tbl_reminders` r
             JOIN `tbl_content` c on c.content_id=r.content_id
-            SET r.{$field_name} = '$field_value'
-            WHERE c.content_id =$content_id $cond ";
-        
+            SET $cond
+            WHERE c.content_id = $content_id";
+        //echo '<pre>';die($sql);
         $rslt = mysql_query($sql,$linkid) or print_error(mysql_error($linkid));
-//                    echo '<pre>';die($sql);
-            if(mysql_errno($linkid)) {
-                print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
-            }
-            else {
-                $output['reminders'] = array("affected_rows"=>mysql_affected_rows($linkid),"result"=>"Field is Updated.");
-            }
+
+
+        if(mysql_errno($linkid)) {
+            print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
+        }
+        else {
+            $output = array("status"=>"success","result"=>"Content is Updated.");
+        }
+        
     }
+    else { $output = unknown(); }
     return $output;
 }
+
 function check_uid($uid) {
     include "paths.php";
     include $db_file_url;
@@ -104,7 +153,7 @@ function print_error($error) {
         echo json_encode($error);
     }
     else {
-        echo json_encode('{"status":"fail","response":"'.$error.'"}');
+        echo json_encode(array("status"=>"fail","response"=>$error));
     }
     die();
 }

@@ -17,7 +17,7 @@ switch($get['action_object']) {
     case 'single_content': 
                 if(!isset($get['uid'])) print_error(array("status"=>"fail","response"=>"Undefined uid."));
                 if(!isset($get['content_type'])) print_error(array("status"=>"fail","response"=>"Undefined content type."));
-                if(!isset($get['timestamp'])) print_error(array("status"=>"fail","response"=>"Undefined content type."));
+                if(!isset($get['timestamp'])) print_error(array("status"=>"fail","response"=>"Undefined timestamp."));
                 $output = put_single_content_info($get);
                    
         break;
@@ -39,7 +39,7 @@ function put_single_content_info($get) {
     
     $timestamp=strtotime(mysql_real_escape_string(urldecode($get['timestamp'])));//Unix timestamp
     
-    $rslt = mysql_query("select uid from generic_profile where `uid`=$uid",$linkid) or print_error(mysql_error($linkid));
+    $rslt = mysql_query("select uid from generic_profile where `uid`='$uid'",$linkid) or print_error(mysql_error($linkid));
     $row = mysql_fetch_array($rslt);
     if($row['uid']!='') { print_error("User/uid does not exits."); }
     
@@ -106,6 +106,7 @@ function put_single_content_info($get) {
                 $rslt_arr = array("status"=>"success","content_id"=>$content_id);
             }
     }
+    else { $output = unknown(); }
     return $rslt_arr;
 }
 
@@ -175,7 +176,7 @@ function print_error($error) {
         echo json_encode($error);
     }
     else {
-        echo json_encode('{"status":"fail","response":"'.$error.'"}');
+        echo json_encode(array("status"=>"fail","response"=>$error));
     }
     die();
 }
