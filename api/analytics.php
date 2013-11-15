@@ -98,7 +98,6 @@ function get_content_count($get) {
     }
     return $output;
 }
-
 function table_actions() {
     include "paths.php";
     include $db_file_url;

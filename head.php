@@ -30,5 +30,11 @@
 		<meta http-equiv="Content-Type" content="text/html">
 		<meta name="distribution" content="Global">
 		<meta name="robots" content="index,follow">
-		
+		<?php
+                if(isset($css_arr)) {
+                    foreach($css_arr as $css) {
+                        echo '<link rel="stylesheet" href="/assets/css/'.$css.'.css" type="text/css" media="screen" />';
+                    }
+                }
+                ?>
 	</head>	
