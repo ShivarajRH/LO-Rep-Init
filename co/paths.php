@@ -52,5 +52,11 @@
 	/* LOGOS */
 	$logo_lyfeon = '/assets/logos/lyfeon.png';
 	$logo_favicon = '/assets/logos/favicon.png';
-
+        
+        if($_SERVER['HTTP_HOST'] == 'localhost:13080') {
+            $img_url="/assets/images/";
+        }
+        else {
+            $img_url="http://commondatastorage.googleapis.com/";
+        }
 ?>

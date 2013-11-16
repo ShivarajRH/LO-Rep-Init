@@ -11,6 +11,7 @@ a{
         text-decoration:none;
         color:#0080d0!important;
 }
+section { display: table; }
 li {
         list-style-type:none;
 }

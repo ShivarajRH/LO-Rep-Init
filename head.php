@@ -24,12 +24,12 @@
 		<meta name="rating" content="General">
 		<meta name="target" content="all">
 		<meta name="HandheldFriendly" content="True">  
-		<!--<meta name="reply-to" content="contact@lyfeon.com">-->
 		<meta http-equiv="window-target" content="_top">
 		<meta http-equiv="Cache-control" content="private">
 		<meta http-equiv="Content-Type" content="text/html">
 		<meta name="distribution" content="Global">
 		<meta name="robots" content="index,follow">
+                <meta name="p:domain_verify" content="e2887c3d4625a359333850a0fd933851"/>
 		<?php
                 if(isset($css_arr)) {
                     foreach($css_arr as $css) {

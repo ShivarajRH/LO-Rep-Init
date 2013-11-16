@@ -5,24 +5,24 @@
 			<div class="creator_options">
 				<ul>
 					<li class="share_box_icon create_note">
-						<img onclick="" class="fl_le" src="../assets/images/note.png" title="Create Note"></img>
+						<img onclick="" class="fl_le" src="<?=$img_url?>icons/note.png" title="Create Note"></img>
 					</li>
 					<li class="share_box_icon create_reminder">
-						<img onclick="" class="fl_le" src="../assets/images/clock.png" title="Create Reminder"></img>
+						<img onclick="" class="fl_le" src="<?=$img_url?>icons/clock.png" title="Create Reminder"></img>
 					</li>
 					<li class="share_box_icon create_expense">
-						<img onclick="" class="" src="../assets/images/expenses.png"  title="Record Expense"></img>
+						<img onclick="" class="" src="<?=$img_url?>icons/expenses.png"  title="Record Expense"></img>
 					</li>
 					
 					<!--
 					<li class="share_box_icon create_location">
-						<img onclick="" class="" src="../assets/images/location.png" title="Record Location"></img>
+						<img onclick="" class="" src="http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Flocation.png" title="Record Location"></img>
 					</li>
 					<li class="share_box_icon create_message">
-						<img onclick="" class="" src="../assets/images/message.png"  title="Create Message"></img>
+						<img onclick="" class="" src="http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Fmessage.png"  title="Create Message"></img>
 					</li>
 					<li class="share_box_icon create_list">
-						<img onclick="" class="" src="../assets/images/list.png"  title="Create List"></img>
+						<img onclick="" class="" src="http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Flist.png"  title="Create List"></img>
 					</li>
 					-->
 					
