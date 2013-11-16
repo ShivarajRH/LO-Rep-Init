@@ -523,3 +523,4 @@ input[type=datetime-local]::-webkit-outer-spin-button  {
 	font-size:80%;
 	padding-bottom:1.5%;
 }
+.hide { display: none; }

@@ -6,6 +6,8 @@
 	$metapagename='LyfeOn - your notes, reminders and expenses';
 	$metasubtitle='LyfeOn - Manage your stuff';
 	$metacopyright=' $fname . &nbsp; . $lname ';
+        
+        $load_js['stream'] = 'stream';
 ?>
 <?php include '/co/paths.php'; ?>
 <?php include_once 'head.php'; ?>
