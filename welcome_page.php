@@ -6,11 +6,16 @@
 	$metapagename='LyfeOn - Login / Signup';
 	$metasubtitle='LyfeOn - Manage your life';
 	$metacopyright='LyfeOn';
+        
+        $load_js['welcome_pg'] = 'welcome_pg_scripts';
 ?>
 <?php include_once 'head.php'; ?>
 
 <!-- Google+ Signin -->
 <script type="text/javascript">
+    window.___gcfg = {
+        lang: 'en'
+    }
   (function() {
    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
    po.src = 'https://apis.google.com/js/client:plusone.js';

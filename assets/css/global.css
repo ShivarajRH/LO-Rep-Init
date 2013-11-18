@@ -58,7 +58,7 @@ body{
         background-color:#f5f5f5;
 		position:absolute;
 		height:100%;
-		font-family:'Roboto-Regular', Helvetica;
+		font-family:'Roboto', Helvetica;
 		-webkit-text-stroke:0.3px;
 		-webkit-text-stroke-color: #cdcdcd;
 		-webkit-font-smoothing: subpixel-antialiased;
@@ -153,13 +153,13 @@ input[type=datetime-local]::-webkit-outer-spin-button  {
   margin: 0; 
 } 
 ::-webkit-datetime-edit { 
-	font-family:'Roboto-Regular', Helvetica;
+	font-family:'Roboto', Helvetica;
 }
 ::-webkit-datetime-edit-fields-wrapper { 
 	background: none; 
 }
 ::-webkit-datetime-edit-text, ::-webkit-datetime-edit-month-field, ::-webkit-datetime-edit-day-field, ::-webkit-datetime-edit-year-field  { 
-	font-family:'Roboto-Regular', Helvetica;
+	font-family:'Roboto', Helvetica;
 	color:#f0f0f0;
 }
 ::-webkit-inner-spin-button { 

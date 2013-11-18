@@ -12,7 +12,10 @@
         <?php if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandler"); else ob_start(); ?>
 
         <link rel="stylesheet" href="/assets/css/global.css" type="text/css" media="screen" />
-        <link rel="stylesheet" href="/assets/css/fonts/font.css">
+        <!--<link rel="stylesheet" href="/assets/css/fonts/font.css">-->
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300italic,400italic,700italic,400,700,300' rel='stylesheet' type='text/css'>
+        
         <link rel="shortcut icon" type="image/png" href="/assets/logos/favicon.png"/>
         <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/ddpmfmlfaonpbigeobfkjeklaloplepn">  
 

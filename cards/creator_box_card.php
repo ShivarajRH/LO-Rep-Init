@@ -104,9 +104,3 @@
         </div>
     </div>
 </li>
-<script>
-function show_actions1() {
-    alert("Hi");
-    return false;
-}
-</script>
