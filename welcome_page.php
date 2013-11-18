@@ -13,9 +13,9 @@
 
 <!-- Google+ Signin -->
 <script type="text/javascript">
-    window.___gcfg = {
+    /*window.___gcfg = {
         lang: 'en'
-    }
+    }*/
   (function() {
    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
    po.src = 'https://apis.google.com/js/client:plusone.js';
@@ -32,8 +32,7 @@
 				
 				
 				<li class="pin single_note_card" style="text-align:center;width:100%;">
-                                                <!-- Google+ Signin --> <!-- Insert Client ID-->
-						</br>
+                                                </br>
 						<?php include 'google_plus_signin_button.php'; ?>
 						</br></br>
 						<div style="text-align:center;width:100%;">

@@ -2,6 +2,7 @@
 <!--  DO NOT MODIFY THIS FILE -->
 
 <span id="signinButton">
+    <!-- Google+ Signin --> <!-- Insert Client ID-->
 	<span
 		class="g-signin"
 		data-callback="signinCallback"
@@ -11,8 +12,9 @@
 		data-theme="dark"
 		data-width="wide"
 		data-height="tall" 
-		data-scope="https://www.googleapis.com/auth/plus.login">
+		data-scope="https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login">
 	</span>
+    <!--data-scope="https://www.googleapis.com/plus/v1/people/me"-->
 	<!--data-cookiepolicy="single_host_origin"-->
 	<!-- IMP: Change data-height="short" when included in header  -->
 	

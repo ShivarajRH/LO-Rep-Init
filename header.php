@@ -3,7 +3,7 @@
 	<div class="header">
 		<div class="logo">
 			<a href="">
-				<img class="fl_le" src="/assets/logos/lyfeon.png" style="padding-left:1%;width:30px;margin-top:-0.3%;height:24px;"></img>
+				<img class="fl_le" src="/assets/logos/lyfeon.png" style="padding-left:1%;width:30px;margin-top:-0.3%;height:24px;"/>
 				<span class="fl_le" style="padding-left:0.6%;">LyfeOn</span>
 			</a>
 		</div>
@@ -30,7 +30,7 @@
 						<li><a href="/co/services/company" target="_blank"><span class="">Co.</span></a></li>
 					</ul>
 				</li>
-				<li class="menu_drop_list last fl_ri"><a href=""><img class="" src="/assets/images/settings.png" alt="Settings" title="Settings"></img></a>
+				<li class="menu_drop_list last fl_ri"><a href=""><img class="" src="/assets/images/settings.png" alt="Settings" title="Settings"/></a>
 					<ul>
 						<li><a href=""><span class="">Account</span></a></li>
 						<li class="last"><a href=""><span class="">Logout</span></a></li>
