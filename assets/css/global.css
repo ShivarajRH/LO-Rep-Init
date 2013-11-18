@@ -172,26 +172,30 @@ input[type=datetime-local]::-webkit-outer-spin-button  {
 	border-radius: 2px; 
 }
 
-.share_box_icon{
-	cursor:pointer;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  filter: alpha(opacity=50);
-  -moz-opacity: 0.5;
-  -khtml-opacity: 0.5;
-  opacity: 0.5;
+.share_box_icon {
+    cursor:pointer;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    filter: alpha(opacity=50);
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    opacity: 0.5;
+    display: block;
+    border: 1px sold #000;
+    float: left;
 }
 .share_box_icon:hover{
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-  filter: alpha(opacity=100);
-  -moz-opacity: 1;
-  -khtml-opacity: 1;
-  opacity: 1;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: alpha(opacity=100);
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    opacity: 1;
 }
 .share_box_icon img{
 	height:25px;
 	width:25px;
-	padding-right:10%;
+	padding-right:10px;
 }
+.clear { clear: both;}
 .creator_box{
 	--webkit-user-select: none;
 }

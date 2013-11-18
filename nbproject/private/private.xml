@@ -1,41 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/app.yaml</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/header.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/footer_reg.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/google_plus_signin_button.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/includes/db_connection.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/api/dbtest.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/analyticstracking.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/co/analytics/analytics.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/co/investors/investors.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/co/people/people.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/co/services/contact.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/co/services/help.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/co/services/terms.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/co/co.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/api/search.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/api/paths.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/error_404.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/api/write.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/api/delete.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/head.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/co/services/company.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/api/modify.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/api/analytics.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/assets/css/services.css</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/cards/reminder_list_card.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/cards/expenses_list_card.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/stream.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/cards/creator_box_card.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/co/paths.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/cards/note_options.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/cards/note_single_stream_card.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/welcome_page.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/assets/css/global.css</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/cards/expenses_list_single_filter.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/cards/single_expense_list_card.php</file>
-    </open-files>
 </project-private>

@@ -46,9 +46,8 @@
         }
         if(isset($load_js)) {
             foreach($load_js as $js_filenm) {
-                echo '<script src="/assets/js/'.$js_filenm.'.js" type="text/javascript" />';
+                echo '<script src="/assets/js/'.$js_filenm.'.js" type="text/javascript"></script>';
             }
         }
-
         ?>
 </head>	
