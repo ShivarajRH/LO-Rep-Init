@@ -13,7 +13,6 @@ switch($get['action_object']) {
                         $output= get_list_content_info($get); 
         break;
     case 'single_content': 
-                        //if(!isset($get['uid'])) print_error(array("status"=>"fail","response"=>"Undefined uid."));
                         if(!isset($get['content_id'])) print_error(array("status"=>"fail","response"=>"Undefined content id."));
                         if(!isset($get['content_type'])) print_error(array("status"=>"fail","response"=>"Undefined content type.")); 
                         $output= get_single_content_info($get); 
@@ -28,7 +27,6 @@ echo json_encode($output);
 function get_single_content_info($get) {
     include "paths.php";
     include $db_file_url;
-    //http://localhost:13080/apis/search/?action_object=single_content&uid=65858778973333&content_id=2&content_type=note
     $output=array(); $con='';
     //$uid=mysql_real_escape_string($get['uid']);
     $content_id=mysql_real_escape_string($get['content_id']);

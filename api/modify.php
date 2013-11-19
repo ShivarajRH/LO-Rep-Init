@@ -18,7 +18,6 @@ function modify_single_content_info($get) {
     include "paths.php";
     include $db_file_url;
     $cond='';
-    //http://localhost:13080/apis/write/?action_object=single_content&uid=6585877897&field_name=note_text&field_value=gsdfhgdsf%20asagfadslgfaeew%20v%20sadfjasdfsdkjfhadsf&content_id=2&content_type=note
     $output=array();
     $uid=mysql_real_escape_string(urldecode($get['uid']));
     $content_type=mysql_real_escape_string(urldecode($get['content_type']));
