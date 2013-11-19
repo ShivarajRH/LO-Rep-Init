@@ -33,7 +33,7 @@
 				<li class="menu_drop_list last fl_ri"><a href=""><img class="" src="/assets/images/settings.png" alt="Settings" title="Settings"/></a>
 					<ul>
 						<li><a href=""><span class="">Account</span></a></li>
-						<li class="last"><a href=""><span class="">Logout</span></a></li>
+						<li class="last"><a href="javascript:void(0)" onclick="signOut();"><span class="">Logout</span></a></li>
 					</ul>
 				</li>
 				<li class="menu_drop_list last fl_ri">

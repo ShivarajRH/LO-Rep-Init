@@ -3,7 +3,7 @@ function signinCallback(authResult) {
     // Update the app to reflect a signed in user
     // Hide the sign-in button now that the user is authorized, for example:
     document.getElementById('signinButton').setAttribute('style', 'display: none');
-    location.href="/stream.php";
+    
     
     //console.log("\n Token_info="+gapi.auth.getToken());
     //console.log("\n User_info=");
@@ -15,9 +15,9 @@ function signinCallback(authResult) {
             var gid=val.id;
             var uid=val.id;
             var name=val.displayName;
-            var email=val.emails.value;
+            var email=val.emails.email;
             
-            var fname=val.emails.value;
+            /*var fname=val.emails.value;
             var mname=val.emails.value;
             var lname=val.emails.value;
             var uname=val.emails.value;
@@ -26,13 +26,19 @@ function signinCallback(authResult) {
             var lat=val.emails.value;
             var long1=val.emails.value;
             var timestamp=val.emails.value;
-            
+            */
+           
             //store into session
+            var postData ={gid:gid,uid:uid,name:name,email:email} ;
+            $.post("do_session_actions?action=create",postData,function() {
+                console.log("Session is set");
+            });
             
+            //call profile api
             console.log(key +' <=> ' + val);
-            console.log(" \n");
+            //console.log(" \n");
         });
-            console.log(" post success ");
+            //console.log(" post success ");//location.href="/stream.php";
     }).fail(fail);
             
     /*$.each(authResult,function(key,val){

@@ -38,7 +38,8 @@ function get_single_content_info($get) {
         //Notes
         $rslt = mysql_query("select n.note_id,n.note_text,c.timestamp from tbl_notes n
                             join tbl_content c on c.content_id=n.content_id
-                            where n.`content_id`=$content_id",$linkid) or print_error(mysql_error($linkid));
+                            where n.`content_id`=$content_id
+                            order by c.timestamp desc",$linkid) or print_error(mysql_error($linkid));
         $i=0;$data_array=array();
         while ($row=mysql_fetch_array($rslt)) {
             
@@ -52,7 +53,8 @@ function get_single_content_info($get) {
     elseif($content_type == 'expense') {
             $rslt = mysql_query("select * from tbl_expenses e
             join tbl_content c on c.content_id=e.content_id
-            where e.content_id=$content_id $con",$linkid) or print_error(mysql_error($linkid));
+            where e.content_id=$content_id $con
+            order by c.timestamp desc",$linkid) or print_error(mysql_error($linkid));
 
             if(mysql_errno($linkid)) {
                 print_error(mysql_error($linkid));
@@ -72,7 +74,8 @@ function get_single_content_info($get) {
     }
     elseif($content_type == 'reminder') {
         $rslt = mysql_query("select reminder_id,remind_time,reminder_name 
-            from tbl_reminders where `content_id`=$content_id",$linkid) or print_error(mysql_error($linkid));
+            from tbl_reminders where `content_id`=$content_id
+            order by remind_time desc",$linkid) or print_error(mysql_error($linkid));
             $i=0;
             while ($row=mysql_fetch_array($rslt)) {
 

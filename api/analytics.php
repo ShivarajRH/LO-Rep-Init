@@ -73,24 +73,24 @@ function get_content_count($get) {
         $output['content_count'] = $row['content_count'];
     }
     elseif($content_type == 'note') {
-            if($cond != '') $cond = ' where '.$cond.' and `content_type`="'.$content_type.'" ';
-            $sql="select count(*) as content_count from tbl_content $cond";
+            if($cond != '') $cond = ' and '.$cond.'" ';
+            $sql="select count(*) as content_count from tbl_content where 1=1 and `content_type`='".$content_type."' $cond";
 //            die($sql);
             $rslt = mysql_query($sql,$linkid) or print_error(mysql_error($linkid));
             $row = mysql_fetch_array($rslt);
             $output['content_count'] = $row['content_count'];
     }
     elseif($content_type == 'expense') {
-            if($cond != '') $cond = ' where '.$cond.' and `content_type`="'.$content_type.'" ';
-            $sql="select count(*) as content_count from tbl_content $cond";
+            if($cond != '') $cond = ' and '.$cond.'" ';
+            $sql="select count(*) as content_count from tbl_content where 1=1 and `content_type`='".$content_type."' $cond";
 //            die($sql);
             $rslt = mysql_query($sql,$linkid) or print_error(mysql_error($linkid));
             $row = mysql_fetch_array($rslt);
             $output['content_count'] = $row['content_count'];
     }
     elseif($content_type == 'reminder') {
-            if($cond != '') $cond = ' where '.$cond.' and `content_type`="'.$content_type.'" ';
-            $sql="select count(*) as content_count from tbl_content $cond";
+            if($cond != '') $cond = ' and '.$cond.'" ';
+            $sql="select count(*) as content_count from tbl_content where 1=1 and `content_type`='".$content_type."' $cond";
 //            die($sql);
             $rslt = mysql_query($sql,$linkid) or print_error(mysql_error($linkid));
             $row = mysql_fetch_array($rslt);

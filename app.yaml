@@ -64,5 +64,10 @@ handlers:
 - url: /stream.php
   script: stream.php
 
+
+- url: /includes/do_session_actions(/?.*)
+  script: /includes/do_session_actions.php
+
 - url: /?.*
   script: welcome_page.php
+  
