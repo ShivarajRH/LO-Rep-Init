@@ -1,10 +1,9 @@
 <?php ob_start();
     session_start();
     if(!isset($_SESSION['uid'])) {
-        //header("HTTP:/1.0 404 Not Found"); no effect :-(
         //header("Status: 404 Not Found"); // has effect of returning 404 status for browser no output shoud echo after
         //echo '<script>alert("Please login");</script>';
-        header("Location:/");
+        header("Location:/?resp=Please SignIn");
         exit();
     }
 	$metatitle='LyfeOn - Your Stuff !';

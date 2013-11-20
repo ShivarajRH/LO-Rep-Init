@@ -4,48 +4,64 @@ function signinCallback(authResult) {
     // Hide the sign-in button now that the user is authorized, for example:
     document.getElementById('signinButton').setAttribute('style', 'display: none');
     
-    
-    //console.log("\n Token_info="+gapi.auth.getToken());
-    //console.log("\n User_info=");
-    //console.log(gapi.client.plus.people.get());
-
     var access_token=authResult['access_token'];
+    //Get auth user details
     $.get("https://www.googleapis.com/plus/v1/people/me?access_token="+access_token,{},function(rdata){
-        $.each(rdata,function(key,val){
-            var gid=val.id;
-            var uid=val.id;
-            var name=val.displayName;
-            var email=val.emails.email;
+        
+            var gid=rdata.id;
+            var uid=rdata.id;
+            var name=rdata.displayName;
+            var emails =rdata.emails;
             
-            /*var fname=val.emails.value;
-            var mname=val.emails.value;
-            var lname=val.emails.value;
-            var uname=val.emails.value;
-            var phone=val.emails.value;
-            var verification=val.emails.value;
-            var lat=val.emails.value;
-            var long1=val.emails.value;
-            var timestamp=val.emails.value;
-            */
-           
-            //store into session
-            var postData ={gid:gid,uid:uid,name:name,email:email} ;
-            $.post("do_session_actions?action=create",postData,function() {
-                console.log("Session is set");
+            $.each(emails,function(key,val){
+                email=val.value;
             });
             
-            //call profile api
-            console.log(key +' <=> ' + val);
-            //console.log(" \n");
-        });
-            //console.log(" post success ");//location.href="/stream.php";
-    }).fail(fail);
+            var postData = {gid:gid,uid:uid,name:name,email:email};
+        
+            //console.log(key +' <=> ' + val.value);
             
+            //store into session
+            //console.log(postData);
+            $.post(site_url+"includes/generalactions/?action=sess_create",postData,function(rdata) {
+                //console.log("SESSION RESPONSE: "+rdata);
+            });
+            
+            var fname=rdata.name.givenName;
+            var mname='';
+            var lname=rdata.name.familyName;
+            var uname=rdata.name.givenName;
+            var phone='';
+            var verification=rdata.verified;
+            var lat='77';
+            var long1='23';
+            
+            var fullDate = new Date($.now());
+            //convert month to 2 digits
+            var twoDigitMonth = ((fullDate.getMonth().length+1) === 1)? (fullDate.getMonth()+1) : (fullDate.getMonth()+1);
+            var currentDate = fullDate.getFullYear() + "-" + twoDigitMonth + "-" + fullDate.getDate();
+            
+            var timestamp=currentDate+" "+fullDate.getHours()+":"+fullDate.getMinutes()+":"+fullDate.getSeconds();
+
+            var apiurl = "&uid="+enco(uid)+"&gid="+enco(gid)+"&name="+enco(name)+"&email="+enco(email)+"&fname="+enco(fname)+"&mname="+enco(mname)+"&lname="
+                +enco(lname)+"&uname="+enco(uname)+"&phone="+enco(phone)+"&verification="+enco(verification)+"&lat="+enco(lat)+"&long="
+                +enco(long1)+"&time="+timestamp;
+            //console.log(apiurl);
+            
+            //call profile api
+            $.post(site_url+"api/write/?action_object=user_profile"+apiurl,{},function(rdata) {
+                console.log("API RESPONSE="+rdata);
+            });
+            
+            //redirect to streams
+            location.href=site_url+"stream.php";
+    }).fail(fail);
+  
     /*$.each(authResult,function(key,val){
         console.log(key +' - ' + val);
         console.log(" \n");
     });*/
-    
+        return true;
   } else if (authResult['error']) {
     // Update the app to reflect a signed out user
     // Possible error values:
@@ -54,6 +70,10 @@ function signinCallback(authResult) {
     //   "immediate_failed" - Could not automatically log in the user
     console.log('Sign-in state: ' + authResult['error']);
   }
+  return false;
+}
+function enco(str) {
+    return encodeURIComponent(str);
 }
 function fail(resp) { console.log("FAIL"); console.log(resp); }
 function signOut() {

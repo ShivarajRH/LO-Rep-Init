@@ -131,9 +131,8 @@ function put_user_details($get) {
     $long=(!isset($get['long']))? '' : mysql_real_escape_string(urldecode($get['long']));
     $timezone=  (!isset($get['time']))? '' : strtotime(mysql_real_escape_string(urldecode($get['time']))); //Unix timestamp
     
-    
-    mysql_query("insert into `generic_profile`(`sno`,`uid`,`gid`,`fname`,`mname`,`lname`,`name`,`uname`,`email`,`phone`,`verification`,`lat`,`long`,`timezone`) values 
-                    ( NULL,'".$uid."','".$gid."','".$fname."','".$mname."','".$lname."','".$name."','".$uname."','".$email."','".$phone."','".$verification."',".$lat.",".$long.",".$timezone.")",$linkid);
+    $sql="insert into `generic_profile`(`sno`,`uid`,`gid`,`fname`,`mname`,`lname`,`name`,`uname`,`email`,`phone`,`verification`,`lat`,`long`,`timezone`) values( NULL,'".$uid."','".$gid."','".$fname."','".$mname."','".$lname."','".$name."','".$uname."','".$email."','".$phone."','".$verification."',".$lat.",".$long.",".$timezone.")";
+    mysql_query($sql,$linkid);
     if(mysql_errno($linkid)) {
         print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
     }

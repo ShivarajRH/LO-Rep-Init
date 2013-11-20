@@ -18,12 +18,20 @@ function show_actions(content_type) {
         $(".expense_creator").removeClass("hide");
     }
 }
+function getDivContent(){
+    var divtext=document.getElementById("note_creator").innerHTML;
+    if(divtext!='Erase this and Create New ...') {
+        document.getElementById("note_text").value = document.getElementById("note_creator").innerHTML;
+    }
+}
 function submit_note_data(elt) {
     //$(elt).
+    getDivContent();
     var note_text = $("#note_text").val();
     var uid = $("#uid").val();
     if(note_text == '') {alert("Enter note input text."); return false; }
-    if(uid == '') {alert("Please login."); return false; location=""; }
+    //if(uid == '') {alert("Please login."); return false; }
+    
     //store this data 
     //along with lat long info
     return true;
@@ -34,8 +42,8 @@ function submit_reminder_data(elt) {
     var reminder_date = $("#reminder_date").val();
     var reminder_time = $("#reminder_time").val();
     if(reminder_title == '') {alert("Enter note reminder title."); return false; }
-    if(reminder_date == '') {alert("Please select reminder date."); return false; location=""; }
-    if(reminder_time == '') {alert("Please select reminder time."); return false; location=""; }
+    if(reminder_date == '') {alert("Please select reminder date."); return false; }
+    if(reminder_time == '') {alert("Please select reminder time."); return false; }
     //store this data 
     //along with lat long info
     return true;
@@ -45,8 +53,8 @@ function submit_expense_data(elt) {
     var expense_title = $("#expense_title").val();
     var expense_amount = $("#expense_amount").val();
     
-    if(expense_title == '') {alert("Enter note expense title."); return false; }
-    if(expense_amount == '') {alert("Please select expense_amount."); return false; }
+    if(expense_title == '') { alert("Enter note expense title."); return false; }
+    if(expense_amount == '') { alert("Please select expense_amount."); return false; }
     
     //store this data 
     //along with lat long info

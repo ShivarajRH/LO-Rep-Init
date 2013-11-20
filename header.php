@@ -11,7 +11,7 @@
 			<ul>
 				<li class="menu_drop_list fl_ri"><a href=""><img class="" src="/assets/images/info.png" alt="About" title="About" /></a>
 					<ul>
-						<li><a href="/co/services/help" target="_blank"><span class="">Help</span></a></li>
+						<li><a href="http://help.lyfeon.com" target="_blank"><span class="">Help</span></a></li>
 						<li><a href="/co/services/terms" target="_blank"><span class="">Terms</span></a></li>
 						<li><a href="/co/services/contact" target="_blank"><span class="">Contact</span></a></li>
 						<li class="last">

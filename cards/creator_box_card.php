@@ -33,15 +33,19 @@
                             <img onclick="" class="" src="http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Flist.png"  title="Create List"></img>
                     </li>
                     -->
-
             </ul></div>
             <div class="clear"></div>
             <div class="creator_replace_box">
                 <div id="note_creator" class="note_creator">
-                    <form method="post" name="note_submit_form" onsubmit="return submit_note_data(this);">
+<!--                    <form method="post" name="note_submit_form" onsubmit="return submit_note_data(this);">
                         <input type="text" value="" placeholder="Erase this and Create New ..." name="note_text" id="note_text"/>
                         <button class="button fl_ri">Save</button>
+                    </form>-->
+                    <form method="post" name="note_submit_form" onsubmit="return submit_note_data(this);">
+                        <textarea type="" value="" name="note_text" id="note_text" style="display: none;"></textarea>
+                        <div id="note_creator" class="note_creator" contenteditable="true">Erase this and Create New ...</div><button class="button fl_ri">Save</button>
                     </form>
+
                 </div>
                 <div id="reminder_creator" class="reminder_creator hide">
                         <form name="reminder_submit_form" action="" method="POST" onsubmit="return submit_reminder_data(this);">
@@ -54,7 +58,7 @@
                 <div id="expense_creator" style="clear:both;" class="expense_creator hide">
                         <form name="expense_submit_form" action="" method="POST" onsubmit="return submit_expense_data(this);">
                                 <input type="text" name="expense_title" placeholder="Name" class="fl_le expense_title" maxlength="30" required>
-                                <input type="number" name="expense_amount" placeholder="Amount" class="fl_le expense_amount" min="-999999" max="999999"  required>
+                                <input type="number" name="expense_amount" placeholder="Amount" class="fl_le expense_amount" min="-999999" max="999999" required>
                                 <input type="submit" class="button fl_ri" value="+">
                         </form>
                 </div>

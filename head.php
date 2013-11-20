@@ -53,4 +53,7 @@
             }
         }
         ?>
+        <script>
+            var site_url ="http://"+(document.domain =='localhost'?'localhost:13080':document.domain)+"/";
+        </script>
 </head>	

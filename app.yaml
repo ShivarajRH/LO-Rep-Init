@@ -10,6 +10,9 @@ handlers:
 - url: /assets
   static_dir: assets
   
+- url: /includes/generalactions/.*
+  script: includes/generalactions.php
+  
 #Apis url
 #- url: /apis/(/?.*?)
 - url: /api/write/.*
@@ -64,9 +67,6 @@ handlers:
 - url: /stream.php
   script: stream.php
 
-
-- url: /includes/do_session_actions(/?.*)
-  script: /includes/do_session_actions.php
 
 - url: /?.*
   script: welcome_page.php
