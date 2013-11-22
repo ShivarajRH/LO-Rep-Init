@@ -1,5 +1,5 @@
 <?php
-$get = ($_GET);
+$get = ($_RESQUEST);
 //print_r($get);
 switch($get['action_object']) {
     case 'single_content':

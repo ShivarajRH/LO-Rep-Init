@@ -1,4 +1,4 @@
-<input type="hidden" value="" name="uid" id="uid"/>
+<input type="hidden" value="<?=$_SESSION['uid']?>" name="uid" id="uid"/>
 
 <li class="pin-box new_content_card standard_card always_first">
     <div>
@@ -41,9 +41,9 @@
                         <input type="text" value="" placeholder="Erase this and Create New ..." name="note_text" id="note_text"/>
                         <button class="button fl_ri">Save</button>
                     </form>-->
-                    <form method="post" name="note_submit_form" onsubmit="return submit_note_data(this);">
+                    <form method="post" name="note_submit_form" id="note_submit_form" onsubmit="return submit_note_data(this);">
                         <textarea type="" value="" name="note_text" id="note_text" style="display: none;"></textarea>
-                        <div id="note_creator" class="note_creator" contenteditable="true">Erase this and Create New ...</div><button class="button fl_ri">Save</button>
+                        <div id="note_creator_div" class="note_creator_div" contenteditable="true">Erase this and Create New ...</div><button class="button fl_ri">Save</button>
                     </form>
 
                 </div>

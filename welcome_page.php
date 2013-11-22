@@ -7,7 +7,6 @@
 	$metasubtitle='LyfeOn - Manage your life';
 	$metacopyright='LyfeOn';
         
-        $load_js['welcome_pg'] = 'welcome_pg_scripts';
 ?>
 <?php include_once 'head.php'; ?>
 

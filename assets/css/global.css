@@ -123,6 +123,24 @@ body{
 	overflow:auto;
 	word-wrap: break-word;
 }
+#note_creator{
+	margin-top:5%;
+	max-height:30em;
+	line-height:19px;
+	border:1px solid #e4e4e4;
+	padding:2%;
+	overflow:auto;
+	word-wrap: break-word;
+}
+/*#note_creator{
+	margin-top:5%;
+	max-height:30em;
+	line-height:19px;
+	border:1px solid #e4e4e4;
+	padding:2%;
+	overflow:auto;
+	word-wrap: break-word;
+}*/
 .expense_title{
 	width:60%;
 	overflow:auto;

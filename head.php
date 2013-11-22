@@ -7,6 +7,7 @@
             else {
                 $js_url="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/";
             }
+            $load_js['global_js'] = 'global_scripts';
         ?>
         <meta charset="utf-8" >
         <?php if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandler"); else ob_start(); ?>

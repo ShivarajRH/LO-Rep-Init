@@ -4,6 +4,7 @@ function signinCallback(authResult) {
     // Hide the sign-in button now that the user is authorized, for example:
     document.getElementById('signinButton').setAttribute('style', 'display: none');
     
+    
     var access_token=authResult['access_token'];
     //Get auth user details
     $.get("https://www.googleapis.com/plus/v1/people/me?access_token="+access_token,{},function(rdata){
@@ -35,13 +36,7 @@ function signinCallback(authResult) {
             var verification=rdata.verified;
             var lat='77';
             var long1='23';
-            
-            var fullDate = new Date($.now());
-            //convert month to 2 digits
-            var twoDigitMonth = ((fullDate.getMonth().length+1) === 1)? (fullDate.getMonth()+1) : (fullDate.getMonth()+1);
-            var currentDate = fullDate.getFullYear() + "-" + twoDigitMonth + "-" + fullDate.getDate();
-            
-            var timestamp=currentDate+" "+fullDate.getHours()+":"+fullDate.getMinutes()+":"+fullDate.getSeconds();
+            var timestamp=getTimeStamp(); 
 
             var apiurl = "&uid="+enco(uid)+"&gid="+enco(gid)+"&name="+enco(name)+"&email="+enco(email)+"&fname="+enco(fname)+"&mname="+enco(mname)+"&lname="
                 +enco(lname)+"&uname="+enco(uname)+"&phone="+enco(phone)+"&verification="+enco(verification)+"&lat="+enco(lat)+"&long="
@@ -54,7 +49,7 @@ function signinCallback(authResult) {
             });
             
             //redirect to streams
-            location.href=site_url+"stream.php";
+            location.href=site_url+"stream";
     }).fail(fail);
   
     /*$.each(authResult,function(key,val){
@@ -72,11 +67,49 @@ function signinCallback(authResult) {
   }
   return false;
 }
+function getTimeStamp() {
+    var fullDate = new Date($.now());
+    //convert month to 2 digits
+    var twoDigitMonth = ((fullDate.getMonth().length+1) === 1)? (fullDate.getMonth()+1) : (fullDate.getMonth()+1);
+    var currentDate = fullDate.getFullYear() + "-" + twoDigitMonth + "-" + fullDate.getDate();
+    return currentDate+" "+fullDate.getHours()+":"+fullDate.getMinutes()+":"+fullDate.getSeconds();
+}
 function enco(str) {
     return encodeURIComponent(str);
 }
 function fail(resp) { console.log("FAIL"); console.log(resp); }
 function signOut() {
     gapi.auth.signOut();
+    $.post(site_url+"includes/generalactions/?action=sess_destroy",{},function(rdata) {
+        console.log("SESSION RESPONSE: "+rdata);
+    });
     location.href=document.URL;
 }
+
+/*
+function disconnectUser() {var access_token=gapi.auth.getToken;
+  var revokeUrl = 'https://accounts.google.com/o/oauth2/revoke?token=' +
+      access_token;
+
+  // Perform an asynchronous GET request.
+  $.ajax({
+    type: 'GET',
+    url: revokeUrl,
+    async: false,
+    contentType: "application/json",
+    dataType: 'jsonp',
+    success: function(nullResponse) {
+        alert("revoked");
+      // Do something now that user is disconnected
+      // The response is always undefined.
+    },
+    error: function(e) {alert("notrevoked");
+      // Handle the error
+       console.log(e);
+      // You could point users to manually disconnect if unsuccessful
+      // https://plus.google.com/apps
+    }
+  });
+}
+// Could trigger the disconnect on a button click
+$('#revokeButton').click(disconnectUser);*/

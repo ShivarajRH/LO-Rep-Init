@@ -64,7 +64,7 @@ handlers:
 - url: /about
   script: about.php
 
-- url: /stream.php
+- url: /stream
   script: stream.php
 
 
