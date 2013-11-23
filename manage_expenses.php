@@ -1,6 +1,15 @@
-<!-- SESSION REQUIRED FOR THIS PAGE -->
-
-<?php 
+<?php ob_start();
+    session_start();
+    if(!isset($_SESSION['uid'])) {
+        //header("Status: 404 Not Found"); // has effect of returning 404 status for browser no output shoud echo after
+        //echo '<script>alert("Please login");</script>';
+        header("Location:/?resp=Please_Sign_In");
+        exit();
+    }
+    $fname=$_SESSION['fname'];
+    $lname=$_SESSION['lname'];
+    $gid = $_SESSION['gid'];
+    
 	$metatitle='LyfeOn - Your Expenses !';
 	$metadescription='LyfeOn - Manage your expenses across devices.';
 	$metaabstract='LyfeOn - your expenses';

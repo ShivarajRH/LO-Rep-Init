@@ -6,13 +6,19 @@
         header("Location:/?resp=Please_Sign_In");
         exit();
     }
+    $fname=$_SESSION['fname'];
+    $lname=$_SESSION['lname'];
+    $gid = $_SESSION['gid'];
+    
 	$metatitle='LyfeOn - Your Stuff !';
 	$metadescription='LyfeOn - Access your notes, reminders and expenses and manage them across devices.';
 	$metaabstract='LyfeOn - your notes, reminders and expenses';
 	$metasubject='LyfeOn - your notes, reminders and expenses';
 	$metapagename='LyfeOn - your notes, reminders and expenses';
 	$metasubtitle='LyfeOn - Manage your stuff';
-	$metacopyright=' $fname . &nbsp; . $lname ';
+       
+	$metacopyright=$fname . " " . $lname;
+        
         $robots_index='no-index';
 	$robots_follow='no-follow';
 

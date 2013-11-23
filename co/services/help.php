@@ -1,4 +1,8 @@
 <?php 
+        $fname="";
+        $lname='';
+        $gid = '';
+        
 	$metatitle='LyfeOn - Help, Terms and About Us !';
 	$metadescription='LyfeOn Terms of Service, Privacy, Security, About, Contact and Help';
 	$metaabstract='LyfeOn - About, Terms and Help';

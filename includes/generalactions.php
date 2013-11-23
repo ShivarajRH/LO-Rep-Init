@@ -24,10 +24,11 @@ if(isset($_GET['action'])) {
 echo ''.$output;
 
 function do_create_sess($post)  {
-    session_start();
+    //session_start();
     $_SESSION['uid']=$post['uid'];
     $_SESSION['gid']=$post['gid'];
     $_SESSION['email']=$post['email'];
+    $_SESSION['name']=$post['name'];
     return "Session is set.";
 }
 

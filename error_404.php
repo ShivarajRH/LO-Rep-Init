@@ -1,4 +1,8 @@
 <?php
+$fname="";
+$lname='';
+$gid = '';
+
 $metatitle='Error 404 !';
 $metadescription='404 error - The requested page could not be found.';
 $metaabstract='Error 404';

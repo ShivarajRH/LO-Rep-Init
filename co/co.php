@@ -1,4 +1,8 @@
 <?php 
+        $fname="";
+        $lname='';
+        $gid = '';
+        
 	$metatitle='LyfeOn - About Company and People';
 	$metadescription='LyfeOn - About Company, Investor Relations, Incorporation, People Management and Internal Management';
 	$metaabstract='LyfeOn - About Company and Internal Management';
