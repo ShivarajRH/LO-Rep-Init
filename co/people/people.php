@@ -6,6 +6,8 @@
 	$metapagename='LyfeOn - About Company and Internal Management';
 	$metasubtitle='LyfeOn - Internal Management';
 	$metacopyright='LyfeOn';
+        $robots_index='index';
+        $robots_follow='follow';
 ?>
 
 <?php include_once '../../head.php'; ?>

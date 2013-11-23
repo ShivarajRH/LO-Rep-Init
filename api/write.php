@@ -30,6 +30,7 @@ echo json_encode($output);
 function put_single_content_info($get) {
     include "paths.php";
     include $db_file_url;
+    
     //http://localhost:13080/api/write/?action_object=single_content&uid=6585877897&content_type=note&note_text=jdsjfkhdsfsdf&lat=77&long=33&timestamp=2013-02-01%2022:11:00
     $uid=mysql_real_escape_string(urldecode($get['uid']));
     $content_type=mysql_real_escape_string(urldecode($get['content_type']));

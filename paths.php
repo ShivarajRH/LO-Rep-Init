@@ -59,4 +59,5 @@
         else {
             $img_url="http://commondatastorage.googleapis.com/";
         }
+        $db_file_url="../includes/db_connection.php";
 ?>

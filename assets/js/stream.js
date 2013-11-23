@@ -1,27 +1,16 @@
 /**
  * @support mrshivaraj123@gmail.com
  */
-function show_actions(content_type) {
-    if(content_type=='note') {
-        $(".note_creator").removeClass("hide");
-        $(".reminder_creator").addClass("hide");
-        $(".expense_creator").addClass("hide");
-    }
-    else if(content_type=='reminder') {
-        $(".note_creator").addClass("hide");
-        $(".reminder_creator").removeClass("hide");
-        $(".expense_creator").addClass("hide");
-    }
-    else if(content_type=='expense') {
-        $(".note_creator").addClass("hide");
-        $(".reminder_creator").addClass("hide");
-        $(".expense_creator").removeClass("hide");
+var defaultNoteText='Enter New Note Text...';
+function clear_text(elt) {
+    var notetxt = $(elt).text();
+    if(notetxt==defaultNoteText) {
+        $(elt).text("");
     }
 }
-
 function getDivContent(){
     var divtext=document.getElementById("note_creator_div");
-    if(divtext.innerHTML!='Erase this and Create New ...') {
+    if(divtext.innerHTML!=defaultNoteText) {
         document.getElementById("note_text").value = divtext.innerHTML;
     }
     else {
@@ -33,46 +22,83 @@ function submit_note_data(elt) {
     getDivContent();
     var note_text = $("#note_text").val();
     var uid = $("#uid").val();
-    if(note_text == '') { alert("Enter note input text."); return false; }
     if(uid == '') {alert("Please Sign-In."); location=site_url+"?Please Sign-In."; return false; }
+    if(note_text == '') { alert("Enter note input text."); return false; }
+    
     
     //store this data 
     var lat='77';
     var long1='23';
-    var timestamp=getTimeStamp(); 
-    $("#note_submit_form").clearForm();
-return false;
+    var timestamp=getTimeStamp();
+    var divtext=document.getElementById("note_creator_div");
+    
+    
     var apiurl = "&uid="+enco(uid)+"&content_type=note&lat="+enco(lat)+"&long="+enco(long1)+"&timestamp="+timestamp;
     //console.log(apiurl);
     var postData = {note_text:note_text};
-    console.log(postData);
+    //console.log(postData);
     //&note_text=God%20gives%20as%20much%20as%20we%20can%20satisfy%20for%20life
     //&lat=77&long=33&timestamp=2013-02-01%2022:11:00
-    //call profile api
+    //call note api
     $.post(site_url+"api/write/?action_object=single_content"+apiurl,postData,function(rdata) {
         if(rdata.status == "success") {
-            console.log("Note information stored successfully.");
+            alert("Note information stored successfully.");
             $("#note_submit_form").clearForm();
+            divtext.innerHTML = defaultNoteText;
         }
         else {
             console.log("\n"+rdata.response);
         }
         
-    },"json");
+    },"json").fail(fail);
     
     return false;
 }
+function fail(rdata){
+    alert(rdata.responseText);
+}
 function submit_reminder_data(elt) {
     //$(elt).
-    var reminder_title = $("#reminder_title").val();
+    var reminder_name = $("#reminder_title").val();
     var reminder_date = $("#reminder_date").val();
     var reminder_time = $("#reminder_time").val();
-    if(reminder_title == '') {alert("Enter note reminder title."); return false; }
+    if(reminder_name == '') {alert("Enter note reminder title."); return false; }
     if(reminder_date == '') {alert("Please select reminder date."); return false; }
     if(reminder_time == '') {alert("Please select reminder time."); return false; }
+    var uid = $("#uid").val();
+    if(uid == '') {alert("Please Sign-In."); location=site_url+"?Please Sign-In."; return false; }
+    
+    var remind_time=reminder_date+" "+reminder_time;
     //store this data 
     //along with lat long info
-    return true;
+    //store this data 
+    var lat='77';
+    var long1='23';
+    var timestamp=getTimeStamp();
+    var divtext=document.getElementById("note_creator_div");
+    
+    
+    var apiurl = "&uid="+enco(uid)+"&content_type=reminder&lat="+enco(lat)+"&long="+enco(long1)
+        +"&timestamp="+timestamp;
+    //console.log(apiurl);
+    var postData = {remind_time:remind_time,reminder_name:reminder_name};
+    console.log(postData);
+    
+    //&content_type=reminder&remind_time=2013-11-07%2001:23:22
+    //&reminder_name=God%20textfor%20develpment%20ashhd&lat=77&long=33&timestamp=2013-11-06%2022:11:00
+    $.post(site_url+"api/write/?action_object=single_content"+apiurl,postData,function(rdata) {
+        if(rdata.status == "success") {
+            alert("Reminder Added.");
+            $("#reminder_submit_form").clearForm();
+        }
+        else {
+            console.log("\n"+rdata.response);
+        }
+        
+    },"json").fail(fail);
+    
+    return false;
+    
 }
 
 function submit_expense_data(elt) {
@@ -83,9 +109,36 @@ function submit_expense_data(elt) {
     if(expense_title == '') { alert("Enter note expense title."); return false; }
     if(expense_amount == '') { alert("Please select expense_amount."); return false; }
     
+    var uid = $("#uid").val();
+    if(uid == '') {alert("Please Sign-In."); location=site_url+"?Please Sign-In."; return false; }
+    
     //store this data 
     //along with lat long info
-    return true;
+    
+    //store this data 
+    var lat='77';
+    var long1='23';
+    var timestamp=getTimeStamp();
+    
+    var apiurl = "&uid="+enco(uid)+"&content_type=expense&lat="+enco(lat)+"&long="+enco(long1)+"&timestamp="+timestamp;
+    //console.log(apiurl);
+    var postData = {title:expense_title,desc:expense_title,amount:expense_amount};
+    //console.log(postData);
+    //return false;
+    //api/write/?action_object=single_content&uid=54694568990687&content_type=expense
+    //&title=God%20gives&desc=God%20textfor%20develpment%20ashhd&amount=1000&lat=77
+    //&long=33&timestamp=2013-02-01%2022:11:00
+    $.post(site_url+"api/write/?action_object=single_content"+apiurl,postData,function(rdata) {
+        if(rdata.status == "success") {
+            alert("Expense Info Added.");
+            $("#expense_submit_form").clearForm();
+        }
+        else {
+            console.log("\n"+rdata.response);
+        }
+    },"json").fail(fail);
+    
+    return false;
 }
 
 $(document).ready(function() {

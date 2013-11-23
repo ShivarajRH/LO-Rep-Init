@@ -6,6 +6,9 @@
 	$metapagename='LyfeOn - About Company and Internal Management';
 	$metasubtitle='LyfeOn - Internal Management';
 	$metacopyright='LyfeOn';
+        
+        $robots_index='index';
+        $robots_follow='follow';
 ?>
 
 <?php include_once '../head.php'; ?>
@@ -27,7 +30,7 @@
 		<div id="wrapper" style="max-width:1400px"> <!-- http://cssdeck.com/labs/css-only-pinterest-style-columns-layout -->
 			<ul id="columns">
 				<li class="pin single_note_card">
-					<a href="/co/services/company/company">
+					<a href="/co/services/company">
 						<img src="/images/company.png" />
 						<h1>About Company</h1>
 					</a>

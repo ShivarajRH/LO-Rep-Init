@@ -1,17 +1,8 @@
 <!DOCTYPE html>
     <head>
-        <?php
-        if($_SERVER['HTTP_HOST'] == 'localhost:13080') {
-                $js_url="/assets/js/";
-            }
-            else {
-                $js_url="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/";
-            }
-            $load_js['global_js'] = 'global_scripts';
-        ?>
         <meta charset="utf-8" >
         <?php if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandler"); else ob_start(); ?>
-
+        <?php $js_url=($_SERVER['HTTP_HOST'] == 'localhost:13080')?"/assets/js/":"http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/"; ?>
         <link rel="stylesheet" href="/assets/css/global.css" type="text/css" media="screen" />
         <!--<link rel="stylesheet" href="/assets/css/fonts/font.css">-->
         <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
@@ -42,7 +33,11 @@
         <meta name="distribution" content="Global">
         <meta name="robots" content="index,follow">
         <meta name="p:domain_verify" content="75195ddad850871ba3953967a8819516"/>
+        
+        <link rel="author" href=" https://plus.google.com/<?php echo $gid; ?>">
+        <meta name="robots" content="<?php echo $robots_index; ?>,<?php echo $robots_follow; ?>">
         <?php
+        
         if(isset($css_arr)) {
             foreach($css_arr as $css) {
                 echo '<link rel="stylesheet" href="/assets/css/'.$css.'.css" type="text/css" media="screen" />';

@@ -8,6 +8,8 @@
 	$metacopyright='LyfeOn';
         
         $css_arr['services']="services";
+        $robots_index='index';
+        $robots_follow='follow';
 ?>
 
 <?php include_once '../../head.php'; ?>

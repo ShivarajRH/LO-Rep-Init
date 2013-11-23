@@ -19,13 +19,12 @@ function signinCallback(authResult) {
             });
             
             var postData = {gid:gid,uid:uid,name:name,email:email};
-        
             //console.log(key +' <=> ' + val.value);
-            
+        console.log("Test");    
             //store into session
             //console.log(postData);
             $.post(site_url+"includes/generalactions/?action=sess_create",postData,function(rdata) {
-                //console.log("SESSION RESPONSE: "+rdata);
+                console.log("SESSION RESPONSE: "+rdata);
             });
             
             var fname=rdata.name.givenName;
@@ -79,11 +78,19 @@ function enco(str) {
 }
 function fail(resp) { console.log("FAIL"); console.log(resp); }
 function signOut() {
-    gapi.auth.signOut();
-    $.post(site_url+"includes/generalactions/?action=sess_destroy",{},function(rdata) {
-        console.log("SESSION RESPONSE: "+rdata);
-    });
-    location.href=document.URL;
+    
+    if(gapi.type( undefined ) === "undefined") {
+        alert("Not Connected.");
+        location.href=site_url+"";
+    }
+    else {
+        gapi.auth.signOut();
+    
+        $.post(site_url+"includes/generalactions/?action=sess_destroy",{},function(rdata) {
+            console.log("SESSION RESPONSE: "+rdata);
+        });
+        location.href=document.URL;
+    }
 }
 
 /*
@@ -113,3 +120,21 @@ function disconnectUser() {var access_token=gapi.auth.getToken;
 }
 // Could trigger the disconnect on a button click
 $('#revokeButton').click(disconnectUser);*/
+
+function show_actions(content_type) {
+    if(content_type=='note') {
+        $(".note_creator").removeClass("hide");
+        $(".reminder_creator").addClass("hide");
+        $(".expense_creator").addClass("hide");
+    }
+    else if(content_type=='reminder') {
+        $(".note_creator").addClass("hide");
+        $(".reminder_creator").removeClass("hide");
+        $(".expense_creator").addClass("hide");
+    }
+    else if(content_type=='expense') {
+        $(".note_creator").addClass("hide");
+        $(".reminder_creator").addClass("hide");
+        $(".expense_creator").removeClass("hide");
+    }
+}

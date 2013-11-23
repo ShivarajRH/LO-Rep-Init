@@ -6,6 +6,8 @@
 	$metapagename='LyfeOn - About, Terms and Help';
 	$metasubtitle='LyfeOn - Documentation';
 	$metacopyright='LyfeOn';
+        $robots_index='index';
+        $robots_follow='follow';
 ?>
 
 <?php include_once '../../head.php'; ?>

@@ -7,21 +7,21 @@
 	$metasubtitle='LyfeOn - Manage your life';
 	$metacopyright='LyfeOn';
         
+        $robots_index='index';
+        $robots_follow='follow';
+        $load_js['global_js'] = 'global_scripts';
 ?>
 <?php include_once 'head.php'; ?>
 
 <!-- Google+ Signin -->
 <script type="text/javascript">
-    /*window.___gcfg = {
-        lang: 'en'
-    }*/
   (function() {
    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
    po.src = 'https://apis.google.com/js/client:plusone.js';
    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
  })();
 </script>
-	
+
 <body>
 	<?php include_once 'header.php'; ?>
 	<div class="center">
