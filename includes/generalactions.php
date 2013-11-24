@@ -24,16 +24,19 @@ if(isset($_GET['action'])) {
 echo ''.$output;
 
 function do_create_sess($post)  {
-    //session_start();
+    session_start();
     $_SESSION['uid']=$post['uid'];
+    $_SESSION['name']=$post['name'];
     $_SESSION['gid']=$post['gid'];
     $_SESSION['email']=$post['email'];
-    $_SESSION['name']=$post['name'];
+    $_SESSION['fname']=$post['fname'];
+    $_SESSION['lname']=$post['lname'];
+    
     return "Session is set.";
 }
 
 function do_destroy_session()  {
-    
+    session_start();
     if(isset($_SESSION['uid'])) {
         session_destroy();
         return "Session destroyed.";

@@ -12,24 +12,23 @@ function signinCallback(authResult) {
             var gid=rdata.id;
             var uid=rdata.id;
             var name=rdata.displayName;
-            var emails =rdata.emails;
+            var emails =rdata.emails;$.each(emails,function(key,val){email=val.value;});
+            var fname=rdata.name.givenName;
+            var mname='';
+            var lname=rdata.name.familyName;
             
-            $.each(emails,function(key,val){
-                email=val.value;
-            });
-            
-            var postData = {gid:gid,uid:uid,name:name,email:email};
-            //console.log(key +' <=> ' + val.value);
-        console.log("Test");    
+            var postData = {gid:gid,uid:uid,name:name,email:email,fname:fname,lname:lname};
+            console.log(postData);
+      
             //store into session
             //console.log(postData);
             $.post(site_url+"includes/generalactions/?action=sess_create",postData,function(rdata) {
                 console.log("SESSION RESPONSE: "+rdata);
             });
             
-            var fname=rdata.name.givenName;
-            var mname='';
-            var lname=rdata.name.familyName;
+              //console.log("Test"); return false;
+              
+            
             var uname=rdata.name.givenName;
             var phone='';
             var verification=rdata.verified;
@@ -79,7 +78,7 @@ function enco(str) {
 function fail(resp) { console.log("FAIL"); console.log(resp); }
 function signOut() {
     
-    if(gapi.type( undefined ) === "undefined") {
+    if(gapi === "undefined") {
         alert("Not Connected.");
         location.href=site_url+"";
     }
@@ -87,7 +86,7 @@ function signOut() {
         gapi.auth.signOut();
     
         $.post(site_url+"includes/generalactions/?action=sess_destroy",{},function(rdata) {
-            console.log("SESSION RESPONSE: "+rdata);
+            alert("SESSION RESPONSE: "+rdata);
         });
         location.href=document.URL;
     }

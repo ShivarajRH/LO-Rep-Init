@@ -6,9 +6,9 @@
         header("Location:/?resp=Please_Sign_In");
         exit();
     }
-    $fname=$_SESSION['fname'];
-    $lname=$_SESSION['lname'];
-    $gid = $_SESSION['gid'];
+    $fname=isset($_SESSION['fname'])?$_SESSION['fname']:"";
+    $lname=isset($_SESSION['lname'])?$_SESSION['lname']:"";
+    $gid = isset($_SESSION['gid'])?$_SESSION['gid']:"";
     
 	$metatitle='LyfeOn - Your Stuff !';
 	$metadescription='LyfeOn - Access your notes, reminders and expenses and manage them across devices.';
@@ -34,9 +34,9 @@
 		</br>
 		<div id="wrapper"> <!-- http://cssdeck.com/labs/css-only-pinterest-style-columns-layout -->
 			<ul id="columns">
-				<?php include_once '/cards/card_creator_box.php'; ?>
-				<?php include_once '/cards/card_reminder_box.php'; ?>
-				<?php include_once '/cards/card_expenses_box.php'; ?>
+				<?php include_once 'cards/card_creator_box.php'; ?>
+				<?php include_once 'cards/card_reminder_box.php'; ?>
+				<?php include_once 'cards/card_expenses_box.php'; ?>
 				<?php 
                                     
 					$max_notes_count = $total_records_count;
@@ -54,7 +54,7 @@
 						$note_text;
 						$note_image;
 						$note_options_req='yes';
-						include_once '/cards/card_note_box.php';
+						include_once 'cards/card_note_box.php';
 					}
 				?>
 			</ul>
