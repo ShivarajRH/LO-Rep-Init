@@ -1,5 +1,5 @@
 <?php 
- class mycurl {
+ /*class mycurl {
     function getApiContent($url,$post,$outtype) {
             $content ='';
             if($post != '') {
@@ -25,5 +25,5 @@
             }
     }
     
-} 
+}*/
 ?>

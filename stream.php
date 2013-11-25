@@ -36,7 +36,9 @@
 		</br>
 		<div id="wrapper"> <!-- http://cssdeck.com/labs/css-only-pinterest-style-columns-layout -->
 			<ul id="columns">
+                            <input type="hidden" value="<?=$uid;?>" name="uid" id="uid"/>
 				<?php 
+                                /*
                                         include 'includes/myclasses.php';
                                         $url=$site_url."api/search/?action_object=list_content&limit_start=1&limit_end=4";
                                         //die($url);&uid=6585877897&content_type=all
@@ -44,7 +46,7 @@
                                         $ob=new mycurl();
 
                                         $post = array("uid"=>$uid,"content_type"=>"all");
-                                        $result = $ob->getApiContent($url,$post,"json");
+                                        //$result = $ob->getApiContent($url,$post,"json");
                                             
                                         
                                         
@@ -58,7 +60,7 @@
                                                                       
                                     
                                     
-                                    echo '<pre>';print_r($result); die();
+                                   // echo '<pre>';print_r($result); die();
                                     
 					$max_notes_count = count($result['notes']);
 					if($max_notes_count==0)
@@ -73,14 +75,15 @@
                                             
                                             //print_r($note);
                                             
-						$content_id= $note['content_id']; /*note content id*/
-						$note_id= $note['note_id'];/*note id*/
+						$content_id= $note['content_id'];
+						$note_id= $note['note_id'];
 						$note_text = $note['note_text'];
 						$note_image='';
 						$note_options_req='yes';
 						include 'cards/card_note_box.php';
-					}
+					} */
 				?>
+                                <div class="stream_replace_content"></div>
 			</ul>
 		</div>
 	</div>

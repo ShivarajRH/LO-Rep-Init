@@ -1,7 +1,7 @@
 <?php
 
 if(isset($_GET['action'])) {
-    $action = $_GET['action'];
+    $action = $_REQUEST['action'];
     
     $post = $_POST;
     if($action == 'sess_create') {
@@ -16,6 +16,9 @@ if(isset($_GET['action'])) {
     elseif($action == 'sess_destroy') {
         $output = do_destroy_session();
     }
+    elseif($action == 'getAllNotes') {
+        $output = do_getAllNotes();
+    }
     else {
         $output="Invalid URL";
     }
@@ -23,6 +26,9 @@ if(isset($_GET['action'])) {
 }
 echo ''.$output;
 
+function do_getAllNotes() {
+    print_r($_SESSION);
+}
 function do_create_sess($post)  {
     session_start();
     $_SESSION['uid']=$post['uid'];

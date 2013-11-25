@@ -141,7 +141,18 @@ function submit_expense_data(elt) {
     return false;
 }
 
+function loadStreamData() {
+    var uid = $("#uid").val();
+    //api/search/?action_object=list_content&uid=6585877897&content_type=all
+    $(".stream_replace_content").html('<div class="">Loading</div>');
+    $.post(site_url+"api/search/?action_object=list_content&uid="+uid+"&content_type=all",{},function(rdata) {
+            alert("Hi");
+            $(".stream_replace_content").html(rdata);
+    },"json").fail(fail);
+    return false;
+}
 $(document).ready(function() {
+    loadStreamData();
     //clearing form fields...
     $.fn.clearForm = function() {
       return this.each(function() {
