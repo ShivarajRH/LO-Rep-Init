@@ -1,5 +1,5 @@
 <?php
-$get = ($_GET);
+$get = ($_REQUEST);
 //print_r($get);
 switch($get['action_object']) {
     #case 'user_profile':  $output = delete_user_profile();

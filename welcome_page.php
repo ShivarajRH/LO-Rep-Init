@@ -1,8 +1,7 @@
 <?php 
     session_start();
     if(isset($_SESSION['uid'])) {
-        //header("Status: 404 Not Found"); // has effect of returning 404 status for browser no output shoud echo after
-        //echo '<script>alert("Please login");</script>';
+        //header("Status: 404 Not Found");
         header("Location:/stream?");
         exit();
     }

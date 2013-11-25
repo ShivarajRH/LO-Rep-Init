@@ -1,6 +1,6 @@
 <?php
 $output= '';
-$get = ($_GET);
+$get = ($_REQUEST);
 switch($get['action_object']) {
     case 'user_profile':
                         if(!isset($get['uid'])) print_error(array("status"=>"fail","response"=>"Undefined uid."));
@@ -94,74 +94,91 @@ function get_list_content_info($get) {
     //&content_type=all&filter_type=time&filter_from=2013-08-12&filter_to=2013-10-01
     $output=array(); $con='';
     $uid=mysql_real_escape_string($get['uid']);
-       
+    $limit_start = $lat=(!isset($get['limit_start']))? '0' : mysql_real_escape_string(urldecode($get['limit_start']))-1;
+    $limit_end = $lat=(!isset($get['limit_end']))? '14' : mysql_real_escape_string(urldecode($get['limit_end']));
+    
+    
     if($get['content_type'] == 'all') {
         //expense total
-        $rslt = mysql_query("select sum(amount) as ttl_expense from tbl_expenses where `uid`=$uid",$linkid) or print_error(mysql_error($linkid));
-        $row = mysql_fetch_array($rslt);
-        $output['expense_total'] = $row['ttl_expense'];
-        //reminders
-        $rslt = mysql_query("select reminder_id,remind_time,reminder_name from tbl_reminders 
-            where `uid`='$uid'",$linkid) or print_error(mysql_error($linkid));
-        $i=0;
-        while ($row=mysql_fetch_array($rslt)) {
+            $rslt = mysql_query("select sum(amount) as ttl_expense from tbl_expenses e
+                where e.`uid`=$uid limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
+            $row = mysql_fetch_array($rslt);
+            $output['expense_total'] = $row['ttl_expense'];
+                    
+                    
+            //reminders
+            $rslt = mysql_query("select c.content_id,reminder_id,remind_time,reminder_name from tbl_reminders r
+                                join tbl_content c on c.content_id=r.content_id
+                                where r.`uid`='$uid' limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
+            $i=0;
+            while ($row=mysql_fetch_array($rslt)) {
+
+                $data_array[$i]['content_id'] = $row['content_id'];
+                $data_array[$i]['reminder_id'] = $row['reminder_id'];
+                $data_array[$i]['reminder_name'] = $row['reminder_name'];
+                $data_array[$i]['remind_time'] = date("Y-m-d H:i:s",$row['remind_time']);
+                $i++;
+            }
+            $output['reminders'] = $data_array;
             
-            $data_array[$i]['reminder_id'] = $row['reminder_id'];
-            $data_array[$i]['reminder_name'] = $row['reminder_name'];
-            $data_array[$i]['remind_time'] = date("Y-m-d H:i:s",$row['remind_time']);
-            $i++;
-        }
-        $output['reminders'] = $data_array;
-        //Notes
-        $rslt = mysql_query("select n.note_id,n.note_text,c.timestamp from tbl_notes n
-                            join tbl_content c on c.content_id=n.content_id
-                            where n.`uid`='$uid'",$linkid) or print_error(mysql_error($linkid));
-        $i=0;$data_array=array();
-        while ($row=mysql_fetch_array($rslt)) {
+            //Notes
+            $rslt = mysql_query("select c.content_id,n.note_id,n.note_text,c.timestamp from tbl_notes n
+                                join tbl_content c on c.content_id=n.content_id
+                                where n.`uid`='$uid' limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
+            $i=0;$data_array=array();
+            while ($row=mysql_fetch_array($rslt)) {
+
+                $data_array[$i]['content_id'] = $row['content_id'];
+                $data_array[$i]['note_id'] = $row['note_id'];
+                $data_array[$i]['note_text'] = $row['note_text'];
+                $data_array[$i]['timestamp'] = date("Y-m-d H:i:s",$row['timestamp']);
+                $i++;
+            }
+            $output['notes'] = $data_array;
             
-            $data_array[$i]['note_id'] = $row['note_id'];
-            $data_array[$i]['note_text'] = $row['note_text'];
-            $data_array[$i]['timestamp'] = date("Y-m-d H:i:s",$row['timestamp']);
-            $i++;
-        }
-        $output['notes'] = $data_array;
+            
     }
     elseif($get['content_type'] == 'note') {
-        //Notes
-        $rslt = mysql_query("select n.note_id,n.note_text,c.timestamp from tbl_notes n
-                            join tbl_content c on c.content_id=n.content_id
-                            where n.`uid`='$uid'",$linkid) or print_error(mysql_error($linkid));
-        $i=0;$data_array=array();
-        while ($row=mysql_fetch_array($rslt)) {
             
-            $data_array[$i]['note_id'] = $row['note_id'];
-            $data_array[$i]['note_text'] = $row['note_text'];
-            $data_array[$i]['timestamp'] = date("Y-m-d H:i:s",$row['timestamp']);
-            $i++;
-        }
-        $output['notes'] = $data_array;
+            $rslt = mysql_query("select c.content_id,n.note_id,n.note_text,c.timestamp from tbl_notes n
+                                join tbl_content c on c.content_id=n.content_id
+                                where n.`uid`='$uid' limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
+            
+            $i=0;$data_array=array();
+            while ($row=mysql_fetch_array($rslt)) {
+
+                $data_array[$i]['content_id'] = $row['content_id'];
+                $data_array[$i]['note_id'] = $row['note_id'];
+                $data_array[$i]['note_text'] = $row['note_text'];
+                $data_array[$i]['timestamp'] = date("Y-m-d H:i:s",$row['timestamp']);
+                $i++;
+            }
+            $output['notes'] = $data_array;
+        
     }
     elseif($get['content_type'] == 'expense') {
+        
             //expense total
-            $rslt = mysql_query("select sum(amount) as ttl_expense from tbl_expenses where `uid`=$uid",$linkid) or print_error(mysql_error($linkid));
+            $rslt = mysql_query("select sum(amount) as ttl_expense from tbl_expenses 
+                where `uid`=$uid limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
             $row = mysql_fetch_array($rslt);
             $output['expense_total'] = $row['ttl_expense'];
 
-        if($get['filter_type']=='time') {
-            if(!isset($get['filter_from'])) print_error(array("status"=>"fail","response"=>"Please specify filter from."));
-            //if(!isset($get['filter_to'])) print_error(array("status"=>"fail","response"=>"Please specify filter to."));
-            $from= strtotime(urldecode($get['filter_from']));
-            $to= isset($get['filter_to'])? strtotime(urldecode($get['filter_to'])) : time();
-            $con .= ' and c.timestamp between '.$from.' and '.$to.' ';
-        }
-        /*$filter_from_str = urlencode(strtolower($get['filter_from']));
-        if($get['filter_type']=='value') {
-            $con = ' and e.title like "%'.$filter_from_str.'%" or e.desc like "%'.$filter_from_str.'%" ';
-        }*/
+            if($get['filter_type']=='time') {
+                if(!isset($get['filter_from'])) print_error(array("status"=>"fail","response"=>"Please specify filter from."));
+                //if(!isset($get['filter_to'])) print_error(array("status"=>"fail","response"=>"Please specify filter to."));
+                $from= strtotime(urldecode($get['filter_from']));
+                $to= isset($get['filter_to'])? strtotime(urldecode($get['filter_to'])) : time();
+                $con .= ' and c.timestamp between '.$from.' and '.$to.' ';
+            }
+            /*$filter_from_str = urlencode(strtolower($get['filter_from']));
+            if($get['filter_type']=='value') {
+                $con = ' and e.title like "%'.$filter_from_str.'%" or e.desc like "%'.$filter_from_str.'%" ';
+            }*/
         
             $rslt = mysql_query("select * from tbl_expenses e
                     join tbl_content c on c.content_id=e.content_id
-                    where e.uid='$uid' $con",$linkid) or print_error(mysql_error($linkid));
+                    where e.uid='$uid' $con limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
       
             if(mysql_errno($linkid)) {
                 print_error(mysql_error($linkid));
@@ -182,11 +199,14 @@ function get_list_content_info($get) {
             }
     }
     elseif($get['content_type'] == 'reminder') {
-            $rslt = mysql_query("select reminder_id,remind_time,reminder_name from tbl_reminders 
-                where `uid`='$uid'",$linkid) or print_error(mysql_error($linkid));
+            
+            $rslt = mysql_query("select c.content_id,reminder_id,remind_time,reminder_name from tbl_reminders r
+                join tbl_content c on c.content_id=r.content_id
+                where r.`uid`='$uid' limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
             $i=0;
             while ($row=mysql_fetch_array($rslt)) {
 
+                $data_array[$i]['content_id'] = $row['content_id'];
                 $data_array[$i]['reminder_id'] = $row['reminder_id'];
                 $data_array[$i]['reminder_name'] = $row['reminder_name'];
                 $data_array[$i]['remind_time'] = date("Y-m-d H:i:s",$row['remind_time']);

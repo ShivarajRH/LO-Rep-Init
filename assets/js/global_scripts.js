@@ -18,7 +18,7 @@ function signinCallback(authResult) {
             var lname=rdata.name.familyName;
             
             var postData = {gid:gid,uid:uid,name:name,email:email,fname:fname,lname:lname};
-            console.log(postData);
+            //console.log(postData);
       
             //store into session
             //console.log(postData);
@@ -44,10 +44,13 @@ function signinCallback(authResult) {
             //call profile api
             $.post(site_url+"api/write/?action_object=user_profile"+apiurl,{},function(rdata) {
                 console.log("API RESPONSE="+rdata);
+                
+                
+                //redirect to streams
+                location.href=site_url+"stream#";
             });
             
-            //redirect to streams
-            location.href=site_url+"stream";
+            
     }).fail(fail);
   
     /*$.each(authResult,function(key,val){
@@ -80,15 +83,16 @@ function signOut() {
     
     if(gapi === "undefined") {
         alert("Not Connected.");
-        location.href=site_url+"";
+        location.href=site_url+"?#";
     }
     else {
         gapi.auth.signOut();
     
         $.post(site_url+"includes/generalactions/?action=sess_destroy",{},function(rdata) {
             alert("SESSION RESPONSE: "+rdata);
+            location.href=document.URL;
         });
-        location.href=document.URL;
+        
     }
 }
 

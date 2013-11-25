@@ -1,4 +1,4 @@
-	<div style="font-size:87%;margin:0 auto;width:50%;border-top: 1px solid #E7CECE;padding-left: 25%;">
+	<div style="font-size:87%;width:100%;border-top: 1px solid #E7CECE;padding-left: 2%;">
 		<ul>
 			<li><a href="http://help.lyfeon.com" target="_blank"><span class="fl_le">Help&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
 			<li><a href="/co/services/terms" target="_blank"><span class="fl_le">Terms&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>

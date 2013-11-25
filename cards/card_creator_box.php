@@ -1,4 +1,4 @@
-<input type="hidden" value="<?=$_SESSION['uid']?>" name="uid" id="uid"/>
+<input type="hidden" value="<?=$uid;?>" name="uid" id="uid"/>
 
 <li class="pin-box new_content_card standard_card always_first">
     <div>

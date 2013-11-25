@@ -3,7 +3,7 @@
 if(isset($_GET['action'])) {
     $action = $_GET['action'];
     
-    $post= $_POST;
+    $post = $_POST;
     if($action == 'sess_create') {
         if(!empty($post) and $post!='') {
             //print_r($post);die();

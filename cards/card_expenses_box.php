@@ -11,16 +11,16 @@
 				</br>
 				<p class="card_heading">
 					<span class="card_heading_text">Expenses</span>
-					<span class="intime_total fl_ri">$expenses_filter_total</span>
+					<span class="intime_total fl_ri"><?=$expenses_filter_total;?></span>
 				</p>
 				<?php 
-					if($content_target_src == manage_expenses)
+					if($content_target_src == 'manage_expenses')
 					{
-						include_once 'expenses_list.php';
+						include 'expenses_list.php';
 					}
-					else if($content_target_src == stream)
+					else if($content_target_src == 'stream')
 					{
-						$view_all_target=='/manage_expenses.php';
+						$view_all_target = $site_url.'manage_expenses';
 						include_once 'view_all_target.php';
 					}
 				?>

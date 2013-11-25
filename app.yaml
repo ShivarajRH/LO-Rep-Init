@@ -67,6 +67,11 @@ handlers:
 - url: /stream
   script: stream.php
 
+- url: /manage_expenses
+  script: manage_expenses.php
+
+- url: /manage_reminders
+  script: manage_reminders.php
 
 - url: /?.*
   script: welcome_page.php

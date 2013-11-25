@@ -19,23 +19,29 @@
 								<span class="">Google+</span>
 							</a>
 							<div class="g-follow" style="width:50px;height:20px;" data-href="https://plus.google.com/118335972259503633372" data-rel="publisher" data-annotation="none" data-height="24"></div>
-							<script type="text/javascript">
+							<!--<script type="text/javascript">
 								(function() {
 								var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
 								po.src = 'https://apis.google.com/js/plusone.js';
 								var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
 								})();
-							</script>								
+							</script>-->
 						</li>
 						<li><a href="/co/services/company" target="_blank"><span class="">Co.</span></a></li>
 					</ul>
 				</li>
-				<li class="menu_drop_list last fl_ri"><a href=""><img class="" src="/assets/images/settings.png" alt="Settings" title="Settings"/></a>
-					<ul>
-						<li><a href=""><span class="">Account</span></a></li>
-						<li class="last"><a href="javascript:void(0)" onclick="signOut();"><span class="">Logout</span></a></li>
-					</ul>
+                                <?php
+                                if(isset($_SESSION['uid'])) {
+                                ?>
+                                <li class="menu_drop_list last fl_ri"><a href=""><img class="" src="/assets/images/settings.png" alt="Settings" title="Settings"/></a>
+                                    <ul>
+                                        <li><a href=""><span class="">Account</span></a></li>
+                                        <li class="last"><a href="javascript:void(0)" onclick="signOut();"><span class="">Logout</span></a></li>
+                                    </ul>
 				</li>
+                                <?php
+                                }
+                                ?>
 				<li class="menu_drop_list last fl_ri">
 					<?php //include_once '/google_plus_signin_button.php'; ?>
 				</li>

@@ -1,14 +1,16 @@
-<?php ob_start();
+<?php 
+    error_reporting(1);
+    ob_start();
     session_start();
     if(!isset($_SESSION['uid'])) {
-        //header("Status: 404 Not Found"); // has effect of returning 404 status for browser no output shoud echo after
-        //echo '<script>alert("Please login");</script>';
+        //header("Status: 404 Not Found"); 
         header("Location:/?resp=Please_Sign_In");
         exit();
     }
     $fname=isset($_SESSION['fname'])?$_SESSION['fname']:"";
     $lname=isset($_SESSION['lname'])?$_SESSION['lname']:"";
     $gid = isset($_SESSION['gid'])?$_SESSION['gid']:"";
+    $uid = isset($_SESSION['uid'])?$_SESSION['gid']:"6585877897";
     
 	$metatitle='LyfeOn - Your Stuff !';
 	$metadescription='LyfeOn - Access your notes, reminders and expenses and manage them across devices.';
@@ -26,7 +28,7 @@
         $load_js['stream'] = 'stream';
 	$content_target_src='stream';
 ?>
-<?php include '/paths.php'; ?>
+<?php include 'paths.php'; ?>
 <?php include_once 'head.php'; ?>
 <body>
 	<?php include_once 'header.php'; ?>
@@ -34,12 +36,31 @@
 		</br>
 		<div id="wrapper"> <!-- http://cssdeck.com/labs/css-only-pinterest-style-columns-layout -->
 			<ul id="columns">
-				<?php include_once 'cards/card_creator_box.php'; ?>
-				<?php include_once 'cards/card_reminder_box.php'; ?>
-				<?php include_once 'cards/card_expenses_box.php'; ?>
 				<?php 
+                                        include 'includes/myclasses.php';
+                                        $url=$site_url."api/search/?action_object=list_content&limit_start=1&limit_end=4";
+                                        //die($url);&uid=6585877897&content_type=all
+                                      
+                                        $ob=new mycurl();
+
+                                        $post = array("uid"=>$uid,"content_type"=>"all");
+                                        $result = $ob->getApiContent($url,$post,"json");
+                                            
+                                        
+                                        
+                                        include_once 'cards/card_creator_box.php';
+                                        
+                                        $total_reminders=count($result['reminders']);
+                                        include_once 'cards/card_reminder_box.php'; 
+                                        
+                                        $expenses_filter_total = $result['expense_total'];
+                                        include_once 'cards/card_expenses_box.php'; 
+                                                                      
                                     
-					$max_notes_count = $total_records_count;
+                                    
+                                    echo '<pre>';print_r($result); die();
+                                    
+					$max_notes_count = count($result['notes']);
 					if($max_notes_count==0)
                                         {
                                                 $max_notes_count=1;
@@ -47,14 +68,17 @@
                                                 $note_image='';
                                         }
                                         //http://lyfeon.com/api/search/?action_object=list_content&uid=6585877897&content_type=note
-					for($note_item_count==1;$note_item_count<=$max_notes_count;$note_item_count++)
+					foreach($result['notes'] as $note)
 					{
-						$content_id= /*note content id*/
-						$note_id= /*note id*/
-						$note_text;
-						$note_image;
+                                            
+                                            //print_r($note);
+                                            
+						$content_id= $note['content_id']; /*note content id*/
+						$note_id= $note['note_id'];/*note id*/
+						$note_text = $note['note_text'];
+						$note_image='';
 						$note_options_req='yes';
-						include_once 'cards/card_note_box.php';
+						include 'cards/card_note_box.php';
 					}
 				?>
 			</ul>

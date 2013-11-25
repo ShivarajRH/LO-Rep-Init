@@ -4,7 +4,7 @@
 	<?php
 		if($note_options_req=='yes')
 		{
-			include_once ' note_options.php '; 
+			include_once 'note_options.php '; 
 		}
 	?>
 </li>
