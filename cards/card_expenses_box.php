@@ -5,16 +5,16 @@
 			<div class="expenses_details">
 				<?php 
 					include_once 'time_filter.php'; 
-					$filter_from;
-					$filter_to;
+					//$filter_from;
+					//$filter_to;
 				?>
 				</br>
 				<p class="card_heading">
 					<span class="card_heading_text">Expenses</span>
-					<span class="intime_total fl_ri"><?=$expenses_filter_total;?></span>
+					<span class="intime_total fl_ri" id="expense_total"><?php//$expenses_filter_total;?></span>
 				</p>
 				<?php 
-					if($content_target_src == 'manage_expenses')
+					/*if($content_target_src == 'manage_expenses')
 					{
 						include 'expenses_list.php';
 					}
@@ -22,7 +22,7 @@
 					{
 						$view_all_target = $site_url.'manage_expenses';
 						include_once 'view_all_target.php';
-					}
+					}*/
 				?>
 			</div>
 		</div>

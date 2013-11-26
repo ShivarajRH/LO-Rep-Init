@@ -1,0 +1,13 @@
+/* 
+    Document   : stream
+    Created on : Nov 25, 2013, 9:52:58 PM
+    Author     : mrshivaraj123@gmail.com
+    Description: Only stream file dependent classes
+*/
+
+.stream_replace_content {
+    width: 98%;
+     min-height:25%;
+     height: 25%;
+     display: block;
+}

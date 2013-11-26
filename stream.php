@@ -4,13 +4,13 @@
     session_start();
     if(!isset($_SESSION['uid'])) {
         //header("Status: 404 Not Found"); 
-        header("Location:/?resp=Please_Sign_In");
-        exit();
+       // header("Location:/?resp=Please_Sign_In");
+       // exit();
     }
     $fname=isset($_SESSION['fname'])?$_SESSION['fname']:"";
     $lname=isset($_SESSION['lname'])?$_SESSION['lname']:"";
     $gid = isset($_SESSION['gid'])?$_SESSION['gid']:"";
-    $uid = isset($_SESSION['uid'])?$_SESSION['gid']:"6585877897";
+    $uid = isset($_SESSION['uid'])?$_SESSION['gid']:"104219296596850018797";
     
 	$metatitle='LyfeOn - Your Stuff !';
 	$metadescription='LyfeOn - Access your notes, reminders and expenses and manage them across devices.';
@@ -38,8 +38,9 @@
 			<ul id="columns">
                             <input type="hidden" value="<?=$uid;?>" name="uid" id="uid"/>
 				<?php 
-                                /*
-                                        include 'includes/myclasses.php';
+                                        include_once 'cards/card_creator_box.php';
+                                
+                                    /*    include 'includes/myclasses.php';
                                         $url=$site_url."api/search/?action_object=list_content&limit_start=1&limit_end=4";
                                         //die($url);&uid=6585877897&content_type=all
                                       
@@ -47,18 +48,21 @@
 
                                         $post = array("uid"=>$uid,"content_type"=>"all");
                                         //$result = $ob->getApiContent($url,$post,"json");
-                                            
+                                      */      
                                         
                                         
-                                        include_once 'cards/card_creator_box.php';
                                         
-                                        $total_reminders=count($result['reminders']);
-                                        include_once 'cards/card_reminder_box.php'; 
                                         
-                                        $expenses_filter_total = $result['expense_total'];
+                                       // $total_reminders=count($result['reminders']);
+                                        //include_once 'cards/card_reminder_box.php'; 
+                                        ?>
+                            
+                                        <div class="reminders_block"></div>
+                            <?php            
+                                        //$expenses_filter_total = $result['expense_total'];
                                         include_once 'cards/card_expenses_box.php'; 
                                                                       
-                                    
+                                    /*
                                     
                                    // echo '<pre>';print_r($result); die();
                                     
@@ -83,7 +87,9 @@
 						include 'cards/card_note_box.php';
 					} */
 				?>
-                                <div class="stream_replace_content"></div>
+                                <div class="stream_replace_content">
+                                    
+                                </div>
 			</ul>
 		</div>
 	</div>

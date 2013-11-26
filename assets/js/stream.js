@@ -146,7 +146,70 @@ function loadStreamData() {
     //api/search/?action_object=list_content&uid=6585877897&content_type=all
     $(".stream_replace_content").html('<div class="">Loading</div>');
     $.post(site_url+"api/search/?action_object=list_content&uid="+uid+"&content_type=all",{},function(rdata) {
-            alert("Hi");
+            $("#expense_total").html(rdata.expense_total);
+            var total_reminders = (rdata.reminders).length;
+            $("#ttl_reminders").html(total_reminders);
+            
+            
+            var content_target_src ='stream';
+            
+        if (content_target_src =='stream')
+                var max_reminder_count=4;
+        else if (content_target_src=='manage_reminders')
+                var max_reminder_count = total_reminders;
+        
+        if(max_reminder_count==0)
+        {
+                max_reminder_count=1;
+                var reminder_name='Add Something';
+        }
+        
+        var output = "";
+        $.each(rdata.reminders,function(i,reminder){
+            
+        
+        
+                var reminder_id = reminder.reminder_id;
+                var reminder_name = reminder.reminder_name;
+                var reminder_time = reminder.remind_time;
+                var content_id = reminder.content_id;
+                var content_type = 'reminder';
+                //$uid;
+                var note_options_req='yes';
+                output = "<li class='list_single_reminder'>\n\
+                                <span class='single_reminder_name'>"+reminder_name+"</span>\n\
+                                <span class='single_reminder_time fl_ri'>"+reminder_time+"</span>";
+        
+                                
+                                if(note_options_req=='yes') {
+                                        output += "<div>\n\
+                                                    <ul class='note-options'>\n\
+                                                            <li class='note-options-single fl_le'><img class='' src='http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Fdelete.png' alt='Delete' title='Delete'/></li>\n\
+                                                            <li class='note-options-single fl_le'><img class='' src='http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Fedit.png' alt='Edit' title='Edit'/></li>\n\
+                                                    </ul>\n\
+                                            </div>";
+                                }
+                                
+                                output += "</li>";
+                        
+                if (content_target_src=='stream' && total_reminders > 4)
+                {
+                        var view_all_target='/manage_reminders';
+                        output += "<p class=''>\n\
+                                            <a href='"+view_all_target+"'>";
+                                    output += "<span class='fl_ri' style='font-size: 75%;'>View All</span></a>\n\
+                                    </p>";
+                }
+                
+                
+            });
+            $(".reminders_block").html(output);
+
+
+
+
+
+                                                
             $(".stream_replace_content").html(rdata);
     },"json").fail(fail);
     return false;
