@@ -24,6 +24,7 @@
 						include_once 'view_all_target.php';
 					}*/
 				?>
+                                <span class="expenses_view_all"></span>
 			</div>
 		</div>
 	</div>

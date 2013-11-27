@@ -4,8 +4,8 @@
     session_start();
     if(!isset($_SESSION['uid'])) {
         //header("Status: 404 Not Found"); 
-       // header("Location:/?resp=Please_Sign_In");
-       // exit();
+        header("Location:/?resp=Please_Sign_In");
+        exit();
     }
     $fname=isset($_SESSION['fname'])?$_SESSION['fname']:"";
     $lname=isset($_SESSION['lname'])?$_SESSION['lname']:"";
@@ -54,18 +54,18 @@
                                         
                                         
                                        // $total_reminders=count($result['reminders']);
-                                        //include_once 'cards/card_reminder_box.php'; 
+                                        include_once 'cards/card_reminder_box.php'; 
                                         ?>
                             
-                                        <div class="reminders_block"></div>
+                                        <!--<div class="reminders_block"></div>-->
                             <?php            
                                         //$expenses_filter_total = $result['expense_total'];
                                         include_once 'cards/card_expenses_box.php'; 
                                                                       
-                                    /*
+                                    
                                     
                                    // echo '<pre>';print_r($result); die();
-                                    
+                                    /*
 					$max_notes_count = count($result['notes']);
 					if($max_notes_count==0)
                                         {
@@ -84,12 +84,14 @@
 						$note_text = $note['note_text'];
 						$note_image='';
 						$note_options_req='yes';
-						include 'cards/card_note_box.php';
+						
 					} */
+                                        
+                                        //include 'cards/card_note_box.php';
+                                        
 				?>
-                                <div class="stream_replace_content">
-                                    
-                                </div>
+                                <span class="all_note_list_box"></span>
+                                <!--<div class="stream_replace_content"></div>-->
 			</ul>
 		</div>
 	</div>

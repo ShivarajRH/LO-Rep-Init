@@ -259,7 +259,7 @@ input[type=datetime-local]::-webkit-outer-spin-button  {
 }
 .menu_drop > ul > li > a {
   font-size: 15px;
-    padding:3.5%
+  padding: 15px 20px;
 }
 .menu_drop > ul > li > ul {
   opacity: 0;
@@ -281,12 +281,14 @@ input[type=datetime-local]::-webkit-outer-spin-button  {
 .menu_drop > ul ul > li {
   position: relative;
 }
-.menu_drop ul ul a {
-  background-color: #f5f5f5;
-  padding:15%;
-  padding-left:10%;
-  padding-right:10%;
-  display: block;
+
+.menu_drop ul ul a{
+    background-color: #f5f5f5;
+    padding: 3.5%;
+    padding-left: 10%;
+    padding-right: 10%;
+    display: block;
+    font-size: 90%;
 }
 .menu_drop ul ul a:hover {
   background-color: #f0f0f0;

@@ -54,7 +54,7 @@ function put_single_content_info($get) {
         if(!isset($get['note_text'])) print_error(array("status"=>"fail","response"=>"Undefined note text."));
         if(!isset($get['content_type'])) print_error(array("status"=>"fail","response"=>"Undefined content type."));
                 
-            $note_text=urldecode($get['note_text']);
+            $note_text=  mysql_escape_string(urldecode($get['note_text']));
             mysql_query("insert into `tbl_notes`(`sno`,`note_id`,`content_id`,`uid`,`note_text`,`file_id`) 
                                 values ( NULL,NULL,'".$content_id."','".$uid."','".$note_text."',NULL);",$linkid) or print_error(mysql_error($linkid));
             $insert_id = mysql_insert_id();

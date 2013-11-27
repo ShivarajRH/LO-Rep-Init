@@ -8,18 +8,19 @@
                 <!--return show_actions1();-->
                 <li class="create_note">
                     <div class="share_box_icon" onclick="return show_actions('note');">
-                        <img class="fl_le" src="<?=$img_url?>icons/note.png" title="Create Note"/>
+                        
+                        <img class="fl_le" src="http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Fnote.png" title="Create Note"/>
                     </div>
                 </li>
 
                 <li class="create_reminder">
                     <div class="share_box_icon" onclick="return show_actions('reminder');">
-                        <img class="fl_le" src="<?=$img_url?>icons/clock.png" title="Create Reminder"/>
+                        <img class="fl_le" src="http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Fclock.png" title="Create Reminder"/>
                     </div>
                 </li>
                 <li class="create_expense">
                     <div class="share_box_icon" onclick="return show_actions('expense');">
-                        <img class="" src="<?=$img_url?>icons/expenses.png" title="Record Expense"/>
+                        <img class="" src="http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Fexpenses.png" title="Record Expense"/>
                     </div>
                 </li>
                     <!--
@@ -59,7 +60,7 @@
                 <div id="expense_creator" style="clear:both;" class="expense_creator hide">
                         <form name="expense_submit_form" id="expense_submit_form" action="" method="POST" onsubmit="return submit_expense_data(this);">
                                 <input type="text" name="expense_title" id="expense_title" placeholder="Name" class="fl_le expense_title" maxlength="30" required>
-                                <input type="number" name="expense_amount" id="expense_amount" placeholder="Amount" class="fl_le expense_amount" min="-999999" max="999999" required>
+                                <input type="number" name="expense_amount" id="expense_amount" placeholder="Amount" class="fl_le expense_amount" min="-999999" max="999999" step="any" required>
                                 <input type="submit" class="button fl_ri" value="+">
                         </form>
                 </div>

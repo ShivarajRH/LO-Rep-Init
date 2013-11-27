@@ -35,16 +35,17 @@ function submit_note_data(elt) {
     
     var apiurl = "&uid="+enco(uid)+"&content_type=note&lat="+enco(lat)+"&long="+enco(long1)+"&timestamp="+timestamp;
     //console.log(apiurl);
-    var postData = {note_text:note_text};
+    var postData = {note_text:enco(note_text)};
     //console.log(postData);
     //&note_text=God%20gives%20as%20much%20as%20we%20can%20satisfy%20for%20life
     //&lat=77&long=33&timestamp=2013-02-01%2022:11:00
     //call note api
     $.post(site_url+"api/write/?action_object=single_content"+apiurl,postData,function(rdata) {
         if(rdata.status == "success") {
-            alert("Note information stored successfully.");
+            //alert("Note information stored successfully.");
             $("#note_submit_form").clearForm();
             divtext.innerHTML = defaultNoteText;
+            loadStreamData();
         }
         else {
             console.log("\n"+rdata.response);
@@ -55,7 +56,7 @@ function submit_note_data(elt) {
     return false;
 }
 function fail(rdata){
-    alert(rdata.responseText);
+    console.log(rdata.responseText);
 }
 function submit_reminder_data(elt) {
     //$(elt).
@@ -81,15 +82,16 @@ function submit_reminder_data(elt) {
     var apiurl = "&uid="+enco(uid)+"&content_type=reminder&lat="+enco(lat)+"&long="+enco(long1)
         +"&timestamp="+timestamp;
     //console.log(apiurl);
-    var postData = {remind_time:remind_time,reminder_name:reminder_name};
+    var postData = {remind_time:remind_time,reminder_name:enco(reminder_name)};
     console.log(postData);
     
     //&content_type=reminder&remind_time=2013-11-07%2001:23:22
     //&reminder_name=God%20textfor%20develpment%20ashhd&lat=77&long=33&timestamp=2013-11-06%2022:11:00
     $.post(site_url+"api/write/?action_object=single_content"+apiurl,postData,function(rdata) {
         if(rdata.status == "success") {
-            alert("Reminder Added.");
+            //alert("Reminder Added.");
             $("#reminder_submit_form").clearForm();
+            loadStreamData();
         }
         else {
             console.log("\n"+rdata.response);
@@ -122,7 +124,7 @@ function submit_expense_data(elt) {
     
     var apiurl = "&uid="+enco(uid)+"&content_type=expense&lat="+enco(lat)+"&long="+enco(long1)+"&timestamp="+timestamp;
     //console.log(apiurl);
-    var postData = {title:expense_title,desc:expense_title,amount:expense_amount};
+    var postData = {title:enco(expense_title),desc:enco(expense_title),amount:(expense_amount)};
     //console.log(postData);
     //return false;
     //api/write/?action_object=single_content&uid=54694568990687&content_type=expense
@@ -130,8 +132,9 @@ function submit_expense_data(elt) {
     //&long=33&timestamp=2013-02-01%2022:11:00
     $.post(site_url+"api/write/?action_object=single_content"+apiurl,postData,function(rdata) {
         if(rdata.status == "success") {
-            alert("Expense Info Added.");
+            //alert("Expense Info Added.");
             $("#expense_submit_form").clearForm();
+            loadStreamData();
         }
         else {
             console.log("\n"+rdata.response);
@@ -146,13 +149,34 @@ function loadStreamData() {
     //api/search/?action_object=list_content&uid=6585877897&content_type=all
     $(".stream_replace_content").html('<div class="">Loading</div>');
     $.post(site_url+"api/search/?action_object=list_content&uid="+uid+"&content_type=all",{},function(rdata) {
+            
+            var content_target_src ='stream';
+            
+            //EXPENSES INFORMATION
+            var exp_output='';
             $("#expense_total").html(rdata.expense_total);
+            
+            if(content_target_src == 'manage_expenses')
+            {
+                    //include 'expenses_list.php';
+            }
+            else if(content_target_src == 'stream')
+            {
+                    var view_all_target = site_url+'manage_expenses';
+                    exp_output += "<p class=''>\n\
+                                        <a href='"+view_all_target+"'>\n\
+                                            <span class='fl_ri' style='font-size: 75%;'>View All</span></a>\n\
+                                </p>";
+            }
+            $(".expenses_view_all").html(exp_output);
+            
+            
             var total_reminders = (rdata.reminders).length;
             $("#ttl_reminders").html(total_reminders);
             
             
-            var content_target_src ='stream';
             
+        // REMINDER CODE
         if (content_target_src =='stream')
                 var max_reminder_count=4;
         else if (content_target_src=='manage_reminders')
@@ -167,16 +191,16 @@ function loadStreamData() {
         var output = "";
         $.each(rdata.reminders,function(i,reminder){
             
+                if(i<max_reminder_count) {
         
-        
-                var reminder_id = reminder.reminder_id;
-                var reminder_name = reminder.reminder_name;
-                var reminder_time = reminder.remind_time;
-                var content_id = reminder.content_id;
-                var content_type = 'reminder';
-                //$uid;
-                var note_options_req='yes';
-                output = "<li class='list_single_reminder'>\n\
+                        var reminder_id = reminder.reminder_id;
+                        var reminder_name = reminder.reminder_name;
+                        var reminder_time = reminder.remind_time;
+                        var content_id = reminder.content_id;
+                        var content_type = 'reminder';
+                        //$uid;
+                        var note_options_req='yes';
+                        output += "<li class='list_single_reminder'>\n\
                                 <span class='single_reminder_name'>"+reminder_name+"</span>\n\
                                 <span class='single_reminder_time fl_ri'>"+reminder_time+"</span>";
         
@@ -191,26 +215,63 @@ function loadStreamData() {
                                 }
                                 
                                 output += "</li>";
-                        
-                if (content_target_src=='stream' && total_reminders > 4)
-                {
-                        var view_all_target='/manage_reminders';
-                        output += "<p class=''>\n\
-                                            <a href='"+view_all_target+"'>";
-                                    output += "<span class='fl_ri' style='font-size: 75%;'>View All</span></a>\n\
-                                    </p>";
                 }
-                
-                
             });
-            $(".reminders_block").html(output);
+            if (content_target_src=='stream' && total_reminders > 4)
+            {
+                    var view_all_target=site_url+'manage_reminders';
+                    output += "<p class=''>\n\
+                                        <a href='"+view_all_target+"'>";
+                                output += "<span class='fl_ri' style='font-size: 75%;'>View All</span></a>\n\
+                                </p>";
+            }
+            
+            $(".reminders_list").html(output);
+            //END REMINDER CODE
+            
+            
+            //NOTES CODE
+            var note_output='';
+            var max_notes_count = (rdata.notes).length;
+            if(max_notes_count==0)
+            {
+                    var max_notes_count=1;
+                    var note_text='';
+                    var note_image='';
+            }
 
+            $.each(rdata.notes,function(i,note) {
+                    
+                            var content_id= note.content_id;
+                            var note_id= note.note_id;
+                            var note_text = note.note_text;
+                            var note_image='';
+                            var note_options_req='yes';
+                            note_output += "<li class='pin single_note_card'>\n\
+                                                <img src='"+note_image+"' />\n\
+                                                <p>"+note_text+"</p>";
+                                                
+                                                if(note_options_req=='yes') {
+                                                       note_output += "<div>\n\
+                                                                   <ul class='note-options'>\n\
+                                                                           <li class='note-options-single fl_le'><a href='javascript:void(0)' onclick='delete_this(this,'"+content_id+"')'><img class='' src='http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Fdelete.png' alt='Delete' title='Delete'/></li>\n\
+                                                                           <li class='note-options-single fl_le'><img class='' src='http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Fedit.png' alt='Edit' title='Edit'/></li>\n\
+                                                                   </ul>\n\
+                                                           </div>";
+                                               }
+                                               
+                            note_output +="</li>";
+                            
+            });
+            $(".all_note_list_box").html("Loading...");
+            $(".all_note_list_box").html(note_output);
 
+            
 
 
 
                                                 
-            $(".stream_replace_content").html(rdata);
+            
     },"json").fail(fail);
     return false;
 }
