@@ -1,3 +1,8 @@
+$(document).ready(function() {
+    $(".header").click(function(){
+       window.scrollTo(0,0); 
+    });
+});
 function signinCallback(authResult) {
   if (authResult['access_token']) {
     // Update the app to reflect a signed in user

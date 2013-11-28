@@ -5,14 +5,17 @@
         <?php $js_url=($_SERVER['HTTP_HOST'] == 'localhost:13080')?"/assets/js/":"http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/"; ?>
         <link rel="stylesheet" href="/assets/css/global.css" type="text/css" media="screen" />
         <!--<link rel="stylesheet" href="/assets/css/fonts/font.css">-->
-        <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-        <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300italic,400italic,700italic,400,700,300' rel='stylesheet' type='text/css'>
+<link href="http://commondatastorage.googleapis.com/lyfeon%2Fcss%2Froboto.min.css" rel='stylesheet' type='text/css'>
+<link href="http://commondatastorage.googleapis.com/lyfeon%2Fcss%2Furi.min.css" rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" type="image/png" href="http://commondatastorage.googleapis.com/lyfeon%2Flogos%2Ffavicon.png"/>
         
-        <link rel="shortcut icon" type="image/png" href="/assets/logos/favicon.png"/>
         <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/ddpmfmlfaonpbigeobfkjeklaloplepn">  
 
         <script src="<?=$js_url;?>jquery.min.js"></script>
-        <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+        <!--<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>-->
+        
+       
 
         <title><?php echo $metatitle; ?></title>
         <meta name="description" content=" <?php echo $metadescription; ?> " >
@@ -31,7 +34,6 @@
         <meta http-equiv="Cache-control" content="private">
         <meta http-equiv="Content-Type" content="text/html">
         <meta name="distribution" content="Global">
-        <meta name="robots" content="index,follow">
         <meta name="p:domain_verify" content="75195ddad850871ba3953967a8819516"/>
         
         <link rel="author" href=" https://plus.google.com/<?php echo $gid; ?>">
@@ -54,4 +56,16 @@
             var site_url ="http://"+(document.domain =='localhost'?'localhost:13080':document.domain)+"/";
         </script>
         
-</head>	
+</head>
+<!-- <script type="text/javascript">
+function downloadJSAtOnload() {
+    var element = document.createElement("script");
+    element.src = "<?=$js_url;?>jquery.min.js";
+    document.body.appendChild(element);
+}
+if (window.addEventListener)
+    window.addEventListener("load", downloadJSAtOnload, false);
+else if (window.attachEvent)
+    window.attachEvent("onload", downloadJSAtOnload);
+else window.onload = downloadJSAtOnload;
+</script>-->

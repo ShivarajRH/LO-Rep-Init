@@ -107,9 +107,9 @@ function get_list_content_info($get) {
                     
                     
             //reminders
-            $rslt = mysql_query("select c.content_id,reminder_id,remind_time,reminder_name from tbl_reminders r
+            $rslt = mysql_query("select c.content_id,r.reminder_id,remind_time,reminder_name from tbl_reminders r
                                 join tbl_content c on c.content_id=r.content_id
-                                where r.`uid`='$uid' limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
+                                where r.`uid`='$uid' order by r.reminder_id desc limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
             $i=0;
             while ($row=mysql_fetch_array($rslt)) {
 
@@ -124,7 +124,7 @@ function get_list_content_info($get) {
             //Notes
             $rslt = mysql_query("select c.content_id,n.note_id,n.note_text,c.timestamp from tbl_notes n
                                 join tbl_content c on c.content_id=n.content_id
-                                where n.`uid`='$uid' limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
+                                where n.`uid`='$uid' order by n.note_id desc limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
             $i=0;$data_array=array();
             while ($row=mysql_fetch_array($rslt)) {
 
@@ -142,7 +142,7 @@ function get_list_content_info($get) {
             
             $rslt = mysql_query("select c.content_id,n.note_id,n.note_text,c.timestamp from tbl_notes n
                                 join tbl_content c on c.content_id=n.content_id
-                                where n.`uid`='$uid' limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
+                                where n.`uid`='$uid' order by n.note_id desc limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
             
             $i=0;$data_array=array();
             while ($row=mysql_fetch_array($rslt)) {
@@ -178,7 +178,7 @@ function get_list_content_info($get) {
         
             $rslt = mysql_query("select * from tbl_expenses e
                     join tbl_content c on c.content_id=e.content_id
-                    where e.uid='$uid' $con limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
+                    where e.uid='$uid' $con order by e.expense_id desc limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
       
             if(mysql_errno($linkid)) {
                 print_error(mysql_error($linkid));
@@ -188,11 +188,18 @@ function get_list_content_info($get) {
                 while($row = mysql_fetch_assoc($rslt)) {
                     /*****/
                     $month=date("M",$row['timestamp']);
-                    $data_array[$month][$i]['expense_id']=$row['expense_id'];
+                    /*$data_array[$month][$i]['expense_id']=$row['expense_id'];
                     $data_array[$month][$i]['content_id']=$row['content_id'];
                     $data_array[$month][$i]['expense_title']=$row['title'];
                     $data_array[$month][$i]['expense_amount']=$row['amount'];
-                    $data_array[$month]['month_total']+=$row['amount'];
+                    $data_array[$month]['month_total']+=$row['amount'];*/
+                    
+                    $data_array[$i]['expense_id']=$row['expense_id'];
+                    $data_array[$i]['content_id']=$row['content_id'];
+                    $data_array[$i]['expense_title']=$row['title'];
+                    $data_array[$i]['expense_amount']=$row['amount'];
+                    $data_array[$i]['month']=date("M",$row['timestamp']);;
+                    //$data_array[$month]['month_total']+=$row['amount'];
                     $i++;
                 }
                 $output['expenses'] = $data_array;
@@ -202,7 +209,7 @@ function get_list_content_info($get) {
             
             $rslt = mysql_query("select c.content_id,reminder_id,remind_time,reminder_name from tbl_reminders r
                 join tbl_content c on c.content_id=r.content_id
-                where r.`uid`='$uid' limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
+                where r.`uid`='$uid' order by r.reminder_id desc limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
             $i=0;
             while ($row=mysql_fetch_array($rslt)) {
 

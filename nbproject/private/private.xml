@@ -6,12 +6,10 @@
         <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/includes/myclasses.php</file>
         <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/welcome_page.php</file>
         <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/api/analytics.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/api/search.php</file>
         <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/includes/generalactions.php</file>
         <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/cards/expenses_list.php</file>
         <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/cards/note_options.php</file>
         <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/stream.php</file>
-        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/assets/js/stream.js</file>
         <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/cards/single_reminder_item.php</file>
         <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/cards/card_note_box.php</file>
         <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/cards/card_reminder_box.php</file>
@@ -24,5 +22,7 @@
         <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/head.php</file>
         <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/cards/view_all_target.php</file>
         <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/api/write.php</file>
+        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/assets/js/stream.js</file>
+        <file>file:/C:/Users/Home/Dropbox/appengine/lyfeon-init-oct18/api/search.php</file>
     </open-files>
 </project-private>

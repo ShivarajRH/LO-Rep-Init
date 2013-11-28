@@ -62,15 +62,15 @@
 						</br>
 				</li>
 				<li class="pin single_note_card">
-					<img src="images/wall.jpg" />
+					<img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Freps%2Fnote_rep_427x640.jpg" />
 					<h1>Take Notes</h1>
 					<p>
-						
+
 					</p>
 				</li>
 				
 				<li class="pin single_note_card">
-					<img src="images/clock.jpg" />
+					<img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Freps%2Freminder_rep_427x640.jpg" />
 					<h1>Set Reminders</h1>
 					<p>
 						
@@ -83,7 +83,7 @@
 					</p>
 				</li>
 				<li class="pin single_note_card">
-					<img src="images/expenses.jpg" />
+					<img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Freps%2Fexpenses_rep_427x640.jpg" />
 					<h1>Track Expenses</h1>
 					<p>
 						

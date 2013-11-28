@@ -31,29 +31,30 @@
 	</br>
 	<div class="center">
 		</br>
+
 		<div id="wrapper" style="max-width:1400px"> <!-- http://cssdeck.com/labs/css-only-pinterest-style-columns-layout -->
 			<ul id="columns">
 				<li class="pin single_note_card">
 					<a href="/co/services/company">
-						<img src="/images/company.png" />
+						<img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Freps%2Fabout_rep_427x640.png" />
 						<h1>About Company</h1>
 					</a>
 				</li>
 				<li class="pin single_note_card">
 					<a href="/co/investors/investors">
-						<img src="/images/investors.png" />
+						<img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Freps%2Finvestors_rep_427x640.png" />
 						<h1>Investors</h1>
 					</a>
 				</li>
 				<li class="pin single_note_card">
 					<a href="/co/people/people">
-						<img src="/images/people.png" />
+						<img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Freps%2Fteam_rep_427x640.png" />
 						<h1>People</h1>
 					</a>
 				</li>
 				<li class="pin single_note_card">
 					<a href="/co/analytics/analytics">
-						<img src="/images/analytics.png" />
+						<img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Freps%2Fanalytics_rep_427x640.png" />
 						<h1>Analytics</h1>
 					</a>
 				</li>

@@ -193,7 +193,7 @@ input[type=datetime-local]::-webkit-outer-spin-button  {
 .share_box_icon img{
 	height:25px;
 	width:25px;
-	padding-right:10px;
+	padding-right:50%;
 }
 .clear { clear: both;}
 .creator_box{
