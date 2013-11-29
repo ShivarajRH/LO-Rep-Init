@@ -111,7 +111,7 @@ body{
 	height:2em;
 	max-height:30em;
 	line-height:19px;
-	border:1px solid #e4e4e4;
+	border-bottom:1px solid #e4e4e4;
 	padding:2%;
 }
 #note_creator_div{
@@ -122,6 +122,14 @@ body{
 	padding:2%;
 	overflow:auto;
 	word-wrap: break-word;
+        border-bottom:
+        -ms-word-break: break-all;
+        word-break: break-all; 
+        /* Non standard for webkit */ 
+        word-break: break-word; 
+        -webkit-hyphens: auto; 
+        -moz-hyphens: auto; 
+        hyphens: auto;
 }
 .expense_title{
 	width:60%;
@@ -182,6 +190,9 @@ input[type=datetime-local]::-webkit-outer-spin-button  {
     display: block;
     border: 1px sold #000;
     float: left;
+    height: 25px;
+    width: 25px;
+    padding-right: 8%;
 }
 .share_box_icon:hover{
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -380,6 +391,13 @@ input[type=datetime-local]::-webkit-outer-spin-button  {
 	transition: all .2s ease;
 	padding:5%;
 	width:88%;
+        -ms-word-break: break-all;
+        word-break: break-all; 
+        /* Non standard for webkit */ 
+        word-break: break-word; 
+        -webkit-hyphens: auto; 
+        -moz-hyphens: auto; 
+        hyphens: auto;
 }
 .pin img {
 	width: 100%;
@@ -389,6 +407,13 @@ input[type=datetime-local]::-webkit-outer-spin-button  {
 .pin p , .pin h1 , .pin h2 {
 	color: #333;
 	margin: 0;
+        -ms-word-break: break-all;
+        word-break: break-all; 
+        /* Non standard for webkit */ 
+        word-break: break-word; 
+        -webkit-hyphens: auto; 
+        -moz-hyphens: auto; 
+        hyphens: auto;
 }
 
 @media (min-width: 400px) {

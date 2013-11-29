@@ -4,8 +4,8 @@
     session_start();
     if(!isset($_SESSION['uid'])) {
         //header("Status: 404 Not Found"); 
-        header("Location:/?resp=Please_Sign_In");
-        exit();
+        //header("Location:/?resp=Please_Sign_In");
+        //exit();
     }
     $fname=isset($_SESSION['fname'])?$_SESSION['fname']:"";
     $lname=isset($_SESSION['lname'])?$_SESSION['lname']:"";

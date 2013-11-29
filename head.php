@@ -4,19 +4,16 @@
         <?php if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandler"); else ob_start(); ?>
         <?php $js_url=($_SERVER['HTTP_HOST'] == 'localhost:13080')?"/assets/js/":"http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/"; ?>
         <link rel="stylesheet" href="/assets/css/global.css" type="text/css" media="screen" />
-        <!--<link rel="stylesheet" href="/assets/css/fonts/font.css">-->
-<link href="http://commondatastorage.googleapis.com/lyfeon%2Fcss%2Froboto.min.css" rel='stylesheet' type='text/css'>
-<link href="http://commondatastorage.googleapis.com/lyfeon%2Fcss%2Furi.min.css" rel='stylesheet' type='text/css'>
+        <link href="http://commondatastorage.googleapis.com/lyfeon%2Fcss%2Froboto.min.css" rel='stylesheet' type='text/css'>
+        <link href="http://commondatastorage.googleapis.com/lyfeon%2Fcss%2Furi.min.css" rel='stylesheet' type='text/css'>
 
         <link rel="shortcut icon" type="image/png" href="http://commondatastorage.googleapis.com/lyfeon%2Flogos%2Ffavicon.png"/>
         
         <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/ddpmfmlfaonpbigeobfkjeklaloplepn">  
 
         <script src="<?=$js_url;?>jquery.min.js"></script>
-        <!--<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>-->
-        
-       
 
+        
         <title><?php echo $metatitle; ?></title>
         <meta name="description" content=" <?php echo $metadescription; ?> " >
         <meta name="abstract" content=" <?php echo $metaabstract; ?> " >
@@ -57,15 +54,3 @@
         </script>
         
 </head>
-<!-- <script type="text/javascript">
-function downloadJSAtOnload() {
-    var element = document.createElement("script");
-    element.src = "<?=$js_url;?>jquery.min.js";
-    document.body.appendChild(element);
-}
-if (window.addEventListener)
-    window.addEventListener("load", downloadJSAtOnload, false);
-else if (window.attachEvent)
-    window.attachEvent("onload", downloadJSAtOnload);
-else window.onload = downloadJSAtOnload;
-</script>-->

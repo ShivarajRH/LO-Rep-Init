@@ -208,8 +208,8 @@ function loadStreamData() {
                                         if(note_options_req=='yes') {
                                                 output += "<div>\n\
                                                             <ul class='note-options'>\n\
-                                                                    <li class='note-options-single fl_le'><img class='' src='http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Fdelete.png' alt='Delete' title='Delete'/></li>\n\
-                                                                    <li class='note-options-single fl_le'><img class='' src='http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Fedit.png' alt='Edit' title='Edit'/></li>\n\
+                                                                    <li class='note-options-single delete_icon fl_le'><img class='' src='http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Fdelete.png' alt='Delete' title='Delete'/></li>\n\
+                                                                    <li class='note-options-single edit_icon fl_le'><img class='' src='http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Fedit.png' alt='Edit' title='Edit'/></li>\n\
                                                             </ul>\n\
                                                     </div>";
                                         }
@@ -254,8 +254,8 @@ function loadStreamData() {
                                                 if(note_options_req=='yes') {
                                                        note_output += "<div>\n\
                                                                    <ul class='note-options'>\n\
-                                                                           <li class='note-options-single fl_le'><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','note')\"><img class='' src='http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Fdelete.png' alt='Delete' title='Delete'/></a></li>\n\
-                                                                           <li class='note-options-single fl_le'><img class='' src='http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Fedit.png' alt='Edit' title='Edit'/></li>\n\
+                                                                           <li class='note-options-single delete_icon fl_le'><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','note')\"></a></li>\n\
+                                                                           <li class='note-options-single edit_icon fl_le'></li>\n\
                                                                    </ul>\n\
                                                            </div>";
                                                }

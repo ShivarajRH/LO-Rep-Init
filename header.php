@@ -3,7 +3,7 @@
 	<div class="header">
 		<div class="logo">
 			<a href="">
-				<img class="fl_le" src="/assets/logos/lyfeon.png" style="padding-left:1%;width:30px;margin-top:-0.3%;height:24px;"/>
+				<img class="fl_le" src="http://commondatastorage.googleapis.com/lyfeon%2Flogos%2Flyfeon_48x48_center_w_less_gamma.png" style="padding-left:1%;padding-right: 1%;width: 24px;margin-top:-0.3%;height:24px;"/>
 				<span class="fl_le" style="padding-left:0.6%;">LyfeOn</span>
 			</a>
 		</div>
