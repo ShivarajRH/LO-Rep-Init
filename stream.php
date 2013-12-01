@@ -4,13 +4,14 @@
     session_start();
     if(!isset($_SESSION['uid'])) {
         //header("Status: 404 Not Found"); 
-        //header("Location:/?resp=Please_Sign_In");
-        //exit();
+        header("Location:/?resp=Please_Sign_In");
+        exit();
     }
     $fname=isset($_SESSION['fname'])?$_SESSION['fname']:"";
     $lname=isset($_SESSION['lname'])?$_SESSION['lname']:"";
-    $gid = isset($_SESSION['gid'])?$_SESSION['gid']:"";
-    $uid = isset($_SESSION['uid'])?$_SESSION['gid']:"104219296596850018797";
+    $gid = isset($_SESSION['gid'])?$_SESSION['gid']:""; 
+    $uid = isset($_SESSION['uid'])?$_SESSION['uid']:"104219296596850018797";
+    $content_target_src='stream';
     
 	$metatitle='LyfeOn - Your Stuff !';
 	$metadescription='LyfeOn - Access your notes, reminders and expenses and manage them across devices.';
@@ -26,7 +27,7 @@
 
         $load_js['global_js'] = 'global_scripts';
         $load_js['stream'] = 'stream';
-	$content_target_src='stream';
+	
 ?>
 <?php include 'paths.php'; ?>
 <?php include_once 'head.php'; ?>
@@ -35,8 +36,9 @@
 	<div class="center">
 		</br>
 		<div id="wrapper"> <!-- http://cssdeck.com/labs/css-only-pinterest-style-columns-layout -->
+                    <input type="hidden" value="<?=$uid;?>" name="uid" id="uid"/>
+                    <input type="hidden" value="<?=$content_target_src;?>" name="content_target_src" id="content_target_src"/>
 			<ul id="columns">
-                            <input type="hidden" value="<?=$uid;?>" name="uid" id="uid"/>
 				<?php 
                                         include_once 'cards/card_creator_box.php';
                                 

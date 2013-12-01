@@ -146,36 +146,63 @@ function submit_expense_data(elt) {
 
 function loadStreamData() {
     var uid = $("#uid").val();
-    //api/search/?action_object=list_content&uid=6585877897&content_type=all
+    
+    var content_target_src = $("#content_target_src").val();
+    
     $(".stream_replace_content").html('<div class="">Loading</div>');
     $.post(site_url+"api/search/?action_object=list_content&uid="+uid+"&content_type=all",{},function(rdata) {
-            
-            var content_target_src ='stream';
-            
-            //EXPENSES INFORMATION
-            var exp_output='';
-            $("#expense_total").html((Math.round(rdata.expense_total)*100)/100);
-            
-            if(content_target_src == 'manage_expenses')
-            {
-                    //include 'expenses_list.php';
+
+            if(content_target_src=='stream' || content_target_src == 'manage_expenses') {
+
+                //EXPENSES INFORMATION
+                var exp_output='';
+                $("#expense_total").html((Math.round(rdata.expense_total)*100)/100);
+
+                if(content_target_src == 'manage_expenses')
+                {   
+                        $.post(site_url+"api/search/?action_object=list_content&uid="+uid+"&content_type=expense",{},function(expen) {
+                                    var max_expenses_count = (expen.expenses).length;
+                                    var str_exp='';
+                                    if(max_expenses_count==0)
+                                    {
+                                            max_expenses_count=1;
+                                            str_exp='Add Something';
+                                    }
+                                    if(expen.expenses != null) {
+                                        $.each(expen.expenses,function(i,expense){
+                                                        var expense_name=expense.expense_title;
+                                                        var expense_amount = expense.expense_amount;
+                                                        var content_id = expense.content_id;
+                                                        content_type='expense';
+                                                        note_options_req='yes';
+
+                                                        str_exp+="<li class='single_expense'>\n\
+                                                                    <span class=''>"+expense_name+"</span>\n\
+                                                                    <span class='fl_ri'>"+expense_amount+"</span>";
+
+                                                         if(note_options_req == 'yes') {
+                                                                str_exp += "<div>\n\
+                                                                            <ul class='note-options'>\n\
+                                                                                    <li class='note-options-single delete_icon fl_le'><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','expense')\">&nbsp</a></li>\n\
+                                                                                    <li class='note-options-single edit_icon fl_le'>&nbsp</li>\n\
+                                                                            </ul>\n\
+                                                                    </div>";
+                                                        }
+
+                                                        str_exp +="</li>";
+                                        });
+                                        $(".expenses_list_container").html("<ul class='expenses_list'>"+str_exp+"</ul>");
+                                               
+                                    }
+                
+                        },"json");
+                }
             }
-            else if(content_target_src == 'stream')
-            {
-                    var view_all_target = site_url+'manage_expenses';
-                    exp_output += "<p class=''>\n\
-                                        <a href='"+view_all_target+"'>\n\
-                                            <span class='fl_ri' style='font-size: 75%;'>View All</span></a>\n\
-                                </p>";
-            }
-            $(".expenses_view_all").html(exp_output);
-            
-        if(rdata.reminders != null) {
+            // ====================
+            if(rdata.reminders != null) {
                 var total_reminders = (rdata.reminders).length;
                 $("#ttl_reminders").html(total_reminders);
         
-
-
                 // REMINDER CODE
                 if (content_target_src =='stream')
                         var max_reminder_count=4;
@@ -208,8 +235,8 @@ function loadStreamData() {
                                         if(note_options_req=='yes') {
                                                 output += "<div>\n\
                                                             <ul class='note-options'>\n\
-                                                                    <li class='note-options-single delete_icon fl_le'><img class='' src='http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Fdelete.png' alt='Delete' title='Delete'/></li>\n\
-                                                                    <li class='note-options-single edit_icon fl_le'><img class='' src='http://commondatastorage.googleapis.com/lyfeon%2Ficons%2Fedit.png' alt='Edit' title='Edit'/></li>\n\
+                                                                    <li class='note-options-single delete_icon fl_le'><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','reminder')\">&nbsp</a></li>\n\
+                                                                    <li class='note-options-single edit_icon fl_le'>&nbsp</li>\n\
                                                             </ul>\n\
                                                     </div>";
                                         }
@@ -230,17 +257,19 @@ function loadStreamData() {
                     //END REMINDER CODE
             }
             
-            //NOTES CODE
-            var note_output='';
-            var max_notes_count = (rdata.notes).length;
-            if(max_notes_count==0)
-            {
-                    var max_notes_count=1;
-                    var note_text='';
-                    var note_image='';
-            }
+            
+            if(content_target_src=='stream') {
+                    //NOTES CODE
+                    var note_output='';
+                    var max_notes_count = (rdata.notes).length;
+                    if(max_notes_count==0)
+                    {
+                            var max_notes_count=1;
+                            var note_text='';
+                            var note_image='';
+                    }
 
-            $.each(rdata.notes,function(i,note) {
+                    $.each(rdata.notes,function(i,note) {
                     
                             var content_id= note.content_id;
                             var note_id= note.note_id;
@@ -254,20 +283,19 @@ function loadStreamData() {
                                                 if(note_options_req=='yes') {
                                                        note_output += "<div>\n\
                                                                    <ul class='note-options'>\n\
-                                                                           <li class='note-options-single delete_icon fl_le'><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','note')\"></a></li>\n\
-                                                                           <li class='note-options-single edit_icon fl_le'></li>\n\
+                                                                           <li class='note-options-single delete_icon fl_le'><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','note')\">&nbsp</a></li>\n\
+                                                                           <li class='note-options-single edit_icon fl_le'>&nbsp</li>\n\
                                                                    </ul>\n\
                                                            </div>";
                                                }
                                                
                             note_output +="</li>";
                             
-            });
-            $(".all_note_list_box").html("Loading...");
-            $(".all_note_list_box").html(note_output);
-
+                    });
+                    $(".all_note_list_box").html(note_output);
+            }
             
-
+            
 
 
                                                 
@@ -279,20 +307,20 @@ function delete_this(elt,content_id,cont_type) {
     
     var uid = $("#uid").val();
     if(uid == '') {alert("Please Sign-In."); location=site_url+"?Please Sign-In."; return false; }
-    if(confirm("Are you sure you want to delete this "+cont_type+"?") ) {
-        var postData = {uid:uid,content_type:cont_type,content_id:content_id};
-        console.log(postData);
-        $.post(site_url+"api/delete/?action_object=single_content",postData,function(rdata) {
-            if(rdata.status == "success") {
-                //alert("Reminder Deleted.");
-                loadStreamData();
-            }
-            else {
-                console.log("\n"+rdata.response);
-            }
-
-        },"json").fail(fail);
-    }
+    //if(!confirm("Are you sure you want to delete this "+cont_type+"?") ) {return false;}
+    
+    var postData = {uid:uid,content_type:cont_type,content_id:content_id};
+    //console.log(postData);
+    $.post(site_url+"api/delete/?action_object=single_content",postData,function(rdata) {
+        if(rdata.status == "success") {
+            //alert("Reminder Deleted.");
+            loadStreamData();
+        }
+        else {
+            console.log("\n"+rdata.response);
+        }
+    },"json").fail(fail);
+    
 }
 
 $(document).ready(function() {
