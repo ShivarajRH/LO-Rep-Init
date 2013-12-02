@@ -35,7 +35,7 @@ function submit_note_data(elt) {
     
     var apiurl = "&uid="+enco(uid)+"&content_type=note&lat="+enco(lat)+"&long="+enco(long1)+"&timestamp="+timestamp;
     //console.log(apiurl);
-    var postData = {note_text:enco(note_text)};
+    var postData = {note_text:"'"+enco(nl2br(note_text))+"'"};
     //console.log(postData);
     //&note_text=God%20gives%20as%20much%20as%20we%20can%20satisfy%20for%20life
     //&lat=77&long=33&timestamp=2013-02-01%2022:11:00
@@ -191,9 +191,9 @@ function loadStreamData() {
 
                                                         str_exp +="</li>";
                                         });
-                                        $(".expenses_list_container").html("<ul class='expenses_list'>"+str_exp+"</ul>");
-                                               
                                     }
+                                    
+                                    $(".expenses_list_container").html("<ul class='expenses_list'>"+str_exp+"</ul>");
                 
                         },"json");
                 }
@@ -208,15 +208,15 @@ function loadStreamData() {
                         var max_reminder_count=4;
                 else if (content_target_src=='manage_reminders')
                         var max_reminder_count = total_reminders;
-
+                var output = "";
                 if(max_reminder_count==0)
                 {
                         max_reminder_count=1;
-                        var reminder_name='Add Something';
+                        output +='Add Something';
                 }
-
-                var output = "";
-                $.each(rdata.reminders,function(i,reminder){
+                else {
+                
+                    $.each(rdata.reminders,function(i,reminder){
 
                         if(i<max_reminder_count) {
 
@@ -229,7 +229,7 @@ function loadStreamData() {
                                 var note_options_req='yes';
                                 output += "<li class='list_single_reminder'>\n\
                                         <span class='single_reminder_name'>"+reminder_name+"</span>\n\
-                                        <span class='single_reminder_time fl_ri'>"+reminder_time+"</span>";
+                                        <span class='single_reminder_time fl_ri'>"+showTimeStamp(reminder_time)+"</span>";
 
 
                                         if(note_options_req=='yes') {
@@ -242,17 +242,17 @@ function loadStreamData() {
                                         }
 
                                         output += "</li>";
+                            }
+                        });
+                        if (content_target_src=='stream' && total_reminders > 4)
+                        {
+                                var view_all_target=site_url+'manage_reminders';
+                                output += "<p class=''>\n\
+                                                    <a href='"+view_all_target+"'>";
+                                            output += "<span class='fl_ri' style='font-size: 75%;'>View All</span></a>\n\
+                                            </p>";
                         }
-                    });
-                    if (content_target_src=='stream' && total_reminders > 4)
-                    {
-                            var view_all_target=site_url+'manage_reminders';
-                            output += "<p class=''>\n\
-                                                <a href='"+view_all_target+"'>";
-                                        output += "<span class='fl_ri' style='font-size: 75%;'>View All</span></a>\n\
-                                        </p>";
                     }
-
                     $(".reminders_list").html(output);
                     //END REMINDER CODE
             }
@@ -261,37 +261,39 @@ function loadStreamData() {
             if(content_target_src=='stream') {
                     //NOTES CODE
                     var note_output='';
-                    var max_notes_count = (rdata.notes).length;
-                    if(max_notes_count==0)
-                    {
-                            var max_notes_count=1;
-                            var note_text='';
-                            var note_image='';
-                    }
-
-                    $.each(rdata.notes,function(i,note) {
                     
-                            var content_id= note.content_id;
-                            var note_id= note.note_id;
-                            var note_text = note.note_text;
-                            var note_image='';
-                            var note_options_req='yes';
-                            note_output += "<li class='pin single_note_card'>\n\
-                                                <img src='"+note_image+"' />\n\
-                                                <p>"+note_text+"</p>";
-                                                
-                                                if(note_options_req=='yes') {
-                                                       note_output += "<div>\n\
-                                                                   <ul class='note-options'>\n\
-                                                                           <li class='note-options-single delete_icon fl_le'><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','note')\">&nbsp</a></li>\n\
-                                                                           <li class='note-options-single edit_icon fl_le'>&nbsp</li>\n\
-                                                                   </ul>\n\
-                                                           </div>";
-                                               }
-                                               
-                            note_output +="</li>";
-                            
-                    });
+                    if(rdata.notes != null) {
+                        var max_notes_count = (rdata.notes).length;
+                        if(max_notes_count==0)
+                        {
+                                var max_notes_count=1;
+                                var note_text='';
+                                var note_image='';
+                        }
+                        $.each(rdata.notes,function(i,note) {
+
+                                var content_id= note.content_id;
+                                var note_id= note.note_id;
+                                var note_text = note.note_text;
+                                var note_image='';
+                                var note_options_req='yes';
+                                note_output += "<li class='pin single_note_card'>\n\
+                                                    <img src='"+note_image+"' />\n\
+                                                    <div id='editor_"+content_id+"'>"+nl2br(note_text)+"</div>";
+
+                                                    if(note_options_req=='yes') {
+                                                           note_output += "<div>\n\
+                                                                       <ul class='note-options'>\n\
+                                                                               <li class='note-options-single delete_icon fl_le'><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','note')\">&nbsp</a></li>\n\
+                                                                               <li class='note-options-single edit_icon fl_le' id=\"editorBtn_"+content_id+"\" onclick=\"edit_this(this,'"+content_id+"','note')\">&nbsp</li>\n\
+                                                                       </ul>\n\
+                                                               </div>";
+                                                   }
+
+                                note_output +="</li>";
+
+                        });
+                    }
                     $(".all_note_list_box").html(note_output);
             }
             
@@ -303,6 +305,26 @@ function loadStreamData() {
     },"json").fail(fail);
     return false;
 }
+
+function edit_this(elt,content_id,cont_type) {
+    
+    var editorBtn = document.getElementById('editorBtn_'+content_id);
+    var element = document.getElementById('editor_'+content_id);
+    //editorBtn.addEventListener('click', function(e) {});
+     
+      if (element.isContentEditable) {
+        // Disable Editing
+        element.contentEditable = 'false';
+        //editorBtn.innerHTML = 'Enable Editing';
+            
+        // You could save any changes here.
+      } else {
+        element.contentEditable = 'true';
+        //editorBtn.innerHTML = 'Disable Editing';
+      }
+}
+
+
 function delete_this(elt,content_id,cont_type) {
     
     var uid = $("#uid").val();

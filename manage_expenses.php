@@ -3,8 +3,8 @@
     if(!isset($_SESSION['uid'])) {
         //header("Status: 404 Not Found"); // has effect of returning 404 status for browser no output shoud echo after
         //echo '<script>alert("Please login");</script>';
-//        header("Location:/?resp=Please_Sign_In");
-//        exit();
+        header("Location:/?resp=Please_Sign_In");
+        exit();
     }
     $fname=isset($_SESSION['fname'])?$_SESSION['fname']:"";
     $lname=isset($_SESSION['lname'])?$_SESSION['lname']:"";
@@ -38,6 +38,7 @@
 				<?php include_once 'cards/card_expenses_box.php'; ?>
 			</ul>
 		</div>
+                
 	</div>
 	<?php include_once 'footer_reg.php'; ?>
 </body>

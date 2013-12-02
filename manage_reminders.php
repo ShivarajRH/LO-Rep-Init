@@ -38,7 +38,7 @@
                     <input type="hidden" value="<?=$uid;?>" name="uid" id="uid"/>
                     <input type="hidden" value="<?=$content_target_src;?>" name="content_target_src" id="content_target_src"/>
 			<ul id="columns">
-				<?php include_once 'cards/card_reminder_box.php'; ?>
+                            	<?php include_once 'cards/card_reminder_box.php'; ?>
 			</ul>
 		</div>
 	</div>

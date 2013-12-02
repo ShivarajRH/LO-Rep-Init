@@ -80,6 +80,22 @@ function getTimeStamp() {
     var currentDate = fullDate.getFullYear() + "-" + twoDigitMonth + "-" + fullDate.getDate();
     return currentDate+" "+fullDate.getHours()+":"+fullDate.getMinutes()+":"+fullDate.getSeconds();
 }
+function showTimeStamp(dateString) {
+    dateString.split(' ').join('T');
+    var fullDate = new Date(dateString);
+    //convert month to 2 digits
+    var twoDigitMonth = ((fullDate.getMonth().length+1) === 1)? (fullDate.getMonth()+1) : (fullDate.getMonth()+1);
+    
+    var currentDate = fullDate.getFullYear() + "-" + twoDigitMonth + "-" + fullDate.getDate();
+    
+    return currentDate+" "+fullDate.getHours()+":"+fullDate.getMinutes();//+":"+fullDate.getSeconds();
+}
+function nl2br (str, is_xhtml) {
+    
+    var breakTag = '<br>';//(is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    
+    return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
+}
+
 function enco(str) {
     return encodeURIComponent(str);
 }

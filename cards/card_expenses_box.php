@@ -5,8 +5,7 @@
 			<div class="expenses_details">
 				<?php 
 					include_once 'time_filter.php'; 
-					//$filter_from;
-					//$filter_to;
+					//$filter_from;$filter_to;
 				?>
                                 
 				</br>
