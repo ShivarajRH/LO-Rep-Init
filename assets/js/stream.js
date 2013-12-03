@@ -284,9 +284,9 @@ function loadStreamData() {
                                                            note_output += "<div>\n\
                                                                        <ul class='note-options'>\n\
                                                                                 <li class='note-options-single delete_icon fl_le' id=\"deleteBtn_"+content_id+"\"><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','note')\">&nbsp</a></li>\n\
-                                                                                <li class='note-options-single edit_icon fl_le' id=\"editorBtn_"+content_id+"\" onclick=\"edit_this(this,'"+content_id+"','note')\">&nbsp</li>\n\
+                                                                                <li class='note-options-single edit_icon fl_le' id=\"editorBtn_"+content_id+"\" onclick=\"edit_this('"+content_id+"')\">&nbsp</li>\n\
                                                                                 \n\
-                                                                                <li class='note-options-single save_tick_icon fl_le hide' id='editor_submit_"+content_id+"'></li>\n\
+                                                                                <li class='note-options-single save_tick_icon fl_le hide' id='editor_submit_"+content_id+"' onclick=\"save_edit_text(this,'"+content_id+"','note')\"></li>\n\
                                                                                 <li class='note-options-single cancel_icon fl_le hide' id='editor_cancel_"+content_id+"'></li>\n\
                                                                         </ul>\n\
                                                                </div>";
@@ -308,7 +308,51 @@ function loadStreamData() {
     return false;
 }
 
-function edit_this(elt,content_id,cont_type) {
+function save_edit_text(elt,content_id,cont_type) {
+    var editorBtn = $('#editorBtn_'+content_id);
+    var deleteBtn = $('#deleteBtn_'+content_id);
+    var element = document.getElementById('editor_'+content_id);
+    var note_text = $.trim(element.innerHTML);
+        //alert(note_text);
+    if(note_text == '') {
+        alert("enter text");
+        element.focus();
+        return false;
+    }
+            
+    var elementSubmitBtn = $('#editor_submit_'+content_id);
+    var elementCancelBtn = $('#editor_cancel_'+content_id);
+    
+    element.contentEditable = 'false';
+    elementSubmitBtn.addClass("hide");
+    elementCancelBtn.addClass("hide");
+    editorBtn.removeClass("hide");
+    deleteBtn.removeClass("hide");
+    
+    //here call modify API
+    var uid = $("#uid").val();
+    if(uid == '') {alert("Please Sign-In."); location=site_url+"?Please Sign-In."; return false; }
+    //if(!confirm("Are you sure you want to modify this "+cont_type+"?") ) {return false;}
+    
+    var lat='77';
+    var long1='23';
+    var timestamp=getTimeStamp();
+    
+    var apiurl ="&lat="+enco(lat)+"&long="+enco(long1)+"&timestamp="+timestamp;
+    var postData = {uid:enco(uid),content_type:enco(cont_type),content_id:enco(content_id),note_text:enco(note_text)};
+    //console.log(postData);
+    $.post(site_url+"api/modify/?action_object=single_content"+apiurl,postData,function(rdata) {
+        if(rdata.status == "success") {
+            //alert("Reminder Deleted.");
+            loadStreamData();
+        }
+        else {
+            console.log("\n"+rdata.response);
+        }
+    },"json").fail(fail);
+}
+
+function edit_this(content_id) {
     
     var editorBtn = $('#editorBtn_'+content_id);
     var deleteBtn = $('#deleteBtn_'+content_id);
@@ -319,18 +363,11 @@ function edit_this(elt,content_id,cont_type) {
      
       if (element.isContentEditable) {
         // Disable Editing
-        element.contentEditable = 'false';
-        var note_text = element.innerHTML;
-        
-        elementSubmitBtn.addClass("hide");
-        elementCancelBtn.addClass("hide");
-        editorBtn.removeClass("hide");
-        deleteBtn.removeClass("hide");
-        
-        
-        //here call modify API
-        
-            
+//        element.contentEditable = 'false';
+//        elementSubmitBtn.addClass("hide");
+//        elementCancelBtn.addClass("hide");
+//        editorBtn.removeClass("hide");
+//        deleteBtn.removeClass("hide");
             
         // You could save any changes here.
       } else {

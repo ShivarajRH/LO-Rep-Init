@@ -19,4 +19,9 @@
     Date.prototype.getShortMonthName = function () {
         return this.getMonthName().substr(0, 3);
     };
+    
+    // usage:
+    var d = new Date();
+    alert(d.getMonthName());      // "October"
+    alert(d.getShortMonthName()); // "Oct"
 </script>
