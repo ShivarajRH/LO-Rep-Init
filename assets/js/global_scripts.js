@@ -84,9 +84,15 @@ function showTimeStamp(dateString) {
     dateString.split(' ').join('T');
     var fullDate = new Date(dateString);
     //convert month to 2 digits
-    var twoDigitMonth = ((fullDate.getMonth().length+1) === 1)? (fullDate.getMonth()+1) : (fullDate.getMonth()+1);
+    //var twoDigitMonth = ((fullDate.getMonth().length+1) === 1)? (fullDate.getMonth()+1) : (fullDate.getMonth()+1);
+    var monthNameArr = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
+    var monthName = monthNameArr[fullDate.getMonth()]; 
+
+    var sameyear = new Date($.now()).getFullYear();
     
-    var currentDate = fullDate.getFullYear() + "-" + twoDigitMonth + "-" + fullDate.getDate();
+    var year = (sameyear != fullDate.getFullYear())? fullDate.getFullYear()+', ' :'';
+    
+    var currentDate = year+ monthName +" "+fullDate.getDate()+",";
     
     return currentDate+" "+fullDate.getHours()+":"+fullDate.getMinutes();//+":"+fullDate.getSeconds();
 }

@@ -35,7 +35,7 @@ function submit_note_data(elt) {
     
     var apiurl = "&uid="+enco(uid)+"&content_type=note&lat="+enco(lat)+"&long="+enco(long1)+"&timestamp="+timestamp;
     //console.log(apiurl);
-    var postData = {note_text:"'"+enco(nl2br(note_text))+"'"};
+    var postData = {note_text:enco(nl2br(note_text))};
     //console.log(postData);
     //&note_text=God%20gives%20as%20much%20as%20we%20can%20satisfy%20for%20life
     //&lat=77&long=33&timestamp=2013-02-01%2022:11:00
@@ -222,14 +222,14 @@ function loadStreamData() {
 
                                 var reminder_id = reminder.reminder_id;
                                 var reminder_name = reminder.reminder_name;
-                                var reminder_time = reminder.remind_time;
+                                var reminder_time = showTimeStamp(reminder.remind_time);
                                 var content_id = reminder.content_id;
                                 var content_type = 'reminder';
                                 //$uid;
                                 var note_options_req='yes';
                                 output += "<li class='list_single_reminder'>\n\
                                         <span class='single_reminder_name'>"+reminder_name+"</span>\n\
-                                        <span class='single_reminder_time fl_ri'>"+showTimeStamp(reminder_time)+"</span>";
+                                        <span class='single_reminder_time fl_ri'>"+reminder_time+"</span>";
 
 
                                         if(note_options_req=='yes') {
@@ -271,7 +271,6 @@ function loadStreamData() {
                                 var note_image='';
                         }
                         $.each(rdata.notes,function(i,note) {
-
                                 var content_id= note.content_id;
                                 var note_id= note.note_id;
                                 var note_text = note.note_text;
@@ -279,14 +278,17 @@ function loadStreamData() {
                                 var note_options_req='yes';
                                 note_output += "<li class='pin single_note_card'>\n\
                                                     <img src='"+note_image+"' />\n\
-                                                    <div id='editor_"+content_id+"'>"+nl2br(note_text)+"</div>";
-
+                                                    <div class='editable_block' id='editor_"+content_id+"'>"+nl2br(note_text)+"</div>";
+                                                    
                                                     if(note_options_req=='yes') {
                                                            note_output += "<div>\n\
                                                                        <ul class='note-options'>\n\
-                                                                               <li class='note-options-single delete_icon fl_le'><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','note')\">&nbsp</a></li>\n\
-                                                                               <li class='note-options-single edit_icon fl_le' id=\"editorBtn_"+content_id+"\" onclick=\"edit_this(this,'"+content_id+"','note')\">&nbsp</li>\n\
-                                                                       </ul>\n\
+                                                                                <li class='note-options-single delete_icon fl_le' id=\"deleteBtn_"+content_id+"\"><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','note')\">&nbsp</a></li>\n\
+                                                                                <li class='note-options-single edit_icon fl_le' id=\"editorBtn_"+content_id+"\" onclick=\"edit_this(this,'"+content_id+"','note')\">&nbsp</li>\n\
+                                                                                \n\
+                                                                                <li class='note-options-single save_tick_icon fl_le hide' id='editor_submit_"+content_id+"'></li>\n\
+                                                                                <li class='note-options-single cancel_icon fl_le hide' id='editor_cancel_"+content_id+"'></li>\n\
+                                                                        </ul>\n\
                                                                </div>";
                                                    }
 
@@ -308,22 +310,37 @@ function loadStreamData() {
 
 function edit_this(elt,content_id,cont_type) {
     
-    var editorBtn = document.getElementById('editorBtn_'+content_id);
+    var editorBtn = $('#editorBtn_'+content_id);
+    var deleteBtn = $('#deleteBtn_'+content_id);
     var element = document.getElementById('editor_'+content_id);
+    var elementSubmitBtn = $('#editor_submit_'+content_id);
+    var elementCancelBtn = $('#editor_cancel_'+content_id);
     //editorBtn.addEventListener('click', function(e) {});
      
       if (element.isContentEditable) {
         // Disable Editing
         element.contentEditable = 'false';
-        //editorBtn.innerHTML = 'Enable Editing';
+        var note_text = element.innerHTML;
+        
+        elementSubmitBtn.addClass("hide");
+        elementCancelBtn.addClass("hide");
+        editorBtn.removeClass("hide");
+        deleteBtn.removeClass("hide");
+        
+        
+        //here call modify API
+        
+            
             
         // You could save any changes here.
       } else {
         element.contentEditable = 'true';
-        //editorBtn.innerHTML = 'Disable Editing';
+        elementSubmitBtn.removeClass("hide");
+        elementCancelBtn.removeClass("hide");
+        editorBtn.addClass("hide");
+        deleteBtn.addClass("hide");
       }
 }
-
 
 function delete_this(elt,content_id,cont_type) {
     
