@@ -20,7 +20,7 @@
 <body>
 	<?php include_once '../../header.php'; ?>
 	<br />
-	<div class="center">
+	<div class="center mw45em">
 		</br>
 		<section>
 			<details open>

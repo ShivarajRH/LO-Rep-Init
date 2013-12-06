@@ -6,6 +6,7 @@
  */
 ?>
 <script>
+    /*
     Date.prototype.monthNames = [
                                     "January", "February", "March",
                                     "April", "May", "June",
@@ -24,4 +25,34 @@
     var d = new Date();
     alert(d.getMonthName());      // "October"
     alert(d.getShortMonthName()); // "Oct"
+    */
+   /*
+    *Javascript
+   box.removeAttribute("class")
+    OR
+        // to add
+        box.className = 'move';
+        // to remove
+        box.className = ''; //IE also Supports
+   */
+    /*function hasClass(ele,cls) {
+      return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+    }
+    function addClass(ele,cls) {
+        if (!this.hasClass(ele,cls)) ele.className += " "+cls;
+    }
+    function removeClass(ele,cls) {
+        if (hasClass(ele,cls)) {
+            var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
+            ele.className=ele.className.replace(reg,' ');
+        }
+    }
+    var forEach = Array.prototype.forEach;
+    var className = "yourclass";
+
+    forEach.call(document.querySelectorAll("." + className), function(node) {
+        node.classList.remove(className);
+    });
+    */
+    //editorBtn.addEventListener('click', function(e) {});
 </script>

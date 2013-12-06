@@ -1,6 +1,6 @@
 <?php
-$get = ($_RESQUEST);
-//print_r($get);
+$get = ($_REQUEST);
+//print_r($get);die();
 switch($get['action_object']) {
     case 'single_content':
                     if(!isset($get['uid'])) print_error(array("status"=>"fail","response"=>"Undefined uid."));
@@ -14,6 +14,7 @@ switch($get['action_object']) {
         break;
 }
 echo json_encode($output);
+
 function modify_single_content_info($get) {
     include "paths.php";
     include $db_file_url;

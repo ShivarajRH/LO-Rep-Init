@@ -418,7 +418,7 @@ input[type=datetime-local]::-webkit-outer-spin-button  {
         hyphens: auto;
 }
 
-@media (min-width: 400px) {
+@media (min-width: 300px) {
 	#columns {
 		-webkit-column-count: 1;
 		-moz-column-count: 1;
@@ -562,7 +562,7 @@ input[type=datetime-local]::-webkit-outer-spin-button  {
 }
 .hide { display: none; }
 .editable_block {
-    background-color: #fff;
-    padding: 2%;
-    border: solid 1px #ececec;
+    background-color:#fff;
+    padding:2%;
+    border:1px solid #ececec;
 }

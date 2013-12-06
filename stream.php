@@ -2,11 +2,13 @@
     error_reporting(1);
     ob_start();
     session_start();
+    
     if(!isset($_SESSION['uid'])) {
-        //header("Status: 404 Not Found"); 
+        //header("Status: 404 Not Found");
         header("Location:/?resp=Please_Sign_In");
         exit();
     }
+
     $fname=isset($_SESSION['fname'])?$_SESSION['fname']:"";
     $lname=isset($_SESSION['lname'])?$_SESSION['lname']:"";
     $gid = isset($_SESSION['gid'])?$_SESSION['gid']:""; 
@@ -38,6 +40,7 @@
 		<div id="wrapper"> <!-- http://cssdeck.com/labs/css-only-pinterest-style-columns-layout -->
                     <input type="hidden" value="<?=$uid;?>" name="uid" id="uid"/>
                     <input type="hidden" value="<?=$content_target_src;?>" name="content_target_src" id="content_target_src"/>
+                    <input type="hidden" id="max_notes_count" name="max_notes_count" value=""/>
 			<ul id="columns">
 				<?php 
                                         include_once 'cards/card_creator_box.php';
