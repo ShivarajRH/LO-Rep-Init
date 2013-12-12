@@ -111,7 +111,7 @@
         <script>
             var site_url ="http://"+(document.domain =='localhost'?'localhost:13080':document.domain)+"/";
         </script>
-        
+       
 <!--      <link rel="shortcut icon" type="image/png" href="http://commondatastorage.googleapis.com/lyfeon%2Flogos%2Ffavicon.png">-->
         
     </head>

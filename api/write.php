@@ -37,6 +37,7 @@ function put_single_content_info($get) {
     
     $lat=(!isset($get['lat']))? '' : mysql_real_escape_string(urldecode($get['lat']));
     $long=(!isset($get['long']))? '' : mysql_real_escape_string(urldecode($get['long']));
+    $visibility=(!isset($get['visibility']))? 'pri' : mysql_real_escape_string(urldecode($get['visibility']));
     
     $timestamp=strtotime(mysql_real_escape_string(urldecode($get['timestamp'])));//Unix timestamp
     
@@ -44,8 +45,8 @@ function put_single_content_info($get) {
     $row = mysql_fetch_array($rslt);
     if(mysql_num_rows($rslt) == 0) { print_error("User/uid does not exits.".mysql_error()."".$uid); }
     
-    mysql_query("insert into `tbl_content`(`sno`,`content_id`,`uid`,`timestamp`,`lat`,`long`,`content_type`) 
-                        values ( NULL,NULL,'".$uid."','".$timestamp."','".$lat."','".$long."','".$content_type."')",$linkid) or print_error(mysql_error($linkid));
+    mysql_query("insert into `tbl_content`(`sno`,`content_id`,`uid`,`timestamp`,`lat`,`long`,`content_type`,`visibility`) 
+                        values ( NULL,NULL,'".$uid."','".$timestamp."','".$lat."','".$long."','".$content_type."','".$visibility."')",$linkid) or print_error(mysql_error($linkid));
     $slno = $content_id = mysql_insert_id(); //"cnt".rand(8,getrandmax());
     
     mysql_query("update `tbl_content` set `content_id`='$content_id' where `sno`=$slno") or print_error(mysql_error($linkid));
@@ -55,8 +56,8 @@ function put_single_content_info($get) {
         if(!isset($get['content_type'])) print_error(array("status"=>"fail","response"=>"Undefined content type."));
                 
             $note_text=  mysql_escape_string(urldecode($get['note_text']));
-            mysql_query("insert into `tbl_notes`(`sno`,`note_id`,`content_id`,`uid`,`note_text`,`file_id`) 
-                                values ( NULL,NULL,'".$content_id."','".$uid."','".$note_text."',NULL);",$linkid) or print_error(mysql_error($linkid));
+            mysql_query("insert into `tbl_notes`(`sno`,`note_id`,`content_id`,`uid`,`note_text`,`visibility`,`file_id`) 
+                                values ( NULL,NULL,'".$content_id."','".$uid."','".$note_text."','".$visibility."',NULL);",$linkid) or print_error(mysql_error($linkid));
             $insert_id = mysql_insert_id();
             mysql_query("update `tbl_notes` set `note_id`='".$insert_id."' where `sno`=$insert_id") or print_error(mysql_error($linkid));
             
@@ -76,8 +77,8 @@ function put_single_content_info($get) {
             $desc=mysql_real_escape_string(urldecode($get['desc']));
             $amount=mysql_real_escape_string(urldecode($get['amount']));
             
-            mysql_query("insert into `tbl_expenses`(`sno`,`expense_id`,`content_id`,`uid`,`title`,`desc`,`amount`) 
-                                values ( NULL,NULL,'".$content_id."','".$uid."','".$title."','".$desc."','".$amount."');",$linkid) or print_error(mysql_error($linkid));
+            mysql_query("insert into `tbl_expenses`(`sno`,`expense_id`,`content_id`,`uid`,`title`,`desc`,`amount`,`visibility`) 
+                                values ( NULL,NULL,'".$content_id."','".$uid."','".$title."','".$desc."','".$amount."','".$visibility."');",$linkid) or print_error(mysql_error($linkid));
             $insert_id = mysql_insert_id();
             mysql_query("update `tbl_expenses` set `expense_id`='".$insert_id."' where `sno`=$insert_id") or print_error(mysql_error($linkid));
             
@@ -95,8 +96,8 @@ function put_single_content_info($get) {
             $remind_time=strtotime(mysql_real_escape_string(urldecode($get['remind_time'])));
             $reminder_name=mysql_real_escape_string(urldecode($get['reminder_name']));
             
-            mysql_query("insert into `tbl_reminders`(`sno`,`reminder_id`,`content_id`,`uid`,`remind_time`,`reminder_name`) 
-                                         values ( NULL,NULL,'".$content_id."','".$uid."',".$remind_time.",'".$reminder_name."')",$linkid) or print_error(mysql_error($linkid));
+            mysql_query("insert into `tbl_reminders`(`sno`,`reminder_id`,`content_id`,`uid`,`remind_time`,`reminder_name`,`visibility`) 
+                                         values ( NULL,NULL,'".$content_id."','".$uid."',".$remind_time.",'".$reminder_name."','".$visibility."')",$linkid) or print_error(mysql_error($linkid));
             $insert_id = mysql_insert_id();
             mysql_query("update `tbl_reminders` set `reminder_id`='".$insert_id."' where `sno`=$insert_id") or print_error(mysql_error($linkid));;
             

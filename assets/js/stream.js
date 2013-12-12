@@ -21,6 +21,7 @@ function submit_note_data(elt) {
     //$(elt).
     getDivContent();
     var note_text = $("#note_text").val();
+    var note_visibility = $("#note_visibility").val();
     var uid = $("#uid").val();
     if(uid == '') {alert("Please Sign-In."); location=site_url+"?Please Sign-In."; return false; }
     if(note_text == '') { alert("Enter note input text."); return false; }
@@ -34,7 +35,8 @@ function submit_note_data(elt) {
     
     var apiurl = "&uid="+enco(uid)+"&content_type=note&lat="+enco(lat)+"&long="+enco(long1)+"&timestamp="+timestamp;
     //console.log(apiurl);
-    var postData = {note_text:enco(nl2br(note_text))};
+    var postData = {note_text:enco(nl2br(note_text)),visibility:note_visibility};
+    //console.log(postData);    return false;
     //call note api
     $.post(site_url+"api/write/?action_object=single_content"+apiurl,postData,function(rdata) {
         if(rdata.status == "success") {
@@ -269,7 +271,6 @@ function loadStreamData() {
                                             note_output += "<li class='pin single_note_card'>\n\
                                                                 <img src='"+note_image+"' />\n\
                                                                 <div class='' id='editor_"+content_id+"'>"+nl2br(note_text)+"</div>";
-
                                                                 if(note_options_req=='yes') {
                                                                        note_output += "<div>\n\
                                                                                    <ul class='note-options'>\n\
@@ -278,6 +279,7 @@ function loadStreamData() {
                                                                                             \n\
                                                                                             <li class='note-options-single save_tick_icon fl_le hide' id='editor_submit_"+content_id+"' onclick=\"save_edit_text(this,'"+content_id+"','note')\"></li>\n\
                                                                                             <li class='note-options-single cancel_icon fl_le hide' id='editor_cancel_"+content_id+"' onclick=\"cancel_edit_text('"+content_id+"');\"></li>\n\
+                                                                                            <li class='note-options-single cancel_icon fl_le pop_open_icon' onclick=\"popthis_out('"+content_id+"','note');\"></li>\n\
                                                                                     </ul>\n\
                                                                            </div>";
                                                                }
@@ -460,7 +462,6 @@ function loadNotesInfo(limit_start,limit_end) {
     },"json");
     
 }
-
   $(window).scroll(function(){
         var max_notes_count= document.getElementById("max_notes_count").value;
         
@@ -501,19 +502,26 @@ function loadNotesInfo(limit_start,limit_end) {
      
 $(document).ready(function() {
     loadStreamData();
-    //clearing form fields...
-    $.fn.clearForm = function() {
-      return this.each(function() {
-            var type = this.type, tag = this.tagName.toLowerCase();
-            if (tag == 'form')
-              return $(':input',this).clearForm();
-            if (type == 'text' || type == 'password' || tag == 'textarea')
-              this.value = '';
-            else if (type == 'checkbox' || type == 'radio')
-              this.checked = false;
-            else if (tag == 'select')
-              this.selectedIndex = -1;
-      });
-    };
-
 });
+
+    function makeit_public(content_type) {
+        if(content_type='note') {
+            $("#note_visibility").val('pub');
+            $("#btn_note_private").show();
+            $("#btn_note_public").hide();
+        }
+
+    }
+    function makeit_private(content_type) {
+        if(content_type='note') {
+            $("#note_visibility").val('pri');
+            $("#btn_note_private").hide();
+            $("#btn_note_public").show();
+        }
+
+    }
+    function popthis_out(content_id,content_type) {
+            window.location.target="_blank";
+            window.parent.location.href=site_url+"note_pop_page/?cid="+enco(content_id);
+    }
+

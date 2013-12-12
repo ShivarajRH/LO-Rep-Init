@@ -6,9 +6,7 @@ $(document).ready(function() {
 function signinCallback(authResult) {
   if (authResult['access_token']) {
     // Update the app to reflect a signed in user
-    // Hide the sign-in button now that the user is authorized, for example:
-    document.getElementById('signinButton').setAttribute('style', 'display: none');
-    
+   
     
     var access_token=authResult['access_token'];
     //Get auth user details
@@ -21,18 +19,15 @@ function signinCallback(authResult) {
             var fname=rdata.name.givenName;
             var mname='';
             var lname=rdata.name.familyName;
+            var img_url=rdata.image.url;
             
             var postData = {gid:gid,uid:uid,name:name,email:email,fname:fname,lname:lname};
             //console.log(postData);
       
             //store into session
-            //console.log(postData);
             $.post(site_url+"includes/generalactions/?action=sess_create",postData,function(rdata) {
                 console.log("SESSION RESPONSE: "+rdata);
             });
-            
-              //console.log("Test"); return false;
-              
             
             var uname=rdata.name.givenName;
             var phone='';
@@ -48,7 +43,7 @@ function signinCallback(authResult) {
             
             //call profile api
             $.post(site_url+"api/write/?action_object=user_profile"+apiurl,{},function(rdata) {
-                console.log("API RESPONSE="+rdata);
+                //console.log("API RESPONSE="+rdata);
                 
                 
                 //redirect to streams
@@ -57,11 +52,15 @@ function signinCallback(authResult) {
             
             
     }).fail(fail);
-  
-    /*$.each(authResult,function(key,val){
+    
+     // Hide the sign-in button now that the user is authorized, for example:
+    document.getElementById('signinButton').setAttribute('style', 'display: none');
+    
+    
+    $.each(authResult,function(key,val){
         console.log(key +' - ' + val);
         console.log(" \n");
-    });*/
+    });
         return true;
   } else if (authResult['error']) {
     // Update the app to reflect a signed out user
@@ -97,7 +96,6 @@ function showTimeStamp(dateString) {
     return currentDate+" "+fullDate.getHours()+":"+fullDate.getMinutes();//+":"+fullDate.getSeconds();
 }
 function nl2br (str, is_xhtml) {
-    
     var breakTag = '<br>';//(is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    
     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
 }
@@ -117,7 +115,7 @@ function signOut() {
     
         $.post(site_url+"includes/generalactions/?action=sess_destroy",{},function(rdata) {
             alert("SESSION RESPONSE: "+rdata);
-            location.href=document.URL;
+            location.href=site_url+"?#";//document.URL;
         });
         
     }
@@ -168,3 +166,21 @@ function show_actions(content_type) {
         $(".expense_creator").removeClass("hide");
     }
 }
+
+$(document).ready(function() {
+    //clearing form fields...
+    $.fn.clearForm = function() {
+      return this.each(function() {
+            var type = this.type, tag = this.tagName.toLowerCase();
+            if (tag == 'form')
+              return $(':input',this).clearForm();
+            if (type == 'text' || type == 'password' || tag == 'textarea')
+              this.value = '';
+            else if (type == 'checkbox' || type == 'radio')
+              this.checked = false;
+            else if (tag == 'select')
+              this.selectedIndex = -1;
+      });
+    };
+
+});

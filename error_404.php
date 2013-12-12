@@ -1,4 +1,5 @@
 <?php
+//header("404");
 $fname="";
 $lname='';
 $gid = '';
@@ -11,15 +12,15 @@ $metapagename='Error 404';
 $metasubtitle='Error 404';
 $metacopyright='LyfeOn';
 ?>
-<?php include_once '/head.php '; ?>
+<?php include_once 'head.php '; ?>
 <body>
-<?php include_once '/header.php '; ?>
+<?php include_once 'header.php '; ?>
 <div class="center">
 </br>
 <div style="max-width: 45em;margin: 0 auto;">
 <p><strong>404.</strong> That&#39;s an error.</br></br>The requested page was not found on this server. That&#39;s all we know.</p>
-<a class="back" href="http://lyfeon.com">Back to LyfeOn</a>
+<a class="back" href="<?=$site_url;?>">Back to LyfeOn</a>
 </div>
 </div>
-<?php include_once '/footer.php '; ?>
+<?php include_once 'footer_reg.php '; ?>
 </body>

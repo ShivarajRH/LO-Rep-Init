@@ -1,5 +1,4 @@
 <?php
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -8,11 +7,11 @@
 <script>
     /*
     Date.prototype.monthNames = [
-                                    "January", "February", "March",
-                                    "April", "May", "June",
-                                    "July", "August", "September",
-                                    "October", "November", "December"
-                                ];
+                                "January", "February", "March",
+                                "April", "May", "June",
+                                "July", "August", "September",
+                                "October", "November", "December"
+                            ];
 
     Date.prototype.getMonthName = function() {
         return this.monthNames[this.getMonth()];

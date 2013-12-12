@@ -1,6 +1,6 @@
 <?php 
- /*class mycurl {
-    function getApiContent($url,$post,$outtype) {
+ class myactions {
+    function getApiContent($url,$outtype,$post='') {
             $content ='';
             if($post != '') {
                 $post = http_build_query($post);
@@ -13,9 +13,12 @@
                     )
                 );
                 $content = stream_context_create($content);
+                $rdata = file_get_contents($url,false,$content);
+            }
+            else {
+                $rdata = file_get_contents($url,false);
             }
             
-            $rdata = file_get_contents($url,false,$content);
             
             if($outtype=='json') {
                 return json_decode($rdata,true);
@@ -25,5 +28,5 @@
             }
     }
     
-}*/
+}
 ?>

@@ -67,12 +67,25 @@ handlers:
 - url: /stream
   script: stream.php
 
+- url: /note_pop_page/.*
+  script: note_pop_page.php
+
 - url: /manage_expenses
   script: manage_expenses.php
 
 - url: /manage_reminders
   script: manage_reminders.php
 
-- url: /?.*
+#error_handlers:
+ # - file: error_404.php
+  
+#- error_code: over_quota
+#    file: over_quota.html
+
+  
+#- url: /+
+- url: /.*
   script: welcome_page.php
   
+#- url: /.*
+#  script: error_404.php
