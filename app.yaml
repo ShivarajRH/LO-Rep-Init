@@ -67,8 +67,14 @@ handlers:
 - url: /stream
   script: stream.php
 
-- url: /note_pop_page/.*
-  script: note_pop_page.php
+- url: /u/.*
+  script: u.php
+
+- url: /note/.*
+  script: note.php
+
+- url: /user_account(/?.*?)
+  script: user_account.php
 
 - url: /manage_expenses
   script: manage_expenses.php

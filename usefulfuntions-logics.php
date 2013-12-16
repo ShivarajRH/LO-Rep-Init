@@ -55,3 +55,13 @@
     */
     //editorBtn.addEventListener('click', function(e) {});
 </script>
+<?php
+/*    include 'includes/myclasses.php';
+                                        $url=$site_url."api/search/?action_object=list_content&limit_start=1&limit_end=4";
+                                        //die($url);&uid=6585877897&content_type=all
+                                      
+                                        $ob=new mycurl();
+
+                                        $post = array("uid"=>$uid,"content_type"=>"all");
+                                        //$result = $ob->getApiContent($url,$post,"json");
+                                      */

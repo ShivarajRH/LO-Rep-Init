@@ -60,26 +60,26 @@
         <!-- FACEBOOK -->
         <meta property="fb:admins" content="288454427926658" />
         <meta property="fb:app_id" content="484129578287464" /> 
-        <meta property="og:title" content="$metatitle"/>
+        <meta property="og:title" content="<?=$metatitle;?>"/>
         <meta property="og:type" content="article"/>
-        <meta property="og:image" content="$image_url"/>
-        <meta property="og:image:width" content="$image_width"/>
-        <meta property="og:image:height" content="$image_height"/>
-        <meta property="og:url" content="http://lyfeon.com/<?php $uid?>/<?php $note_id?>"/>
-        <meta property="og:description" content="$metadescription"/>
+        <meta property="og:image" content="<?=$image_url;?>"/>
+        <meta property="og:image:width" content="<?=$image_width;?>"/>
+        <meta property="og:image:height" content="<?=$image_height;?>"/>
+        <meta property="og:url" content="http://lyfeon.com/<?=$uid?>/<?=$note_id?>"/>
+        <meta property="og:description" content="<?=$metadescription;?>"/>
 
         <!-- TWITTER -->
-        <meta name="twitter:card" content="$twitter_card_content"/>
+        <meta name="twitter:card" content="<?=$twitter_card_content;?>"/>
         <!-- <meta name="twitter:card" content="app"/> -->
         <meta name="twitter:site" content="lyfeon"/>
         <meta name="twitter:site:id" content="1021500254"/>
-        <meta name="twitter:url" content="http://lyfeon.com/<?php $uid?>/<?php $note_id?> "/>
-        <meta name="twitter:title" content="$metatitle"/>
-        <meta name="twitter:description" content="$metadescription"/>
-        <meta name="twitter:image" content="$image_url"/>
-        <meta name="twitter:image:src" content="$image_url"/>
-        <meta name="twitter:image:width" content="$image_width"/>
-        <meta name="twitter:image:height" content="$image_height"/>
+        <meta name="twitter:url" content="http://lyfeon.com/<?=$uid?>/<?=$note_id?> "/>
+        <meta name="twitter:title" content="<?=$metatitle;?>"/>
+        <meta name="twitter:description" content="<?=$metadescription;?>"/>
+        <meta name="twitter:image" content="<?=$image_url;?>"/>
+        <meta name="twitter:image:src" content="<?=$image_url;?>"/>
+        <meta name="twitter:image:width" content="<?=$image_width;?>"/>
+        <meta name="twitter:image:height" content="<?=$image_height;?>"/>
         <meta name="twitter:app:name:googleplay" content="LyfeOn"/>
         <meta name="twitter:app:id:googleplay" content="com.lyfeon.oneapp"/>
         <meta name="twitter:app:url:googleplay" content="http://lyfeon.com/android/lyfeon"/>

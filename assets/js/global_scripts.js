@@ -16,12 +16,13 @@ function signinCallback(authResult) {
             var uid=rdata.id;
             var name=rdata.displayName;
             var emails =rdata.emails;$.each(emails,function(key,val){email=val.value;});
+            var currency='$';
             var fname=rdata.name.givenName;
             var mname='';
             var lname=rdata.name.familyName;
             var img_url=rdata.image.url;
             
-            var postData = {gid:gid,uid:uid,name:name,email:email,fname:fname,lname:lname};
+            var postData = {gid:gid,uid:uid,name:name,email:email,fname:fname,lname:lname,img_url:enco(img_url),currency:enco(currency)};
             //console.log(postData);
       
             //store into session
@@ -38,7 +39,7 @@ function signinCallback(authResult) {
 
             var apiurl = "&uid="+enco(uid)+"&gid="+enco(gid)+"&name="+enco(name)+"&email="+enco(email)+"&fname="+enco(fname)+"&mname="+enco(mname)+"&lname="
                 +enco(lname)+"&uname="+enco(uname)+"&phone="+enco(phone)+"&verification="+enco(verification)+"&lat="+enco(lat)+"&long="
-                +enco(long1)+"&time="+timestamp;
+                +enco(long1)+"&time="+timestamp+"&img_url="+img_url+"&currency="+currency;
             //console.log(apiurl);
             
             //call profile api

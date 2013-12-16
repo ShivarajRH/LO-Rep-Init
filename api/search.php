@@ -31,25 +31,28 @@ function get_single_content_info($get) {
     //$uid=mysql_real_escape_string($get['uid']);
     $content_id=mysql_real_escape_string($get['content_id']);
     $content_type=mysql_real_escape_string($get['content_type']);
-    
+    //uid,content_id,file_id,visibility
     if($content_type == 'note') {
         //Notes
-        $rslt = mysql_query("select n.note_id,n.note_text,c.timestamp from tbl_notes n
+        $rslt = mysql_query("select c.uid,c.content_id,n.visibility,c.timestamp,n.note_id,n.note_text,n.visibility from tbl_notes n
                             join tbl_content c on c.content_id=n.content_id
                             where n.`content_id`=$content_id
                             order by c.timestamp desc",$linkid) or print_error(mysql_error($linkid));
         $i=0;$data_array=array();
         while ($row=mysql_fetch_array($rslt)) {
-            
+                    
+            $data_array[$i]['uid'] = $row['uid'];
+            $data_array[$i]['content_id'] = $row['content_id'];
             $data_array[$i]['note_id'] = $row['note_id'];
             $data_array[$i]['note_text'] = $row['note_text'];
+            $data_array[$i]['visibility'] = $row['visibility'];
             $data_array[$i]['timestamp'] = date("Y-m-d H:i:s",$row['timestamp']);
             $i++;
         }
         $output['notes'] = $data_array;
     }
     elseif($content_type == 'expense') {
-            $rslt = mysql_query("select * from tbl_expenses e
+            $rslt = mysql_query("select e.content_id,e.expense_id,e.expense_title,e.expense_amount,e.visibility from tbl_expenses e
             join tbl_content c on c.content_id=e.content_id
             where e.content_id=$content_id $con
             order by c.timestamp desc",$linkid) or print_error(mysql_error($linkid));
@@ -65,20 +68,23 @@ function get_single_content_info($get) {
                     $data_array[$i]['content_id']=$row['content_id'];
                     $data_array[$i]['expense_title']=$row['title'];
                     $data_array[$i]['expense_amount']=$row['amount'];
+                    $data_array[$i]['visibility']=$row['visibility'];
                     $i++;
                 }
                 $output['expenses'] = $data_array;
             }
     }
     elseif($content_type == 'reminder') {
-        $rslt = mysql_query("select reminder_id,remind_time,reminder_name 
+        $rslt = mysql_query("select c.content_id,reminder_id,remind_time,reminder_name,visibility
             from tbl_reminders where `content_id`=$content_id
             order by remind_time desc",$linkid) or print_error(mysql_error($linkid));
             $i=0;
             while ($row=mysql_fetch_array($rslt)) {
 
                 $data_array[$i]['reminder_id'] = $row['reminder_id'];
+                $data_array[$i]['content_id'] = $row['content_id'];
                 $data_array[$i]['reminder_name'] = $row['reminder_name'];
+                $data_array[$i]['visibility'] = $row['visibility'];
                 $data_array[$i]['remind_time'] = date("Y-m-d H:i:s",$row['remind_time']);
                 $i++;
             }
@@ -95,7 +101,7 @@ function get_list_content_info($get) {
     $output=array(); $con='';
     $uid=mysql_real_escape_string($get['uid']);
     $limit_start = $lat=(!isset($get['limit_start']))? '0' : mysql_real_escape_string(urldecode($get['limit_start']))-1;
-    $limit_end = $lat=(!isset($get['limit_end']))? '14' : mysql_real_escape_string(urldecode($get['limit_end']));
+    $limit_end = $lat=(!isset($get['limit_end']))? '35' : mysql_real_escape_string(urldecode($get['limit_end']));
     
     
     if($get['content_type'] == 'all') {
@@ -107,7 +113,7 @@ function get_list_content_info($get) {
                     
                     
             //reminders
-            $rslt = mysql_query("select c.content_id,r.reminder_id,remind_time,reminder_name from tbl_reminders r
+            $rslt = mysql_query("select c.content_id,r.reminder_id,r.remind_time,r.reminder_name,r.visibility from tbl_reminders r
                                 join tbl_content c on c.content_id=r.content_id
                                 where r.`uid`='$uid' order by r.reminder_id desc limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
             $i=0;
@@ -116,21 +122,23 @@ function get_list_content_info($get) {
                 $data_array[$i]['content_id'] = $row['content_id'];
                 $data_array[$i]['reminder_id'] = $row['reminder_id'];
                 $data_array[$i]['reminder_name'] = $row['reminder_name'];
+                $data_array[$i]['visibility'] = $row['visibility'];
                 $data_array[$i]['remind_time'] = date("Y-m-d H:i:s",$row['remind_time']);
                 $i++;
             }
             $output['reminders'] = $data_array;
             
             //Notes
-            $rslt = mysql_query("select c.content_id,n.note_id,n.note_text,c.timestamp from tbl_notes n
+            $rslt = mysql_query("select c.content_id,n.note_id,n.note_text,n.visibility,c.timestamp from tbl_notes n
                                 join tbl_content c on c.content_id=n.content_id
                                 where n.`uid`='$uid' order by n.note_id desc limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
             $i=0;$data_array=array();
             while ($row=mysql_fetch_array($rslt)) {
-
+                
                 $data_array[$i]['content_id'] = $row['content_id'];
                 $data_array[$i]['note_id'] = $row['note_id'];
                 $data_array[$i]['note_text'] = $row['note_text'];
+                $data_array[$i]['visibility'] = $row['visibility'];
                 $data_array[$i]['timestamp'] = date("Y-m-d H:i:s",$row['timestamp']);
                 $i++;
             }
@@ -140,7 +148,7 @@ function get_list_content_info($get) {
     }
     elseif($get['content_type'] == 'note') {
             
-            $rslt = mysql_query("select c.content_id,n.note_id,n.note_text,c.timestamp from tbl_notes n
+            $rslt = mysql_query("select c.content_id,n.note_id,n.note_text,n.visibility,c.timestamp from tbl_notes n
                                 join tbl_content c on c.content_id=n.content_id
                                 where n.`uid`='$uid' order by n.note_id desc limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
             
@@ -150,6 +158,7 @@ function get_list_content_info($get) {
                 $data_array[$i]['content_id'] = $row['content_id'];
                 $data_array[$i]['note_id'] = $row['note_id'];
                 $data_array[$i]['note_text'] = $row['note_text'];
+                $data_array[$i]['visibility'] = $row['visibility'];
                 $data_array[$i]['timestamp'] = date("Y-m-d H:i:s",$row['timestamp']);
                 $i++;
             }
@@ -159,10 +168,11 @@ function get_list_content_info($get) {
     elseif($get['content_type'] == 'expense') {
         
             //expense total
-            $rslt = mysql_query("select sum(amount) as ttl_expense from tbl_expenses 
+            $rslt = mysql_query("select sum(amount) as ttl_expense,currency from tbl_expenses 
                 where `uid`=$uid limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
             $row = mysql_fetch_array($rslt);
             $output['expense_total'] = $row['ttl_expense'];
+            $output['currency'] = $row['currency'];
 
             if($get['filter_type']=='time') {
                 if(!isset($get['filter_from'])) print_error(array("status"=>"fail","response"=>"Please specify filter from."));
@@ -184,6 +194,7 @@ function get_list_content_info($get) {
                 print_error(mysql_error($linkid));
             }
             else {
+                
                 $i=0;$data_array=array();
                 while($row = mysql_fetch_assoc($rslt)) {
                     /*****/
@@ -191,15 +202,18 @@ function get_list_content_info($get) {
                     /*$data_array[$month][$i]['expense_id']=$row['expense_id'];
                     $data_array[$month][$i]['content_id']=$row['content_id'];
                     $data_array[$month][$i]['expense_title']=$row['title'];
-                    $data_array[$month][$i]['expense_amount']=$row['amount'];
-                    $data_array[$month]['month_total']+=$row['amount'];*/
+                    $data_array[$month][$i]['expense_amount']=$row['amount'];*/
+//                    $data_array[$month]['month_total']+=$row['amount'];
+                    
                     
                     $data_array[$i]['expense_id']=$row['expense_id'];
                     $data_array[$i]['content_id']=$row['content_id'];
                     $data_array[$i]['expense_title']=$row['title'];
                     $data_array[$i]['expense_amount']=$row['amount'];
                     $data_array[$i]['month']=date("M",$row['timestamp']);;
-                    //$data_array[$month]['month_total']+=$row['amount'];
+                    $data_array[$i]['visibility']=$row['visibility'];
+//                    $data_array[$i]['currency']=$row['currency'];
+//                    $data_array[$month]['month_total']+=$row['amount'];
                     $i++;
                 }
                 $output['expenses'] = $data_array;
@@ -207,7 +221,7 @@ function get_list_content_info($get) {
     }
     elseif($get['content_type'] == 'reminder') {
             
-            $rslt = mysql_query("select c.content_id,reminder_id,remind_time,reminder_name from tbl_reminders r
+            $rslt = mysql_query("select c.content_id,r.reminder_id,r.remind_time,r.reminder_name,r.visibility from tbl_reminders r
                 join tbl_content c on c.content_id=r.content_id
                 where r.`uid`='$uid' order by r.reminder_id desc limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
             $i=0;
@@ -216,6 +230,7 @@ function get_list_content_info($get) {
                 $data_array[$i]['content_id'] = $row['content_id'];
                 $data_array[$i]['reminder_id'] = $row['reminder_id'];
                 $data_array[$i]['reminder_name'] = $row['reminder_name'];
+                $data_array[$i]['visibility'] = $row['visibility'];
                 $data_array[$i]['remind_time'] = date("Y-m-d H:i:s",$row['remind_time']);
                 $i++;
             }
@@ -239,7 +254,11 @@ function get_user_profile($uid) {
             while($row = mysql_fetch_assoc($rslt)) {
                 $result['uid']=$row['uid'];
                 $result['gid']=$row['gid'];
+                $result['fname']=$row['fname'];
+                $result['lname']=$row['lname'];
                 $result['name']=$row['name'];
+                $result['img_url']=$row['img_url'];
+                $result['currency']=$row['currency'];
             }
         }
         else {

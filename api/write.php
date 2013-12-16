@@ -8,6 +8,7 @@ switch($get['action_object']) {
                     if(!isset($get['gid'])) print_error(array("status"=>"fail","response"=>"Undefined gid."));
                     if(!isset($get['name'])) print_error(array("status"=>"fail","response"=>"Undefined name."));
                     if(!isset($get['email'])) print_error(array("status"=>"fail","response"=>"Undefined email."));
+                    if(!isset($get['currency'])) print_error(array("status"=>"fail","response"=>"Undefined currency."));
                     $output = put_user_details($get);
         break;
         
@@ -121,6 +122,7 @@ function put_user_details($get) {
     $gid=mysql_real_escape_string(urldecode($get['gid'])); //req
     $name=mysql_real_escape_string(urldecode($get['name'])); //req
     $email=mysql_real_escape_string(urldecode($get['email'])); //req
+    $currency=mysql_real_escape_string(urldecode($get['currency'])); //req
     
     $content_type=(!isset($get['content_type']))? '' : mysql_real_escape_string(urldecode($get['content_type']));
     $fname=(!isset($get['fname']))? '' : mysql_real_escape_string(urldecode($get['fname']));
@@ -132,8 +134,9 @@ function put_user_details($get) {
     $lat=(!isset($get['lat']))? '' : mysql_real_escape_string(urldecode($get['lat']));
     $long=(!isset($get['long']))? '' : mysql_real_escape_string(urldecode($get['long']));
     $timezone=  (!isset($get['time']))? '' : strtotime(mysql_real_escape_string(urldecode($get['time']))); //Unix timestamp
+    $img_url=  (!isset($get['img_url']))? '' : mysql_real_escape_string(urldecode($get['img_url'])); //google+ image url
     
-    $sql="insert into `generic_profile`(`sno`,`uid`,`gid`,`fname`,`mname`,`lname`,`name`,`uname`,`email`,`phone`,`verification`,`lat`,`long`,`timezone`) values( NULL,'".$uid."','".$gid."','".$fname."','".$mname."','".$lname."','".$name."','".$uname."','".$email."','".$phone."','".$verification."',".$lat.",".$long.",".$timezone.")";
+    $sql="insert into `generic_profile`(`sno`,`uid`,`gid`,`fname`,`mname`,`lname`,`name`,`uname`,`email`,`currency`,`phone`,`verification`,`lat`,`long`,`timezone`,`img_url`) values( NULL,'".$uid."','".$gid."','".$fname."','".$mname."','".$lname."','".$name."','".$uname."','".$email."','".$currency."','".$phone."','".$verification."',".$lat.",".$long.",".$timezone.",'".$img_url."')";
     mysql_query($sql,$linkid);
     if(mysql_errno($linkid)) {
         print_error(array("status"=>"fail","response"=>mysql_error($linkid)));

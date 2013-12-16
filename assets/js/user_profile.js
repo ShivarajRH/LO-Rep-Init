@@ -1,137 +1,15 @@
 /**
  * @support mrshivaraj123@gmail.com
  */
-var defaultNoteText='Enter New Note Text...';
-function clear_text(elt) {
-    var notetxt = $(elt).text();
-    if(notetxt==defaultNoteText) {
-        $(elt).text("");
-    }
-}
-function getDivContent(){
-    var divtext=document.getElementById("note_creator_div");
-    if(divtext.innerHTML!=defaultNoteText) {
-        document.getElementById("note_text").value = divtext.innerHTML;
-    }
-    else {
-        divtext.innerHTML="";divtext.focus();
-    }
-}
-function submit_note_data(elt) {
-    //$(elt).
-    getDivContent();
-    var note_text = $("#note_text").val();
-    var note_visibility = $("#note_visibility").val();
-    var uid = $("#uid").val();
-    if(uid == '') {alert("Please Sign-In."); location=site_url+"?Please Sign-In."; return false; }
-    if(note_text == '') { alert("Enter note input text."); return false; }
-    
-    
-    //store this data 
-    var lat='77';
-    var long1='23';
-    var timestamp=getTimeStamp();
-    var divtext=document.getElementById("note_creator_div");
-    
-    var apiurl = "&uid="+enco(uid)+"&content_type=note&lat="+enco(lat)+"&long="+enco(long1)+"&timestamp="+timestamp;
-    //console.log(apiurl);
-    var postData = {note_text:enco(nl2br(note_text)),visibility:note_visibility};
-    //console.log(postData);    return false;
-    //call note api
-    $.post(site_url+"api/write/?action_object=single_content"+apiurl,postData,function(rdata) {
-        if(rdata.status == "success") {
-            //alert("Note information stored successfully.");
-            $("#note_submit_form").clearForm();
-            divtext.innerHTML = defaultNoteText;
-            loadStreamData();
-        }
-        else {
-            console.log("\n"+rdata.response);
-        }
-        
-    },"json").fail(fail);
-    
-    return false;
-}
+
 function fail(rdata){
     console.log(rdata.responseText);
 }
-function submit_reminder_data(elt) {
-    var reminder_name = $("#reminder_title").val();
-    var reminder_date = $("#reminder_date").val();
-    var reminder_time = $("#reminder_time").val();
-    if(reminder_name == '') {alert("Enter note reminder title."); return false; }
-    if(reminder_date == '') {alert("Please select reminder date."); return false; }
-    if(reminder_time == '') {alert("Please select reminder time."); return false; }
-    var uid = $("#uid").val();
-    if(uid == '') {alert("Please Sign-In."); location=site_url+"?Please Sign-In."; return false; }
-    
-    var remind_time=reminder_date+" "+reminder_time;
-    //store this data along with lat long info
-    var lat='77';
-    var long1='23';
-    var timestamp=getTimeStamp();
-    var divtext=document.getElementById("note_creator_div");
-    
-    
-    var apiurl = "&uid="+enco(uid)+"&content_type=reminder&lat="+enco(lat)+"&long="+enco(long1)
-        +"&timestamp="+timestamp;
-    //console.log(apiurl);
-    var postData = {remind_time:remind_time,reminder_name:enco(reminder_name)};
-    //console.log(postData);
-    
-    $.post(site_url+"api/write/?action_object=single_content"+apiurl,postData,function(rdata) {
-        if(rdata.status == "success") {
-            //alert("Reminder Added.");
-            $("#reminder_submit_form").clearForm();
-            loadStreamData();
-        }
-        else {
-            console.log("\n"+rdata.response);
-        }
-        
-    },"json").fail(fail);
-    
-    return false;
-    
-}
 
-function submit_expense_data(elt) {
-    //$(elt).
-    var expense_title = $("#expense_title").val();
-    var expense_amount = $("#expense_amount").val();
-    
-    if(expense_title == '') { alert("Enter note expense title."); return false; }
-    if(expense_amount == '') { alert("Please select expense_amount."); return false; }
-    
-    var uid = $("#uid").val();
-    if(uid == '') {alert("Please Sign-In."); location=site_url+"?Please Sign-In."; return false; }
-    
-    //store this data, along with lat long info
-    var lat='77';
-    var long1='23';
-    var timestamp=getTimeStamp();
-    
-    var apiurl = "&uid="+enco(uid)+"&content_type=expense&lat="+enco(lat)+"&long="+enco(long1)+"&timestamp="+timestamp;
-    
-    var postData = {title:enco(expense_title),desc:enco(expense_title),amount:(expense_amount)};
-    
-    $.post(site_url+"api/write/?action_object=single_content"+apiurl,postData,function(rdata) {
-        if(rdata.status == "success") {
-            //alert("Expense Info Added.");
-            $("#expense_submit_form").clearForm();
-            loadStreamData();
-        }
-        else {
-            console.log("\n"+rdata.response);
-        }
-    },"json").fail(fail);
-    
-    return false;
-}
 var default_entries=35;
 function loadStreamData() {
     var uid = $("#uid").val();
+    var sess_uid = $("#sess_uid").val();
     
     var content_target_src = $("#content_target_src").val();
     
@@ -166,7 +44,7 @@ function loadStreamData() {
                                                                     <span class=''>"+expense_name+"</span>\n\
                                                                     <span class='fl_ri'>"+expense_amount+"</span>";
 
-                                                         if(note_options_req == 'yes') {
+                                                         if(note_options_req == 'yes' && sess_uid!='') {
                                                                 str_exp += "<div>\n\
                                                                             <ul class='note-options'>\n\
                                                                                     <li class='note-options-single delete_icon fl_le'><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','expense')\">&nbsp</a></li>\n\
@@ -211,14 +89,14 @@ function loadStreamData() {
                                 var reminder_time = showTimeStamp(reminder.remind_time);
                                 var content_id = reminder.content_id;
                                 var content_type = 'reminder';
-                                //$uid;
                                 var note_options_req='yes';
+                                
                                 output += "<li class='list_single_reminder'>\n\
                                         <span class='single_reminder_name'>"+reminder_name+"</span>\n\
                                         <span class='single_reminder_time fl_ri'>"+reminder_time+"</span>";
 
 
-                                        if(note_options_req=='yes') {
+                                        if(note_options_req == 'yes' && sess_uid!='') {
                                                 output += "<div>\n\
                                                             <ul class='note-options'>\n\
                                                                     <li class='note-options-single delete_icon fl_le'><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','reminder')\">&nbsp</a></li>\n\
@@ -271,7 +149,7 @@ function loadStreamData() {
                                             note_output += "<li class='pin single_note_card'>\n\
                                                                 <img src='"+note_image+"' />\n\
                                                                 <div class='' id='editor_"+content_id+"'>"+nl2br(note_text)+"</div>";
-                                                                if(note_options_req=='yes') {
+                                                                if(note_options_req=='yes' && sess_uid != '') {
                                                                        note_output += "<div>\n\
                                                                                    <ul class='note-options'>\n\
                                                                                             <li class='note-options-single delete_icon fl_le' id=\"deleteBtn_"+content_id+"\"><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','note')\">&nbsp</a></li>\n\
@@ -508,22 +386,6 @@ $(document).ready(function() {
     loadStreamData();
 });
 
-    function makeit_public(content_type) {
-        if(content_type='note') {
-            $("#note_visibility").val('pub');
-            $("#btn_note_private").show();
-            $("#btn_note_public").hide();
-        }
-
-    }
-    function makeit_private(content_type) {
-        if(content_type='note') {
-            $("#note_visibility").val('pri');
-            $("#btn_note_private").hide();
-            $("#btn_note_public").show();
-        }
-
-    }
     function popthis_out(content_id,content_type) {
             //window.location.target="_blank";
             //window.parent.location.href=site_url+"note_pop_page/?cid="+enco(content_id);
