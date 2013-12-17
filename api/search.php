@@ -168,11 +168,11 @@ function get_list_content_info($get) {
     elseif($get['content_type'] == 'expense') {
         
             //expense total
-            $rslt = mysql_query("select sum(amount) as ttl_expense,currency from tbl_expenses 
+            $rslt = mysql_query("select sum(amount) as ttl_expense from tbl_expenses 
                 where `uid`=$uid limit $limit_start,$limit_end",$linkid) or print_error(mysql_error($linkid));
             $row = mysql_fetch_array($rslt);
             $output['expense_total'] = $row['ttl_expense'];
-            $output['currency'] = $row['currency'];
+//            $output['currency'] = $row['currency'];
 
             if($get['filter_type']=='time') {
                 if(!isset($get['filter_from'])) print_error(array("status"=>"fail","response"=>"Please specify filter from."));

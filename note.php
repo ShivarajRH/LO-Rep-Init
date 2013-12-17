@@ -88,12 +88,12 @@
     
         #=================
         
-	$metatitle='LyfeOn - '.substr($note_text, 0, 60).'';
-	$metadescription='LyfeOn - '.substr($note_text, 0, 170).'';
-	$metaabstract='LyfeOn - '.substr($note_text, 0, 90).'';
-	$metasubject='LyfeOn - '.substr($note_text, 0, 90).'';
-	$metapagename='LyfeOn - '.substr($note_text, 0, 90).'';
-	$metasubtitle='LyfeOn - '.substr($note_text, 0, 90).'';
+	$metatitle='LyfeOn - '.strip(substr($note_text, 0, 60)).'';
+	$metadescription='LyfeOn - '.strip(substr($note_text, 0, 170)).'';
+	$metaabstract='LyfeOn - '.strip(substr($note_text, 0, 90)).'';
+	$metasubject='LyfeOn - '.strip(substr($note_text, 0, 90)).'';
+	$metapagename='LyfeOn - '.strip(substr($note_text, 0, 90)).'';
+	$metasubtitle='LyfeOn - '.strip(substr($note_text, 0, 90)).'';
 	$metacopyright= $fname . " " . $lname;
 	$image_url=$img_url;
         if($img_url!='') { $height=$width=100; } else { $height=$width=0; }
@@ -137,4 +137,11 @@
 	</br>
 	<?php include_once 'footer_reg.php'; ?>
 </body>
+<?php
+function strip($str)
+{
+   
+   return strip_tags($str);
+}
+?>
 </html>
