@@ -279,7 +279,7 @@ function loadStreamData() {
                                                                                             \n\
                                                                                             <li class='note-options-single save_tick_icon fl_le hide' id='editor_submit_"+content_id+"' onclick=\"save_edit_text(this,'"+content_id+"','note')\"></li>\n\
                                                                                             <li class='note-options-single cancel_icon fl_le hide' id='editor_cancel_"+content_id+"' onclick=\"cancel_edit_text('"+content_id+"');\"></li>\n\
-                                                                                            <li><a class='note-options-single cancel_icon fl_le pop_open_icon' id='pop_open_icon_"+content_id+"' onclick=\"popthis_out('"+content_id+"','note');\" href='"+site_url+"note/?uid="+uid+"&content_id="+content_id+"' target='_blank' class='pop_open_icon'></a></li>\n\
+                                                                                            <li><a class='note-options-single cancel_icon fl_le pop_open_icon' id='pop_open_icon_"+content_id+"' onclick=\"popthis_out('"+content_id+"','note');\" href='"+site_url+"note/?content_id="+content_id+"' target='_blank' class='pop_open_icon'></a></li>\n\
                                                                                     </ul>\n\
                                                                            </div>";
                                                                }

@@ -8,15 +8,16 @@
     include 'includes/myclasses.php';
     $ob = new myactions();
     
-    if(isset($_GET['uid'])) {
-        $uid = urldecode($_GET['uid']);
-        $url=$site_url.'api/search/?action_object=user_profile&uid='.$uid;
-        $rprofile = $ob->getApiContent($url,"json");
-        $rprofile=$rprofile[0];
-    }
-    else {
+//    if(isset($_GET['uid'])) {
+//        $uid = urldecode($_GET['uid']);
+//        $url=$site_url.'api/search/?action_object=user_profile&uid='.$uid;
+//        $rprofile = $ob->getApiContent($url,"json");
+//        $rprofile=$rprofile[0];
+//    }
+//    else {
+        $uid = urldecode($_SESSION['uid']);
         $rprofile=$_SESSION;
-    }
+//    }
 //    echo '<pre>';print_r($rprofile); die();
     $gid = $rprofile['gid']; 
     $name=$rprofile['name'];
