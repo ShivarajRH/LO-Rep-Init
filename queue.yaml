@@ -1,0 +1,20 @@
+# Reference: https://developers.google.com/appengine/docs/php/config/queue
+
+# Set the total storage limit for all queues to 120MB
+total_storage_limit: 150M
+
+#Configuring the default queue
+queue:
+# Change the refresh rate of the default queue from 5/s to 1/s
+- name: default
+  rate: 1/s
+  bucket_size: 1
+ 
+
+- name: tag-extractor
+  rate: 200/s
+  max_concurrent_requests: 50
+  bucket_size: 50
+  retry_parameters:
+    task_retry_limit: 10
+    task_age_limit: 60s

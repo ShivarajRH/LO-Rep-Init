@@ -8,17 +8,23 @@
     include 'includes/myclasses.php';
     $ob = new myactions();
     
-//    if(isset($_GET['uid'])) {
-//        $uid = urldecode($_GET['uid']);
-//        $url=$site_url.'api/search/?action_object=user_profile&uid='.$uid;
-//        $rprofile = $ob->getApiContent($url,"json");
-//        $rprofile=$rprofile[0];
-//    }
-//    else {
+    if(isset($_GET['uid'])) {
+        $uid = urldecode($_GET['uid']);
+        $url=$site_url.'api/search/?action_object=user_profile&uid='.$uid;
+        $rprofile = $ob->getApiContent($url,"json");
+        $rprofile=$rprofile[0];
+        
+        if(count($rprofile)>0) {
+            //header("Location:/?resp=Please_Sign_In");
+            //exit();
+        }
+    }
+    else {
         $uid = urldecode($_SESSION['uid']);
         $rprofile=$_SESSION;
-//    }
-//    echo '<pre>';print_r($rprofile); die();
+//        echo 'By session';
+    }
+    //echo '<pre>';print_r($rprofile); die();
     $gid = $rprofile['gid']; 
     $name=$rprofile['name'];
     $fname=isset($rprofile['fname'])?$rprofile['fname']: "";
@@ -79,14 +85,13 @@
                                 $get_note_options = get_note_options();
                         }
                     }
-                    //else {//if not owner 
-                    //}
-            }
-            else { //User not logged in
-                }
+                    //else {//if not owner    //}
+            }//User not logged in
+            else {                 }
     }
     
         #=================
+//        echo $note_text;
         
 	$metatitle='LyfeOn - '.strip(substr($note_text, 0, 60)).'';
 	$metadescription='LyfeOn - '.strip(substr($note_text, 0, 170)).'';
@@ -140,8 +145,7 @@
 <?php
 function strip($str)
 {
-   
-   return strip_tags($str);
+    return strip_tags($str);
 }
 ?>
 </html>

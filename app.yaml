@@ -2,7 +2,8 @@ application: lyfeon-init
 version: 1
 runtime: php
 api_version: 1
-
+threadsafe: true
+  
 handlers:
 - url: /images
   static_dir: images
@@ -13,9 +14,9 @@ handlers:
 - url: /includes/generalactions/.*
   script: includes/generalactions.php
   
-#Apis url
+#  Apis url
 #- url: /apis/(/?.*?)
-- url: /api/write/.*
+- url: /api/write/.*  
   script: api/write.php
 
 - url: /api/search/.*
@@ -30,6 +31,12 @@ handlers:
 - url: /api/analytics/.*
   script: api/analytics.php
   
+- url: /queue/.*
+  script: queue.php
+
+- url: /worker/tagextractor/.*
+  script: worker/tagextractor.php
+  
   # Co url
 - url: /co/analytics/analytics
   script: co/analytics/analytics.php
@@ -37,30 +44,24 @@ handlers:
 - url: /co/investors/investors
   script: co/investors/investors.php
   
-
 - url: /co/people/people
   script: co/people/people.php
-  
 
 - url: /co/services/company
   script: co/services/company.php
   
-
 - url: /co/services/contact
   script: co/services/contact.php
   
-
 - url: /co/services/help
   script: co/services/help.php
   
-
 - url: /co/services/terms
   script: co/services/terms.php
   
 - url: /co(/?.*?)
   script: co/co.php
   
-
 - url: /about
   script: about.php
 
@@ -82,16 +83,17 @@ handlers:
 - url: /manage_reminders
   script: manage_reminders.php
 
-#error_handlers:
- # - file: error_404.php
-  
-#- error_code: over_quota
-#    file: over_quota.html
-
-  
 #- url: /+
 - url: /.*
   script: welcome_page.php
+
+#error_handlers:
+ # - file: error.php
   
+ #- error_code: over_quota
+  #  file: over_quota.html
+
 #- url: /.*
 #  script: error_404.php
+
+

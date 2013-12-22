@@ -18,7 +18,7 @@ $metacopyright='LyfeOn';
 <div class="center">
 </br>
 <div style="max-width: 45em;margin: 0 auto;">
-<p><strong>404.</strong> That&#39;s an error.</br></br>The requested page was not found on this server. That&#39;s all we know.</p>
+<p><strong></strong> That&#39;s an error.</br></br>The requested page was having internal errors. That&#39;s all we know.</p>
 <a class="back" href="<?=$site_url;?>">Back to LyfeOn</a>
 </div>
 </div>

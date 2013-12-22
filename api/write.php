@@ -1,5 +1,8 @@
 <?php
 $output= '';
+require_once 'google/appengine/api/taskqueue/PushTask.php';
+use \google\appengine\api\taskqueue\PushTask;
+
 $get = ($_REQUEST);
 //print_r($get);
 switch($get['action_object']) {
@@ -65,8 +68,10 @@ function put_single_content_info($get) {
             if(mysql_errno($linkid)) {
                 print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
             }
-            else { 
+            else {
                 $rslt_arr = array("status"=>"success","content_id"=>$content_id);
+                
+                $taskname = createTaskQueue($content_id,$content_type,$uid,$visibility);
             }
     }
     elseif($content_type == 'expense') {
@@ -88,6 +93,8 @@ function put_single_content_info($get) {
             }
             else { 
                 $rslt_arr = array("status"=>"success","content_id"=>$content_id);
+                
+                $taskname = createTaskQueue($content_id,$content_type,$uid,$visibility);
             }
     }
     elseif($content_type == 'reminder') {
@@ -105,12 +112,21 @@ function put_single_content_info($get) {
             if(mysql_errno($linkid)) {
                 print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
             }
-            else { 
+            else {
                 $rslt_arr = array("status"=>"success","content_id"=>$content_id);
+
+                $taskname = createTaskQueue($content_id,$content_type,$uid,$visibility);
             }
     }
     else { $output = unknown(); }
+    
     return $rslt_arr;
+}
+
+function createTaskQueue($content_id,$content_type) {
+    $task = new PushTask('/worker/tagextractor/', ['content_id' => $content_id, 'content_type' => $content_type]);
+    $task_name = $task->add();
+    return $task_name;
 }
 
 function put_user_details($get) {
