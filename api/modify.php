@@ -1,4 +1,7 @@
 <?php
+require_once 'google/appengine/api/taskqueue/PushTask.php';
+use \google\appengine\api\taskqueue\PushTask;
+    
 $get = ($_REQUEST);
 //print_r($get);die();
 switch($get['action_object']) {
@@ -65,6 +68,7 @@ function modify_single_content_info($get) {
             else {
                 
                 $output = array("status"=>"success","result"=>"Content is Updated.");
+                $taskname = createTaskQueue($content_id,$content_type,$uid);
             }
     }
     elseif($content_type == 'expense') {
@@ -95,6 +99,7 @@ function modify_single_content_info($get) {
             }
             else {
                 $output = array("status"=>"success","result"=>"Content is Updated.");
+                $taskname = createTaskQueue($content_id,$content_type,$uid);
             }
     }
     elseif($content_type == 'reminder') {
@@ -129,9 +134,17 @@ function modify_single_content_info($get) {
             $output = array("status"=>"success","result"=>"Content is Updated.");
         }
         
+        $taskname = createTaskQueue($content_id,$content_type,$uid);
+        
     }
     else { $output = unknown(); }
     return $output;
+}
+
+function createTaskQueue($content_id,$content_type,$uid) {
+    $task = new PushTask('/worker/tagmodifier/', ['content_id' => $content_id, 'content_type' => $content_type,"uid"=>$uid]);
+    $task_name = $task->add();
+    return $task_name;
 }
 
 function check_uid($uid) {

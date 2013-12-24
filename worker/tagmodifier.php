@@ -1,6 +1,10 @@
 <?php
+
 $get = ($_REQUEST);
 //print_r($get);
+
+//print_r(is_tag_exists('hello3','104219296596850018797'));
+
 
 if(!isset($get['content_id'])) 
     print_error(array("status"=>"fail","response"=>"Undefined content id.")); 
@@ -22,22 +26,23 @@ $content_arr = get_content_info($content_id,$content_type);
 
 $hashtags_arr=array();
     
-    if($content_type == 'note') {
-        foreach($content_arr['notes'] as $content) {
-            $hashtags_arr['tags'] = getHashTags($content['note_text']);
-        }
+if($content_type == 'note') {
+    foreach($content_arr['notes'] as $content) {
+        $hashtags_arr['tags'] = getHashTags($content['note_text']);
     }
-    if($content_type == 'expense') {
-        foreach($content_arr['expenses'] as $content) {
-            $hashtags_arr['tags'] = getHashTags($content['expense_title']);
-        }
+}
+if($content_type == 'expense') {
+    foreach($content_arr['expenses'] as $content) {
+        $hashtags_arr['tags'] = getHashTags($content['expense_title']);
     }
-    if($content_type == 'reminder') {
-        foreach($content_arr['reminders'] as $content) {
-            $hashtags_arr['tags'] = getHashTags($content['reminder_name']);
-        }
+}
+if($content_type == 'reminder') {
+    foreach($content_arr['reminders'] as $content) {
+        $hashtags_arr['tags'] = getHashTags($content['reminder_name']);
     }
-    array_unique($hashtags_arr['tags']);
+}
+
+array_unique($hashtags_arr['tags']);
     
     /*echo '<ol>';
     foreach ($hashtags_arr['tags'] as $i=>$hastag) {
@@ -46,11 +51,13 @@ $hashtags_arr=array();
     echo '</ol>';die();*/
     
 // get_anchor_tags($str);
+//$rdata=delete_tag_info($get,$hashtags_arr);
 
-$rdata = put_tag_content_info($get,$hashtags_arr);
-echo ''.  json_encode($rdata);
+$rdata = modify_tag_info($get,$hashtags_arr);
 
-function put_tag_content_info($get,$hashtags_arr) {
+echo json_encode($rdata);
+
+function modify_tag_info($get,$hashtags_arr) {
     include "paths.php";
     include $db_file_url;
     
@@ -63,8 +70,13 @@ function put_tag_content_info($get,$hashtags_arr) {
     $lat=(!isset($get['lat']))? '' : mysql_real_escape_string(urldecode($get['lat']));
     $long=(!isset($get['long']))? '' : mysql_real_escape_string(urldecode($get['long']));
     
-    foreach ($hashtags_arr['tags'] as $i=>$tag) {
+    //= Delete
+    $rdata=delete_tag_info($get,$hashtags_arr);
     
+    
+    
+    foreach ($hashtags_arr['tags'] as $i=>$tag) {
+        
         $tags_status = is_tag_exists($tag, $uid);
         
         if($tags_status['status'] == 'fail') {
@@ -82,37 +94,45 @@ function put_tag_content_info($get,$hashtags_arr) {
         mysql_query("insert into `tbl_tag_content`(`sno`,`tag_content_id`,`tag_id`,`tag_string`,`uid`,`content_id`,`content_type`,`privacy`,`timestamp`,`lat`,`long`)
             values ( NULL,NULL,'$tag_id','$tag','$uid','$content_id','$content_type','$visibility','$timestamp','$lat','$long')",$linkid);
 
-            if(mysql_errno($linkid)) {
-                print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
-            }
-            else { 
-                $rslt_arr = array("status"=>"success","content_id"=>$content_id);
-            }
-
+        if(mysql_errno($linkid)) {
+            print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
+        }
+        else { 
+            $rslt_arr = array("status"=>"success","content_id"=>$content_id);
+        }
+        
+        
     }
     return $rslt_arr;
 }
 
-function get_anchor_tags($str) {
-    $text= $str;
-    $regex = "((https?|ftp)\:\/\/)?"; // SCHEME 
-    $regex .= "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?"; // User and Pass 
-    $regex .= "([a-z0-9-.]*)\.([a-z]{2,3})"; // Host or IP 
-    $regex .= "(\:[0-9]{2,5})?"; // Port 
-    $regex .= "(\/([a-z0-9+\$_-]\.?)+)*\/?"; // Path 
-    $regex .= "(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?"; // GET Query 
-    $regex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?"; // Anchor 
-    if(preg_match_all("/^$regex$/", $text,$arr_notes)) {
-            return $arr_notes[1];
-    }
-}
 
-function getHashTags($str) {
-    $str = strip_tags($str);
-    $matches = array();
-    if (preg_match_all('/#([^\s]+)/', $str, $matches)) {
-        return $matches[1];
+function delete_tag_info($get,$hashtags_arr) {
+    include "paths.php";
+    include $db_file_url;
+    
+    $uid=mysql_real_escape_string(urldecode($get['uid']));
+    $content_id=mysql_real_escape_string(urldecode($get['content_id']));
+    $content_type=mysql_real_escape_string(urldecode($get['content_type']));
+
+    $query="select * from tbl_tag_content 
+        where content_id='$content_id' and content_type='$content_type' and uid='$uid'";
+    $rset=  mysql_query($query);
+    
+    if(mysql_errno($linkid)) {
+            print_error(array("status"=>"fail","response"=>mysql_error($linkid)));
     }
+    else { 
+        while($row = mysql_fetch_array($rset)) {
+            $sno = $row['sno'];
+            $tag_id = $row['tag_id'];
+            $arr_tag_id[]=$tag_id;
+//            echo 'Tag_id='.$tag_id.'<br>';
+            mysql_query("delete from `tbl_tag_content` where `sno`=$sno");
+        }
+        $rslt_arr = array("status"=>"success","response"=>count($arr_tag_id)." Tags ".json_encode($arr_tag_id)." are deleted.");
+    }
+    return $rslt_arr;
 }
 
 function get_content_info($content_id,$content_type) {
@@ -198,6 +218,28 @@ function is_tag_exists($tag_string,$uid) {
         else {
             return array("status"=>"fail","response"=>"Not found");
         }
+    }
+}
+
+function get_anchor_tags($str) {
+    $text= $str;
+    $regex = "((https?|ftp)\:\/\/)?"; // SCHEME 
+    $regex .= "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?"; // User and Pass 
+    $regex .= "([a-z0-9-.]*)\.([a-z]{2,3})"; // Host or IP 
+    $regex .= "(\:[0-9]{2,5})?"; // Port 
+    $regex .= "(\/([a-z0-9+\$_-]\.?)+)*\/?"; // Path 
+    $regex .= "(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?"; // GET Query 
+    $regex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?"; // Anchor 
+    if(preg_match_all("/^$regex$/", $text,$arr_notes)) {
+            return $arr_notes[1];
+    }
+}
+
+function getHashTags($str) {
+    $str = strip_tags($str);
+    $matches = array();
+    if (preg_match_all('/#([^\s]+)/', $str, $matches)) {
+        return $matches[1];
     }
 }
 

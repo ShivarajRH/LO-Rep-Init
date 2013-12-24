@@ -6,11 +6,11 @@
 				<img class="fl_le" src="http://commondatastorage.googleapis.com/lyfeon%2Flogos%2Flyfeon_48x48_center_w_less_gamma.png" style="padding-left:1%;padding-right: 1%;width: 24px;margin-top:-0.3%;height:24px;"/>
 				<span class="fl_le" style="padding-left:0.6%;margin-top: -0.2%;">LyfeOn</span>
 			</a>
-<!--                        <span style="padding-left: 2%;margin-top: -0.3%;" class="fl_le">
-                                <input type="text" class="fl_le" placeholder="Search" style="line-height: 150%;padding-left: 5%;width: 125%;border-bottom: 1px solid #e4e4e4;border-radius: 2px;"> 
-                                <div class="fl_le search_icon" style="width: 25px;height: 25px;"></div>
-                                <input type="submit" value="" class="search_icon" style="width: 12px;height: 12px;cursor: pointer;">
-                        </span>-->
+                        <div style="padding-left: 2%;float:left;" class="fl_le">
+                                <input type="text" class="fl_le" placeholder="Search" style="line-height: 150%;padding-left: 5%;border-bottom: 1px solid #e4e4e4;border-radius: 2px;float: left;"> 
+                                <!--<div class="fl_ri search_icon" style="width: 25px;height: 25px;"></div>width: 125%;margin-top: 0.3%;-->
+                                <input type="submit" value="" class="search_icon fl_le" style="width: 20px;height: 20px;cursor: pointer;">
+                        </div>
 		</div>
 		<div class="fl_ri menu_drop">
 			<ul>

@@ -1,4 +1,7 @@
 <?php
+require_once 'google/appengine/api/taskqueue/PushTask.php';
+use \google\appengine\api\taskqueue\PushTask;
+
 $get = ($_REQUEST);
 //print_r($get);
 switch($get['action_object']) {
@@ -52,6 +55,7 @@ function del_single_content($get) {
             else {
                 
                 $output = array("status"=>"success","result"=>"Content removed successfully.");
+                $taskname = createTaskQueue($content_id,$content_type,$uid);
             }
     }
     elseif($content_type == 'expense') {
@@ -71,6 +75,7 @@ function del_single_content($get) {
             else {
                 
                 $output = array("status"=>"success","result"=>"Content removed successfully.");
+                $taskname = createTaskQueue($content_id,$content_type,$uid);
             }
             
     }
@@ -92,11 +97,18 @@ function del_single_content($get) {
             else {
                 
                 $output = array("status"=>"success","result"=>"Content removed successfully.");
+                $taskname = createTaskQueue($content_id,$content_type,$uid);
             }
             
     }
     else { $output = unknown(); }
     return $output;
+}
+
+function createTaskQueue($content_id,$content_type,$uid) {
+    $task = new PushTask('/worker/tagremover/', ['content_id' => $content_id, 'content_type' => $content_type,"uid"=>$uid]);
+    $task_name = $task->add();
+    return $task_name;
 }
 
 function print_error($error) {
@@ -108,6 +120,7 @@ function print_error($error) {
     }
     die();
 }
+
 function unknown() 
 {
     return array("status"=>"fail","response"=>"Unknown url");

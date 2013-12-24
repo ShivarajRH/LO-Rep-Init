@@ -36,6 +36,12 @@ handlers:
 
 - url: /worker/tagextractor/.*
   script: worker/tagextractor.php
+
+- url: /worker/tagremover/.*
+  script: worker/tagremover.php
+  
+- url: /worker/tagmodifier/.*
+  script: worker/tagmodifier.php
   
   # Co url
 - url: /co/analytics/analytics

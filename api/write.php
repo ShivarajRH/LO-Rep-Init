@@ -123,8 +123,8 @@ function put_single_content_info($get) {
     return $rslt_arr;
 }
 
-function createTaskQueue($content_id,$content_type) {
-    $task = new PushTask('/worker/tagextractor/', ['content_id' => $content_id, 'content_type' => $content_type]);
+function createTaskQueue($content_id,$content_type,$uid,$visibility) {
+    $task = new PushTask('/worker/tagextractor/', ['content_id' => $content_id, 'content_type' => $content_type,"uid"=>$uid,"visibility"=>$visibility]);
     $task_name = $task->add();
     return $task_name;
 }
