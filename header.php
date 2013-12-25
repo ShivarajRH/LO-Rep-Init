@@ -1,58 +1,51 @@
-	<?php include_once 'analyticstracking.php'; ?>
+	<?php include_once $global_analytics; ?>
 	
 	<div class="header">
-		<div class="logo">
-			<a href="<?=$site_url;?>stream">
-				<img class="fl_le" src="http://commondatastorage.googleapis.com/lyfeon%2Flogos%2Flyfeon_48x48_center_w_less_gamma.png" style="padding-left:1%;padding-right: 1%;width: 24px;margin-top:-0.3%;height:24px;"/>
-				<span class="fl_le" style="padding-left:0.6%;margin-top: -0.2%;">LyfeOn</span>
+		<div class="logo_block">
+			<a href="">
+				<!-- <span class="fl_le" style="margin-top: -.3%;margin-left: -0.3%;">&#9776;</span> -->
+				<img class="fl_le logo_image" src="assets/logos/lyfeon.png" title="Stream" alt="LyfeOn Logo"></img>
+				<span class="fl_le logo_text" title="Stream">LyfeOn</span>
 			</a>
-                        <div style="padding-left: 2%;float:left;" class="fl_le">
-                                <input type="text" class="fl_le" placeholder="Search" style="line-height: 150%;padding-left: 5%;border-bottom: 1px solid #e4e4e4;border-radius: 2px;float: left;"> 
-                                <!--<div class="fl_ri search_icon" style="width: 25px;height: 25px;"></div>width: 125%;margin-top: 0.3%;-->
-                                <input type="submit" value="" class="search_icon fl_le" style="width: 20px;height: 20px;cursor: pointer;">
-                        </div>
+		</div>
+		<div class="fl_le search_block">
+	  		<form name="globalsearchform" action="<?=$site_url?>search/form" method="get">
+		  		<input type="text" class="fl_le search_box" placeholder=" Search" autocomplete="off" autofocus > 
+				<input type="submit" value="" class="search_icon search_submit" title="Search">
+			</form>
 		</div>
 		<div class="fl_ri menu_drop">
-			<ul>
-				<li class="menu_drop_list fl_ri"><a href=""><div style="float: left;" class="info_icon" alt="About" title="About"></div></a>
-					<ul>
-						<li><a href="http://help.lyfeon.com" target="_blank"><span class="">Help</span></a></li>
-						<li><a href="/co/services/terms" target="_blank"><span class="">Terms</span></a></li>
-						<li><a href="/co/services/contact" target="_blank"><span class="">Contact</span></a></li>
-						<li class="last">
-							<a href="https://plus.google.com/118335972259503633372/posts" target="_blank">
-								<span class="">Google+</span>
-							</a>
-							<div class="g-follow" style="width:50px;height:20px;" data-href="https://plus.google.com/118335972259503633372" data-rel="publisher" data-annotation="none" data-height="24"></div>
-							<!--<script type="text/javascript">
-								(function() {
-								var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-								po.src = 'https://apis.google.com/js/plusone.js';
-								var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-								})();
-							</script>-->
-						</li>
-						<li><a href="co/services/company" target="_blank"><span class="">Co.</span></a></li>
-					</ul>
-				</li>
-                                <?php
-                                if(isset($_SESSION['uid'])) {
-                                ?>
-                                <li class="menu_drop_list last fl_ri" >
-                                    <a href="">
-                                        <div class="settings_icon" alt="Settings" title="Settings" style="float: left;"></div>
-                                    </a>
-                                    <ul>
-                                        <li><a href="<?=$site_url;?>u/?uid=<?=$_SESSION['uid'];?>"><span class="">Account</span></a></li>
-                                        <li class="last"><a href="javascript:void(0)" onclick="signOut();"><span class="">Logout</span></a></li>
-                                    </ul>
-				</li>
-                                <?php
-                                }
-                                ?>
-				<li class="menu_drop_list last fl_ri">
-					<?php //include_once '/google_plus_signin_button.php'; ?>
+			<div class="apps_grid_icon fl_ri" title="Menu"></div>
+			<!-- ONClick Drop Down http://stackoverflow.com/questions/17091596/how-can-i-close-a-dropdown-menu-with-a-click-anywhere-else-on-the-page-and-remov -->
+			<ul class="menu_drop_list">
+				<?php if(isset($_SESSION['uid'])) { ?>
+					<li><a href="http://lyfeon.com/u/"><span class="">Profile</span></a></li>
+					<li><a href="http://lyfeon.com/manage_reminders/"><span class="">Reminders</span></a></li>
+					<li><a href="http://lyfeon.com/manage_expenses/"><span class="">Expenses</span></a></li>
+					<li class="divider"></li>
+					<li><a href="http://lyfeon.com/business" target="_blank"><span class="">Manage Business</span></a></li>
+					<li class="divider"></li>
+					<li class="last"><a href=""><span class="">Sign out</span></a></li>
+					<li class="divider"></li>
+				<?php } ?>
+				<li><a href="http://help.lyfeon.com" target="_blank"><span class="">Help</span></a></li>
+				<li class="last">
+					<a href="https://google.com/+LyfeOn" target="_blank"><span class="">Google+</span></a>
+					<div class="g-follow" style="width:50px;height:20px;" data-href="https://plus.google.com/118335972259503633372" data-rel="publisher" data-annotation="none" data-height="24"></div>
+						<script type="text/javascript">
+							(function() {
+							var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+							po.src = 'https://apis.google.com/js/plusone.js';
+							var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+							})();
+						</script>
 				</li>
 			</ul>
 		</div>
+		<!-- 
+		<div class="fl_ri menu_drop notification_block">
+			<span class="fl_ri highlight highlight_notification_count">3</span>
+			<div class="reminder_bell_icon fl_ri" title="Notifications"></div>
+		</div>
+		-->
 	</div>

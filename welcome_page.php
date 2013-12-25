@@ -24,9 +24,10 @@
         $image_url='http://commondatastorage.googleapis.com/lyfeon%2Flogos%2Flyfeon_300x300_center.png';
         $image_width='300';
         $image_height='300';
-?>
-
-<?php include_once 'head.php'; ?>
+        
+        $load_css['css']='global';
+        include 'paths.php';
+        include_once 'head.php'; ?>
 <!-- Google+ Signin -->
 <script type="text/javascript">
   (function() {

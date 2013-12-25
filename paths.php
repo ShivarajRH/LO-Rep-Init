@@ -22,7 +22,7 @@
 	$global_header = '../header.php';
 	$global_head = '/head.php';
 	$global_footer = '/footer.php';
-	$global_analytics = '/analyticstracking.php';
+	$global_analytics = 'analyticstracking.php';
 	$google_plus_signin_button = '/google_plus_signin_button.php';
 	
 	/* CARDS */
