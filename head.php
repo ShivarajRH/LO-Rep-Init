@@ -90,7 +90,7 @@
         <?php $js_url=($_SERVER['HTTP_HOST'] == 'localhost:13080')?"/assets/js/":"http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/"; ?>
 
 
-        <!--<link rel="stylesheet" href="http://commondatastorage.googleapis.com/lyfeon%2Fcss%2Fcombo.min.css" type="text/css" media="screen" />-->
+        <link rel="stylesheet" href="http://commondatastorage.googleapis.com/lyfeon%2Fcss%2Fcombo.min.css" type="text/css" media="screen" />
         
         <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/ddpmfmlfaonpbigeobfkjeklaloplepn">  
         <script src="<?=$js_url;?>jquery.min.js"></script>

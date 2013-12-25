@@ -25,7 +25,7 @@
         $image_width='300';
         $image_height='300';
         
-        $load_css['css']='global';
+//        $load_css['css']='global';
         include 'paths.php';
         include_once 'head.php'; ?>
 <!-- Google+ Signin -->

@@ -30,7 +30,7 @@
         $load_js['global_js'] = 'global_scripts';
         $load_js['stream'] = 'stream';
 	
-        $load_css['css']='global';
+//        $load_css['css']='global';
 ?>
 <?php include 'paths.php'; ?>
 <?php include_once 'head.php'; ?>

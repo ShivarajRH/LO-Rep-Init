@@ -4,7 +4,7 @@
 		<div class="logo_block">
 			<a href="">
 				<!-- <span class="fl_le" style="margin-top: -.3%;margin-left: -0.3%;">&#9776;</span> -->
-				<img class="fl_le logo_image" src="assets/logos/lyfeon.png" title="Stream" alt="LyfeOn Logo"></img>
+				<img class="fl_le logo_image" src="http://commondatastorage.googleapis.com/lyfeon%2Flogos%2Flyfeon_48x48_center_w_less_gamma.png" title="Stream" alt="LyfeOn Logo"></img>
 				<span class="fl_le logo_text" title="Stream">LyfeOn</span>
 			</a>
 		</div>
@@ -15,9 +15,9 @@
 			</form>
 		</div>
 		<div class="fl_ri menu_drop">
-			<div class="apps_grid_icon fl_ri" title="Menu"></div>
+                        <div class="apps_grid_icon fl_ri" id="btn_apps_grid_icon" title="Menu" style="background-size:100%;"></div>
 			<!-- ONClick Drop Down http://stackoverflow.com/questions/17091596/how-can-i-close-a-dropdown-menu-with-a-click-anywhere-else-on-the-page-and-remov -->
-			<ul class="menu_drop_list">
+			<ul class="menu_drop_list" style="display: none;">
 				<?php if(isset($_SESSION['uid'])) { ?>
 					<li><a href="http://lyfeon.com/u/"><span class="">Profile</span></a></li>
 					<li><a href="http://lyfeon.com/manage_reminders/"><span class="">Reminders</span></a></li>

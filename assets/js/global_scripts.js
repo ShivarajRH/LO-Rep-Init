@@ -183,5 +183,15 @@ $(document).ready(function() {
               this.selectedIndex = -1;
       });
     };
+    
+    //
+//    $(".menu_drop_list").hide();
+    
+    $("#btn_apps_grid_icon").click(function() {
+        $(".menu_drop_list").toggle('slow');
+    });
 
+    
 });
+
+            
