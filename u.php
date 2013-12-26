@@ -105,32 +105,7 @@
                                             include_once 'cards/card_expenses_box.php';
                                             include_once 'cards/card_reminder_box.php';
                                     }
-                                        
-                                       // $total_reminders=count($result['reminders']);
-//                                        include_once 'cards/card_reminder_box.php'; 
-                                        ?>
-                            
-                                        <!--<div class="reminders_block"></div>-->
-                            <?php            
-                                        //$expenses_filter_total = $result['expense_total'];
-//                                        include_once 'cards/card_expenses_box.php';
-                                        
-                                    /*  $max_notes_count = count($result['notes']);
-					if($max_notes_count==0) {
-                                                $max_notes_count=1;
-                                                $note_text='';
-                                                $note_image='';
-                                        }
-					foreach($result['notes'] as $note) {
-                                            	$content_id= $note['content_id'];
-						$note_id= $note['note_id'];
-						$note_text = $note['note_text'];
-						$note_image='';
-						$note_options_req='yes';
-					} */
-                                       //include 'cards/card_note_box.php';
-                                        
-				?>
+                                ?>
                                 <span class="all_note_list_box"></span>
                                 <!--<div class="stream_replace_content"></div>-->
 			</ul>

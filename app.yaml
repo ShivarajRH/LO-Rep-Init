@@ -65,6 +65,9 @@ handlers:
 - url: /co/services/terms
   script: co/services/terms.php
   
+- url: /search/form/.*
+  script: /search/form.php
+  
 - url: /co(/?.*?)
   script: co/co.php
   

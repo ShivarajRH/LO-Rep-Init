@@ -9,25 +9,25 @@
     $lname='';
     $gid = '';
     
-        $metatitle='LyfeOn - Turn your life back ON !';
-        $metadescription='LyfeOn helps you do things quickly and easily. Manage your notes, reminders and expenses across all your devices.';
-        $metaabstract='LyfeOn - Login / Signup';
-        $metasubject='LyfeOn - Login / Signup';
-        $metapagename='LyfeOn - Login / Signup';
-        $metasubtitle='LyfeOn - Manage your life';
-        $metacopyright='LyfeOn';
+    $metatitle='LyfeOn - Turn your life back ON !';
+    $metadescription='LyfeOn helps you do things quickly and easily. Manage your notes, reminders and expenses across all your devices.';
+    $metaabstract='LyfeOn - Login / Signup';
+    $metasubject='LyfeOn - Login / Signup';
+    $metapagename='LyfeOn - Login / Signup';
+    $metasubtitle='LyfeOn - Manage your life';
+    $metacopyright='LyfeOn';
+
+    $robots_index='index';
+    $robots_follow='follow';
+    $load_js['global_js'] = 'global_scripts';
+    $twitter_card_content='app';
+    $image_url='http://commondatastorage.googleapis.com/lyfeon%2Flogos%2Flyfeon_300x300_center.png';
+    $image_width='300';
+    $image_height='300';
         
-        $robots_index='index';
-        $robots_follow='follow';
-        $load_js['global_js'] = 'global_scripts';
-        $twitter_card_content='app';
-        $image_url='http://commondatastorage.googleapis.com/lyfeon%2Flogos%2Flyfeon_300x300_center.png';
-        $image_width='300';
-        $image_height='300';
-        
-//        $load_css['css']='global';
-        include 'paths.php';
-        include_once 'head.php'; ?>
+//    $load_css['css']='global';
+    include 'paths.php';
+    include_once 'head.php'; ?>
 <!-- Google+ Signin -->
 <script type="text/javascript">
   (function() {

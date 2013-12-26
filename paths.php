@@ -60,4 +60,8 @@
             $img_url="http://commondatastorage.googleapis.com/";
         }
         $db_file_url="../includes/db_connection.php";
+        
+        $site_url='http://'.(($_SERVER['HTTP_HOST'] == 'localhost:13080')?"localhost:13080":$_SERVER['HTTP_HOST'])."/";
+        
+        $myclass_url = 'includes/myclasses.php';
 ?>

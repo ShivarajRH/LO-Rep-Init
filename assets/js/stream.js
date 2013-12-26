@@ -406,20 +406,7 @@ function delete_this(elt,content_id,cont_type) {
     },"json").fail(fail);
     
 }
-function removeClass(className) {
-    // convert the result to an Array object
-    var els = Array.prototype.slice.call(
-        document.getElementsByClassName(className)
-    );
-    for (var i = 0, l = els.length; i < l; i++) {
-        var el = els[i];
-        el.className = el.className.replace(
-            new RegExp('(^|\\s+)' + className + '(\\s+|$)', 'g'),
-            '$1'
-        );
-    }
-    
-}
+
 var scrollInAction = false;
 var limit_start = default_entries;
 

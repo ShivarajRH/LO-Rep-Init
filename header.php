@@ -8,16 +8,20 @@
 				<span class="fl_le logo_text" title="Stream">LyfeOn</span>
 			</a>
 		</div>
+            <?php if(isset($uid)){ ?>
+                
 		<div class="fl_le search_block">
-	  		<form name="globalsearchform" action="<?=$site_url?>search/form" method="get">
-		  		<input type="text" class="fl_le search_box" placeholder=" Search" autocomplete="off" autofocus > 
-				<input type="submit" value="" class="search_icon search_submit" title="Search">
+	  		<form name="globalsearchform" action="<?=$site_url;?>search/form/" method="post" target="_blank">
+                                <input type="hidden" name="uid" value="<?=$uid;?>" />
+		  		<input type="text" class="fl_le search_box" name="search_qry" id="search_qry" placeholder=" Search" autocomplete="off" autofocus > 
+				<input type="submit" value="" name="search_btn" id="search_btn" class="search_icon search_submit" title="Search">
 			</form>
 		</div>
+            <?php } ?>
+            
 		<div class="fl_ri menu_drop">
                         <div class="apps_grid_icon fl_ri" id="btn_apps_grid_icon" title="Menu" style="background-size:100%;"></div>
-			<!-- ONClick Drop Down http://stackoverflow.com/questions/17091596/how-can-i-close-a-dropdown-menu-with-a-click-anywhere-else-on-the-page-and-remov -->
-			<ul class="menu_drop_list" style="display: none;">
+			<ul class="menu_drop_list fl_ri hide" id="menu_drop_list" style="margin-top: 2%;">
 				<?php if(isset($_SESSION['uid'])) { ?>
 					<li><a href="http://lyfeon.com/u/"><span class="">Profile</span></a></li>
 					<li><a href="http://lyfeon.com/manage_reminders/"><span class="">Reminders</span></a></li>
@@ -42,10 +46,11 @@
 				</li>
 			</ul>
 		</div>
-		<!-- 
+		
+	</div>
+<!-- 
 		<div class="fl_ri menu_drop notification_block">
 			<span class="fl_ri highlight highlight_notification_count">3</span>
 			<div class="reminder_bell_icon fl_ri" title="Notifications"></div>
 		</div>
 		-->
-	</div>

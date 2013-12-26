@@ -184,14 +184,57 @@ $(document).ready(function() {
       });
     };
     
-    //
-//    $(".menu_drop_list").hide();
     
     $("#btn_apps_grid_icon").click(function() {
-        $(".menu_drop_list").toggle('slow');
+        //$(".menu_drop_list").toggleClass('show');
+        closeMenu("menu_drop_list");
     });
+    
+    /*$("body").click(function(e) {
+        var classname="menu_drop_list";
+        //closeMenu("menu_drop_list");
+        var cls = $("#"+classname+"");
+        
+        alert(cls.hasClass('hide'));
 
+        if(cls.hasClass('hide')) {
+//            cls.removeClass('hide');
+//            e.stopPropagation();
+        }
+        else {
+            cls.addClass('hide');
+        }
+    });*/
+    
     
 });
 
-            
+function closeMenu(classname) {
+    var cls = $("#"+classname+"");
+//    alert(cls.hasClass('hide'));
+    
+    if(cls.hasClass('hide')) {
+        cls.removeClass('hide');
+    }
+    else {
+        cls.addClass('hide');
+    }
+    
+    //$(classname).hide(); // hiding popups
+    //$("#nav .selected").removeClass("selected");
+};
+
+function removeClass(className) {
+    // convert the result to an Array object
+    var els = Array.prototype.slice.call(
+        document.getElementsByClassName(className)
+    );
+    for (var i = 0, l = els.length; i < l; i++) {
+        var el = els[i];
+        el.className = el.className.replace(
+            new RegExp('(^|\\s+)' + className + '(\\s+|$)', 'g'),
+            '$1'
+        );
+    }
+    
+}

@@ -1,11 +1,10 @@
-<?php 
+<?php include 'paths.php';
 //print_r($_SERVER['REQUEST_URI']);die();
     error_reporting(1);
     ob_start();
     session_start();
-    $site_url='http://'.(($_SERVER['HTTP_HOST'] == 'localhost:13080')?"localhost:13080":$_SERVER['HTTP_HOST'])."/";
         
-    include 'includes/myclasses.php';
+    include $myclass_url;
     $ob = new myactions();
     
     if(isset($_GET['uid'])) {
