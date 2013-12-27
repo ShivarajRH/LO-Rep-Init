@@ -1,23 +1,35 @@
-<?php   include 'paths.php';
-    include $myclass_url;
-    if(isset($_POST) ) {
-        $post=($_POST);
-        $uid = $post['uid'];
-        $query_str = $post['search_qry'];
-        $q_arr = explode(" ",$query_str);
-        $ob = new myactions();
-        $rdata = $ob->skip_stopwords($q_arr);
+<?php   
 
-        $obj_query = json_encode($rdata);
-        
-        //request the api
-        $post = array('requesting_uid'=>$uid,'query_str'=>$query_str,'obj_query'=>$obj_query);
-        $url = $site_url.'api/search/?action_object=search_content';
-        $result = $ob->getApiContent($url, 'json',$post);
-        print_r($result);
-        
-    }
-    else {
-        echo '<h4>No input</h4>';
-    }
+
+include 'paths.php';
+
+if(isset($_POST) ) {
+    $post=($_POST);
+    $uid = $post['uid'];
+    $query_str = $post['search_qry'];
+        include $myclass_url;
+        $ob = new myactions();
+
+    $timestamp = date("Y-m-d H:i:s");
+    $lat = 112;
+    $long = 76;
+    $src = 'stream';
+    
+    $s = microtime(true);
+    //request the api
+    $post = array('requesting_uid'=>  urlencode($uid),'query'=>urlencode($query_str),"timestamp"=>urlencode($timestamp),'lat'=>urlencode($lat),'long'=>urlencode($long),'src'=>urlencode($src));
+    $url = $site_url.'api/search/?action_object=search_content';
+    $result = $ob->getApiContent($url, 'json',$post);
+    echo 'Success:<br>';
+    print_r($result);
+    $ttl_span_time = round($e - $s, 2) . " Sec";
+    echo $ttl_span_time;
+}
+else {
+    echo '<h4>No input</h4>';
+}
+    
+$e = microtime(true);
+
+
 ?>
