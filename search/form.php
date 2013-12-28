@@ -14,16 +14,17 @@ if(isset($_POST) ) {
     $lat = 112;
     $long = 76;
     $src = 'stream';
+    $content_type = 'all';
 
     $s = microtime(true);
     //request the api
-    $post = array('requesting_uid'=>  urlencode($uid),'query'=>urlencode($query_str),"timestamp"=>urlencode($timestamp),'lat'=>urlencode($lat),'long'=>urlencode($long),'src'=>urlencode($src));
+    $post = array('requesting_uid'=> urlencode($uid),'query'=>urlencode($query_str),'content_type'=>urlencode($content_type),"timestamp"=>urlencode($timestamp),'lat'=>urlencode($lat),'long'=>urlencode($long),'src'=>urlencode($src));
     
-    $get=$site_url.'api/search/?action_object=search_content&requesting_uid='.urlencode($uid).'&query='
-        .urlencode($query_str).'&timestamp='.urlencode($timestamp).'&lat='.urlencode($lat).'&long='
+    /*$get=$site_url.'api/search/?action_object=search_content&requesting_uid='.urlencode($uid).'&query='
+        .urlencode($query_str).'&content_type='.urlencode($content_type).'&timestamp='.urlencode($timestamp).'&lat='.urlencode($lat).'&long='
         .urlencode($long).'&src='.urlencode($src).'';
+    print_r($get);die();*/
     
-//    echo '<pre>';print_r($get);die();
     $url = $site_url.'api/search/?action_object=search_content';
     $result = $ob->getApiContent($url, 'json',$post);
     echo 'Success:<br>';
