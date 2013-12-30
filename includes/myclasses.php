@@ -1,5 +1,7 @@
 <?php 
  class myactions {
+     function __construct() {     }
+     
      /**
       * GET API Data
       * @param type $url
@@ -100,7 +102,6 @@
             }
     }
     
-    
     /**
      * print all kind of errors of type array and string
      * @param type array or exit execution
@@ -138,8 +139,17 @@
         else {
             return $linkid;
         }
-        
     }
+    
+    /**
+     * Format the text
+     * @param type $string string
+     * @return type string
+     */
+    function format_text($string) {
+        return strip_tags(nl2br($string));
+    }
+    
 }
 
 

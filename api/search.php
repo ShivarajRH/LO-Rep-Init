@@ -8,8 +8,8 @@ include $myclass_url;
  * Search api
  */
 class search extends myactions {
-    function __construct() {
-    }
+    function __construct() { }
+    /********************************************************************************************/
     /**
      * Get single content api
      * @param type $get
@@ -234,10 +234,124 @@ class search extends myactions {
         return $output;
     }
     
+    /********************************************************************************************/
+    
+    /**
+     * Search in tag content table using tag, content_type and uid(optional).
+     * Display public content and private content of uid_requesting return JSON.
+     * @example /api/search/?&action_object=tag_content&content_type=note&tag=food
+     * &uid=101651219808545508511&requesting_uid=104219296596850018797&privacy=pub&time=2013-12-28+10%3A07%3A12
+     * &lat=112&long=76
+     * @param type Array
+     * @return array Array
+     */
+    function get_tag_content_info($get) {
+        $linkid=$this->db_conn();
+        $output=array(); $con='';
+
+        $tag_str = mysql_real_escape_string(urldecode($get['tag']));
+        $requesting_uid = mysql_real_escape_string(urldecode($get['requesting_uid']));
+        
+        $content_type = (!isset($get['content_type']))? 'all' : mysql_real_escape_string(urldecode($get['content_type']));
+        $uid = (!isset($get['uid']))? '' : mysql_real_escape_string(urldecode($get['uid']));
+        $privacy=(!isset($get['privacy']))? 'pub' : mysql_real_escape_string(urldecode($get['privacy']));
+        $timestamp=  (!isset($get['time']))? date("Y-m-d H:i:s",time()) : strtotime(mysql_real_escape_string(urldecode($get['timestamp']))); //Unix timestamp
+        $lat=(!isset($get['lat']))? '' : mysql_real_escape_string(urldecode($get['lat']));
+        $long=(!isset($get['long']))? '' : mysql_real_escape_string(urldecode($get['long']));
+        $src=(!isset($get['src']))? 'pub' : mysql_real_escape_string(urldecode($get['src']));
+        
+        
+        //insert to table
+        $rslt= mysql_query("insert into `tbl_queries`(`sno`,`query_id`,`query_string`,`uid`,`timestamp`,`lat`,`long`,`src`) 
+            values ( NULL,NULL,'".$tag_str."','".$uid."','".$timestamp."','.$lat.','.$long.','".$src."')", $linkid) or $this->print_error(mysql_error($linkid));
+        $sno = mysql_insert_id(); //"cnt".rand(8,getrandmax());
+        mysql_query("update `tbl_queries` set `query_id`='$sno' where `sno`=$sno") or $this->print_error(mysql_error($linkid));
+       
+        
+        // search core query
+        $list_content_info =  $this->get_tags_data($tag_str,$requesting_uid,$uid,$content_type,$privacy);
+//        echo '<pre>';print_r($list_content_info); die();
+        if($list_content_info['status']=='fail') {
+            $this->print_error($list_content_info);
+        }
+         else {
+                foreach ($list_content_info as $type => $data_arr) {
+                    if(!empty($data_arr)) {
+                        $output[$type] = array_map("unserialize", array_unique(array_map("serialize", $data_arr)));
+                    }
+                    else {
+                        $output[$type] =$data_arr;
+                    }
+                }
+    //            echo '<pre>';print_r($output); die();
+                return $output;
+        }
+    }
+    
+     /**
+      * Get matched tag ids
+      * @param type $query_str string
+      * @param type $uid big int
+      * @param type $content_type string
+      * @param type $privacy string
+      * @return type String
+      */
+    function get_tags_data($query_str,$requesting_uid,$uid,$content_type,$privacy='pub') {
+        $linkid=$this->db_conn();$cond = '';
+        
+        if($content_type == 'all' || $content_type == 'note' || $content_type == 'reminder' 
+                || $content_type == 'expense' ) {
+            
+                    if($content_type == 'all') {
+                        $cond .= '';
+                    }
+                    else {
+                        $cond .= " and content_type='$content_type'";
+                    }
+                    
+                    if($privacy == 'pub') {
+                        $cond .= " and privacy='$privacy' or ( `uid`='$requesting_uid' and privacy='pri') ";
+                    }
+                    elseif($privacy == 'pri') {
+                        $cond .= " and privacy='pub' or ( privacy='$privacy' and `uid`='$requesting_uid') ";
+                    }
+                    else {
+                        $this->print_error("Invalid privacy keyword.");
+                    }
+                    
+                    //pub
+                    //get all public tags @and pri tags of uid
+                    //pri
+                    //get all private tags of uid and all uid public tags 
+                    //
+                    //limit $limit_start,$limit_end
+//                    die("select * from tbl_tag_content where tag_string like '%$query_str%' $cond ");
+                    $rslt= mysql_query("select * from tbl_tag_content where tag_string like '%$query_str%' $cond ");
+
+                    $i=0;$data_array=array();
+                    while ($row=mysql_fetch_array($rslt)) {
+
+                            $data_array[$i]['tag_id'] = $row['tag_id'];
+                            $data_array[$i]['content_id'] = $row['content_id'];
+                            $data_array[$i]['tag_string'] = $this->format_text($row['tag_string']);
+                            $data_array[$i]['uid'] = $this->format_text($row['uid']);
+                            $data_array[$i]['timestamp'] = $row['timestamp'];
+                            $data_array[$i]['privacy'] = $row['privacy'];
+                            $i++;
+                    }
+                    $output['tags'] = $data_array;
+
+            }
+            else { $output = $this->unknown(); }
+            return $output;
+    }
+    
     /**
      * 
-     * @param type $get
+     * @param type array
      * @return array array
+     * @example /api/search/?action_object=search_content&requesting_uid=101651219808545508511
+     * &query=sh&content_type=reminder&time=2013-12-28+10%3A07%3A12&lat=112&long=76&src=stream&visibility=pub ApiUrl
      */
     function get_search_content_info($get) {
         $linkid=$this->db_conn();
@@ -250,7 +364,7 @@ class search extends myactions {
         $timestamp=  (!isset($get['time']))? date("Y-m-d H:i:s",time()) : strtotime(mysql_real_escape_string(urldecode($get['timestamp']))); //Unix timestamp
         $src = $lat=(!isset($get['src']))? '' : mysql_real_escape_string(urldecode($get['src']));
 
-        $content_type = mysql_real_escape_string(urldecode($get['content_type']));
+        $content_type = (!isset($get['content_type']))? 'all' : mysql_real_escape_string(urldecode($get['content_type']));
         
         //insert to table
         $rslt= mysql_query("insert into `tbl_queries`(`sno`,`query_id`,`query_string`,`uid`,`timestamp`,`lat`,`long`,`src`) 
@@ -262,79 +376,87 @@ class search extends myactions {
         
         
         // search core query
-        $list_content_info=  $this->get_query_content($query_str,$requesting_uid,$content_type);
+        $list_content_info =  $this->get_query_content($query_str,$requesting_uid,$content_type);
         
-        
-        
-        // skip stoping words
-        $q_arr = explode(" ",$query_str);
-
-        
-        $rdata = $this->skip_stopwords($q_arr);
-        //loop through each query words
-        foreach ($rdata as $qry) {
-
-            $temp_res = $this->get_query_content($qry,$requesting_uid,$content_type);
-            
-            $type = 'expenses';
-            if(count($temp_res[$type])) {
-                foreach($temp_res[$type] as $i=>$res) {
-                    $content_id=$res['content_id'];
-                    if(in_array($content_id, $list_content_info[$type])) {
-//                        echo 'already in array..';
-                    }
-                    else {
-                        //skipped
-                        $list_content_info[$type][]=$res;
-                    }
-                }
-            }
-            $type='reminders';
-            if(count($temp_res[$type])) {
-                foreach($temp_res[$type] as $i=>$res) {
-                    $content_id=$res['content_id'];
-                    if(in_array($content_id, $list_content_info[$type])) {
-//                        echo 'already in array..';
-                    }
-                    else {
-                        //skipped
-                        $list_content_info[$type][]=$res;
-                    }
-                }
-            }
-            
-            $type='notes';
-            if(count($temp_res[$type])) {
-                foreach($temp_res[$type] as $i=>$res) {
-                    $content_id=$res['content_id'];
-                    
-                    foreach($list_content_info[$type] as $prior) {
-                        
-//                        echo '<br>'.$content_id.'=='.$prior['content_id'].'<br>';
-                        
-                        if(in_array($content_id, $prior)) {
-                            
-//                            echo 'already in array..';
-                            
-                        }
-                        else {
-                            //skipped
-                            $list_content_info[$type][]=$res;
-                            
-                            //array_unique($list_content_info[$type]);
-                        }
-                    }
-                }
-            }
-            
-            
+        if($list_content_info['status']=='fail') {
+            $this->print_error($list_content_info);
         }
-        
-//        echo '<pre>';print_r($list_content_info); die();
-        $output = $list_content_info;
-//        $obj_query = json_encode($rdata);echo $obj_query;exit();
+         else {
+             /*
+                // skip stoping words
+                $q_arr = explode(" ",$query_str);
+                $rdata = $this->skip_stopwords($q_arr);
 
-        return $output;
+                //loop through each query words
+                foreach ($rdata as $qry) {
+                    $temp_res = $this->get_query_content($qry,$requesting_uid,$content_type);
+
+                    $type = 'expenses';
+                    if(count($temp_res[$type])) {
+                        foreach($temp_res[$type] as $i=>$res) {
+                            $content_id=$res['content_id'];
+                            if(in_array($content_id, $list_content_info[$type])) {
+        //                        echo 'already in array..';
+                            }
+                            else {
+                                //skipped
+                                $list_content_info[$type][]=$res;
+                            }
+                        }
+                    }
+                    
+                    $type='reminders';
+                    if(count($temp_res[$type])) {
+                        foreach($temp_res[$type] as $i=>$res) {
+                            $content_id=$res['content_id'];
+                            if(in_array($content_id, $list_content_info[$type])) {
+        //                        echo 'already in array..';
+                            }
+                            else {
+                                //skipped
+                                $list_content_info[$type][]=$res;
+                            }
+                        }
+                    }
+
+                    $type='notes';
+                    if(count($temp_res[$type])) {
+                        foreach($temp_res[$type] as $i=>$res) {
+                            $content_id=$res['content_id'];
+                            foreach($list_content_info[$type] as $prior) {
+
+                                if(!in_array($content_id, $prior)) {
+
+                                    $list_content_info[$type][]=$res;
+                                }
+                            }
+                        }
+                    }
+                    $type='profile';
+                    if(count($temp_res[$type])) {
+                        foreach($temp_res[$type] as $i=>$res){
+                            foreach($list_content_info[$type] as $prior) {
+                                    $list_content_info[$type][]=$res;
+                            }
+                        }
+                    }
+                }//Keyword loop ends
+                */
+//             if($list_content_info)
+             
+             
+                foreach ($list_content_info as $type => $data_arr) {
+                    if(!empty($data_arr)) {
+                        $output[$type] = array_map("unserialize", array_unique(array_map("serialize", $data_arr)));
+                    }
+                    else {
+                        $output[$type] =$data_arr;
+                    }
+                }
+    //            echo '<pre>';print_r($output); die();
+                return $output;
+        }
+       
     }
     
     /**
@@ -347,6 +469,7 @@ class search extends myactions {
         
         //limit $limit_start,$limit_end
             if($content_type == 'all') {
+                
                     $sql="select * from tbl_expenses e where (e.title like '%$query_str%' or e.desc like '%$query_str%' )  and e.`uid`=$uid";
                     $rslt = mysql_query($sql,$linkid) or $this->print_error(mysql_error($linkid));
                     
@@ -355,8 +478,8 @@ class search extends myactions {
                             
                             $data_array[$i]['expense_id'] = $row['expense_id'];
                             $data_array[$i]['content_id'] = $row['content_id'];
-                            $data_array[$i]['title'] = $row['title'];
-                            $data_array[$i]['desc'] = $row['desc'];
+                            $data_array[$i]['title'] = $this->format_text($row['title']);
+                            $data_array[$i]['desc'] = $this->format_text($row['desc']);
                             $data_array[$i]['amount'] = $row['amount'];
                             $data_array[$i]['visibility'] = $row['visibility'];
                             $i++;
@@ -372,7 +495,7 @@ class search extends myactions {
 
                         $data_array[$i]['content_id'] = $row['content_id'];
                         $data_array[$i]['reminder_id'] = $row['reminder_id'];
-                        $data_array[$i]['reminder_name'] = $row['reminder_name'];
+                        $data_array[$i]['reminder_name'] = $this->format_text($row['reminder_name']);
                         $data_array[$i]['visibility'] = $row['visibility'];
                         $data_array[$i]['remind_time'] = date("Y-m-d H:i:s",$row['remind_time']);
                         $i++;
@@ -385,10 +508,10 @@ class search extends myactions {
                                         where n.note_text like '%$query_str%' and n.`uid`='$uid' order by n.note_id desc",$linkid) or $this->print_error(mysql_error($linkid));
                     $i=0;$data_array=array();
                     while ($row=mysql_fetch_array($rslt)) {
-
+                        
                         $data_array[$i]['content_id'] = $row['content_id'];
                         $data_array[$i]['note_id'] = $row['note_id'];
-                        $data_array[$i]['note_text'] = $row['note_text'];
+                        $data_array[$i]['note_text'] = $this->format_text($row['note_text']);
                         $data_array[$i]['visibility'] = $row['visibility'];
                         $data_array[$i]['timestamp'] = date("Y-m-d H:i:s",$row['timestamp']);
                         $i++;
@@ -396,20 +519,36 @@ class search extends myactions {
                     $output['notes'] = $data_array;
                     
                     
+                    //Profile
+                    $rslt = mysql_query("select p.fname,p.lname,p.img_url,p.uid from generic_profile p 
+                                        where p.fname like '%$query_str%' or p.mname like '%$query_str%' 
+                                            or p.name like '%$query_str%' or p.uname like '%$query_str%'
+                                            order by p.fname desc",$linkid) or $this->print_error(mysql_error($linkid));
+                    $i=0;$data_array=array();
+                    while ($row=mysql_fetch_array($rslt)) {
+
+                        $data_array[$i]['fname'] = $this->format_text($row['fname']);
+                        $data_array[$i]['lname'] = $this->format_text($row['lname']);
+                        $data_array[$i]['uid'] = $row['uid'];
+                        $i++;
+                    }
+                    $output['profile'] = $data_array;
+                    
+                    
 
             }
             elseif($content_type == 'note') {
-
+                    // limit $limit_start,$limit_end
                     $rslt = mysql_query("select c.content_id,n.note_id,n.note_text,n.visibility,c.timestamp from tbl_notes n
                                         join tbl_content c on c.content_id=n.content_id
-                                        where n.note_text like '%$query_str%' and n.`uid`='$uid' order by n.note_id desc limit $limit_start,$limit_end",$linkid) or $this->print_error(mysql_error($linkid));
+                                        where n.note_text like '%$query_str%' and n.`uid`='$uid' order by n.note_id desc",$linkid) or $this->print_error(mysql_error($linkid));
 
                     $i=0;$data_array=array();
                     while ($row=mysql_fetch_array($rslt)) {
 
                         $data_array[$i]['content_id'] = $row['content_id'];
                         $data_array[$i]['note_id'] = $row['note_id'];
-                        $data_array[$i]['note_text'] = $row['note_text'];
+                        $data_array[$i]['note_text'] = $this->format_text($row['note_text']);
                         $data_array[$i]['visibility'] = $row['visibility'];
                         $data_array[$i]['timestamp'] = date("Y-m-d H:i:s",$row['timestamp']);
                         $i++;
@@ -418,11 +557,12 @@ class search extends myactions {
 
             }
             elseif($content_type == 'expense') {
-
+                    // limit $limit_start,$limit_end
                     $rslt = mysql_query("select * from tbl_expenses e
                             join tbl_content c on c.content_id=e.content_id
-                            where (e.title like '%$query_str%' or e.desc like '%$query_str%') and e.uid='$uid' $con order by e.expense_id desc limit $limit_start,$limit_end",$linkid) or $this->print_error(mysql_error($linkid));
-
+                            where (e.title like '%$query_str%' or e.desc like '%$query_str%') and e.uid='$uid' $con order by e.expense_id desc",$linkid) or $this->print_error(mysql_error($linkid));
+                    
+                    
                     if(mysql_errno($linkid)) {
                         $this->print_error(mysql_error($linkid));
                     }
@@ -433,7 +573,7 @@ class search extends myactions {
                             $month=date("M",$row['timestamp']);
                             $data_array[$i]['expense_id']=$row['expense_id'];
                             $data_array[$i]['content_id']=$row['content_id'];
-                            $data_array[$i]['expense_title']=$row['title'];
+                            $data_array[$i]['expense_title']=$this->format_text($row['title']);
                             $data_array[$i]['expense_amount']=$row['amount'];
                             $data_array[$i]['month']=$month;
                             $data_array[$i]['visibility']=$row['visibility'];
@@ -454,12 +594,28 @@ class search extends myactions {
 
                         $data_array[$i]['content_id'] = $row['content_id'];
                         $data_array[$i]['reminder_id'] = $row['reminder_id'];
-                        $data_array[$i]['reminder_name'] = $row['reminder_name'];
+                        $data_array[$i]['reminder_name'] = $this->format_text($row['reminder_name']);
                         $data_array[$i]['visibility'] = $row['visibility'];
                         $data_array[$i]['remind_time'] = date("Y-m-d H:i:s",$row['remind_time']);
                         $i++;
                     }
                     $output['reminders'] = $data_array;
+
+            }
+            elseif($content_type == 'profile') {
+                    $rslt = mysql_query("select p.fname,p.lname,p.img_url,p.uid from generic_profile p 
+                                        where p.fname like '%$query_str%' and p.mname like '%$query_str%' 
+                                            and p.name like '%$query_str%' and p.uname like '%$query_str%'
+                                            order by p.fname desc",$linkid) or $this->print_error(mysql_error($linkid));
+                    $i=0;$data_array=array();
+                    while ($row=mysql_fetch_array($rslt)) {
+
+                        $data_array[$i]['fname'] = $this->format_text($row['fname']);
+                        $data_array[$i]['lname'] = $this->format_text($row['lname']);
+                        $data_array[$i]['uid'] = $row['uid'];
+                        $i++;
+                    }
+                    $output['profile'] = $data_array;
 
             }
             else { $output = $this->unknown(); }
@@ -508,24 +664,33 @@ switch($get['action_object']) {
     case 'user_profile':
                         if(!isset($get['uid'])) $ob->print_error(array("status"=>"fail","response"=>"Undefined uid."));
                         $output= $ob->get_user_profile($get['uid']); 
-        break;
+                        break;
     case 'list_content': 
                         if(!isset($get['uid'])) $ob->print_error(array("status"=>"fail","response"=>"Undefined uid."));
                         if(!isset($get['content_type'])) $ob->print_error(array("status"=>"fail","response"=>"Undefined content type.")); 
                         //if(!isset($get['filter_type'])) print_error(array("status"=>"fail","response"=>"Undefined filter type.")); 
                         $output= $ob->get_list_content_info($get); 
-        break;
+                        break;
+    
     case 'search_content': 
                         if(!isset($get['requesting_uid'])) $ob->print_error(array("status"=>"fail","response"=>"Undefined uid."));
                         if(!isset($get['query'])) $ob->print_error(array("status"=>"fail","response"=>"Undefined query.")); 
-                        //if(!isset($get['filter_type'])) print_error(array("status"=>"fail","response"=>"Undefined filter type.")); 
-                        $output= $ob->get_search_content_info($get); 
-        break;
+                        if(!isset($get['content_type'])) $ob->print_error(array("status"=>"fail","response"=>"Undefined content type."));
+                        $output= $ob->get_search_content_info($get);
+                        break;
+    
+    case 'tag_content': 
+                        if(!isset($get['requesting_uid'])) $ob->print_error(array("status"=>"fail","response"=>"Undefined uid."));
+                        if(!isset($get['tag'])) $ob->print_error(array("status"=>"fail","response"=>"Undefined tag.")); 
+//                        if(!isset($get['content_type'])) $ob->print_error(array("status"=>"fail","response"=>"Undefined content type."));
+                        $output= $ob->get_tag_content_info($get); 
+                        break;
+    
     case 'single_content': 
         
                         if(!isset($get['content_id'])) $ob->print_error(array("status"=>"fail","response"=>"Undefined content id."));
                         if(!isset($get['content_type'])) $ob->print_error(array("status"=>"fail","response"=>"Undefined content type.")); 
-                        $output= $ob->get_single_content_info($get); 
+                        $output= $ob->get_single_content_info($get);
         break;
     default : $output= $ob->unknown();
         break;
@@ -533,4 +698,6 @@ switch($get['action_object']) {
 #echo '<pre>'; 
 echo json_encode($output); 
 #echo '</pre>';
+  
+
 ?>
