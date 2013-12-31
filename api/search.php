@@ -351,7 +351,8 @@ class search extends myactions {
      * @param type array
      * @return array array
      * @example /api/search/?action_object=search_content&requesting_uid=101651219808545508511
-     * &query=sh&content_type=reminder&time=2013-12-28+10%3A07%3A12&lat=112&long=76&src=stream&visibility=pub ApiUrl
+     * &query=sh&content_type=reminder&time=2013-12-28+10%3A07%3A12&lat=112&long=76&src=stream
+     * &visibility=pub ApiUrl
      */
     function get_search_content_info($get) {
         $linkid=$this->db_conn();
@@ -361,8 +362,9 @@ class search extends myactions {
         $query_str = mysql_real_escape_string(urldecode($get['query']));
         $lat=(!isset($get['lat']))? '' : mysql_real_escape_string(urldecode($get['lat']));
         $long=(!isset($get['long']))? '' : mysql_real_escape_string(urldecode($get['long']));
-        $timestamp=  (!isset($get['time']))? date("Y-m-d H:i:s",time()) : strtotime(mysql_real_escape_string(urldecode($get['timestamp']))); //Unix timestamp
+        $timestamp=  (!isset($get['time']))? date("Y-m-d H:i:s",time()) : strtotime(mysql_real_escape_string(urldecode($get['time']))); //Unix timestamp
         $src = $lat=(!isset($get['src']))? '' : mysql_real_escape_string(urldecode($get['src']));
+        $visibility =(!isset($get['visibility']))? 'pub' : mysql_real_escape_string(urldecode($get['visibility']));
 
         $content_type = (!isset($get['content_type']))? 'all' : mysql_real_escape_string(urldecode($get['content_type']));
         
@@ -376,7 +378,7 @@ class search extends myactions {
         
         
         // search core query
-        $list_content_info =  $this->get_query_content($query_str,$requesting_uid,$content_type);
+        $list_content_info =  $this->get_query_content($query_str,$requesting_uid,$content_type,$visibility);
         
         if($list_content_info['status']=='fail') {
             $this->print_error($list_content_info);
@@ -459,164 +461,139 @@ class search extends myactions {
        
     }
     
+    function get_srch_expense($query_str,$cond) {       
+        $linkid=$this->db_conn();
+
+        // limit $limit_start,$limit_end
+        $sql="select * from tbl_expenses e 
+            join tbl_content c on c.content_id=e.content_id
+            where (e.title like '%$query_str%' or e.desc like '%$query_str%') $cond order by e.expense_id desc";
+        $rslt = mysql_query($sql,$linkid) or $this->print_error(mysql_error($linkid));
+
+        $i=0;$data_array=array();
+        while ($row=mysql_fetch_assoc($rslt)) {
+                $month=date("M",$row['timestamp']);
+                $data_array[$i]['expense_id'] = $row['expense_id'];
+                $data_array[$i]['content_id'] = $row['content_id'];
+                $data_array[$i]['title'] = $this->format_text($row['title']);
+                $data_array[$i]['expense_title']=$this->format_text($row['title']);
+                $data_array[$i]['desc'] = $this->format_text($row['desc']);
+                $data_array[$i]['amount'] = $row['amount'];
+                $data_array[$i]['expense_amount']=$row['amount'];
+                $data_array[$i]['visibility'] = $row['visibility'];
+                $data_array[$i]['uid'] = $row['uid'];
+                $data_array[$i]['month']=$month;
+//                    $data_array[$i]['currency']=$row['currency'];
+//                    $data_array[$month]['month_total']+=$row['amount'];
+                $i++;
+        }
+        return $data_array;
+    }
+    
+    function get_srch_reminder($query_str,$cond) {
+            $linkid=$this->db_conn();
+        
+            //reminders limit $limit_start,$limit_end
+            $rslt = mysql_query("select c.uid,c.content_id,r.reminder_id,r.remind_time,r.reminder_name,r.visibility from tbl_reminders r
+                                join tbl_content c on c.content_id=r.content_id
+                                where r.reminder_name like '%$query_str%' $cond order by r.reminder_id desc",$linkid) or $this->print_error(mysql_error($linkid));
+            $i=0;$data_array=array();
+            while ($row=mysql_fetch_assoc($rslt)) {
+
+                $data_array[$i]['content_id'] = $row['content_id'];
+                $data_array[$i]['reminder_id'] = $row['reminder_id'];
+                $data_array[$i]['reminder_name'] = $this->format_text($row['reminder_name']);
+                $data_array[$i]['visibility'] = $row['visibility'];
+                $data_array[$i]['remind_time'] = date("Y-m-d H:i:s",$row['remind_time']);
+                $data_array[$i]['uid'] = $row['uid'];
+                $i++;
+            }
+            return $data_array;
+    }
+    
+    function get_srch_note($query_str,$cond) {
+        $linkid=$this->db_conn();
+        //Notes limit $limit_start,$limit_end
+        $rslt = mysql_query("select c.uid,c.content_id,n.note_id,n.note_text,n.visibility,c.timestamp from tbl_notes n
+                            join tbl_content c on c.content_id=n.content_id
+                            where n.note_text like '%$query_str%' $cond order by n.note_id desc",$linkid) or $this->print_error(mysql_error($linkid));
+        $i=0;$data_array=array();
+        while ($row=mysql_fetch_assoc($rslt)) {
+
+            $data_array[$i]['content_id'] = $row['content_id'];
+            $data_array[$i]['note_id'] = $row['note_id'];
+            $data_array[$i]['note_text'] = $this->format_text($row['note_text']);
+            $data_array[$i]['visibility'] = $row['visibility'];
+            $data_array[$i]['timestamp'] = date("Y-m-d H:i:s",$row['timestamp']);
+            $data_array[$i]['uid'] = $row['uid'];
+            $i++;
+        }
+        return $data_array;
+    }
+    
+    function get_srch_profile($query_str,$cond) {
+        $linkid=$this->db_conn();
+        //Profile
+        $rslt = mysql_query("select p.fname,p.lname,p.img_url,p.uid from generic_profile p 
+                            where p.fname like '%$query_str%' or p.mname like '%$query_str%' 
+                                or p.name like '%$query_str%' or p.uname like '%$query_str%'
+                                order by p.fname desc",$linkid) or $this->print_error(mysql_error($linkid));
+        $i=0;$data_array=array();
+        while ($row=mysql_fetch_assoc($rslt)) {
+
+            $data_array[$i]['fname'] = $this->format_text($row['fname']);
+            $data_array[$i]['lname'] = $this->format_text($row['lname']);
+            $data_array[$i]['uid'] = $row['uid'];
+            $i++;
+        }
+        return $data_array;
+    }
+    
     /**
      * Get matched content ids
      * @param type $query_str
      * @param type array
      */
-    function get_query_content($query_str,$uid,$content_type) {
-        $linkid=$this->db_conn();
+    function get_query_content($query_str,$uid,$content_type,$visibility) {
+//        $linkid=$this->db_conn();
         
-        //limit $limit_start,$limit_end
+            if($visibility == 'pub') {
+                $cond .= " and c.visibility='$visibility' or ( c.`uid`='$uid' and c.visibility='pri') ";
+            }
+            elseif($visibility == 'pri') {
+
+                $cond .= " and c.visibility='pub' or ( c.visibility='$visibility' and c.`uid`='$uid') ";
+
+            }
+            else {
+                $this->print_error("Invalid visibility keyword.");
+            }
+
+        
             if($content_type == 'all') {
+               
+                $output['expenses'] = $this->get_srch_expense($query_str,$cond);
                 
-                    $sql="select * from tbl_expenses e where (e.title like '%$query_str%' or e.desc like '%$query_str%' )  and e.`uid`=$uid";
-                    $rslt = mysql_query($sql,$linkid) or $this->print_error(mysql_error($linkid));
-                    
-                    $i=0;$data_array=array();
-                    while ($row=mysql_fetch_array($rslt)) {
-                            
-                            $data_array[$i]['expense_id'] = $row['expense_id'];
-                            $data_array[$i]['content_id'] = $row['content_id'];
-                            $data_array[$i]['title'] = $this->format_text($row['title']);
-                            $data_array[$i]['desc'] = $this->format_text($row['desc']);
-                            $data_array[$i]['amount'] = $row['amount'];
-                            $data_array[$i]['visibility'] = $row['visibility'];
-                            $i++;
-                    }
-                    $output['expenses'] = $data_array;
-                    
-                    //reminders limit $limit_start,$limit_end
-                    $rslt = mysql_query("select c.content_id,r.reminder_id,r.remind_time,r.reminder_name,r.visibility from tbl_reminders r
-                                        join tbl_content c on c.content_id=r.content_id
-                                        where r.reminder_name like '%$query_str%' and r.`uid`='$uid' order by r.reminder_id desc",$linkid) or $this->print_error(mysql_error($linkid));
-                    $i=0;$data_array=array();
-                    while ($row=mysql_fetch_array($rslt)) {
+                $output['reminders'] = $this->get_srch_reminder($query_str,$cond);
+                
+                $output['notes'] = $this->get_srch_note($query_str,$cond);
 
-                        $data_array[$i]['content_id'] = $row['content_id'];
-                        $data_array[$i]['reminder_id'] = $row['reminder_id'];
-                        $data_array[$i]['reminder_name'] = $this->format_text($row['reminder_name']);
-                        $data_array[$i]['visibility'] = $row['visibility'];
-                        $data_array[$i]['remind_time'] = date("Y-m-d H:i:s",$row['remind_time']);
-                        $i++;
-                    }
-                    $output['reminders'] = $data_array;
+                $output['profile'] = $this->get_srch_profile($query_str,$cond);
                     
-                    //Notes limit $limit_start,$limit_end
-                    $rslt = mysql_query("select c.content_id,n.note_id,n.note_text,n.visibility,c.timestamp from tbl_notes n
-                                        join tbl_content c on c.content_id=n.content_id
-                                        where n.note_text like '%$query_str%' and n.`uid`='$uid' order by n.note_id desc",$linkid) or $this->print_error(mysql_error($linkid));
-                    $i=0;$data_array=array();
-                    while ($row=mysql_fetch_array($rslt)) {
-                        
-                        $data_array[$i]['content_id'] = $row['content_id'];
-                        $data_array[$i]['note_id'] = $row['note_id'];
-                        $data_array[$i]['note_text'] = $this->format_text($row['note_text']);
-                        $data_array[$i]['visibility'] = $row['visibility'];
-                        $data_array[$i]['timestamp'] = date("Y-m-d H:i:s",$row['timestamp']);
-                        $i++;
-                    }
-                    $output['notes'] = $data_array;
-                    
-                    
-                    //Profile
-                    $rslt = mysql_query("select p.fname,p.lname,p.img_url,p.uid from generic_profile p 
-                                        where p.fname like '%$query_str%' or p.mname like '%$query_str%' 
-                                            or p.name like '%$query_str%' or p.uname like '%$query_str%'
-                                            order by p.fname desc",$linkid) or $this->print_error(mysql_error($linkid));
-                    $i=0;$data_array=array();
-                    while ($row=mysql_fetch_array($rslt)) {
-
-                        $data_array[$i]['fname'] = $this->format_text($row['fname']);
-                        $data_array[$i]['lname'] = $this->format_text($row['lname']);
-                        $data_array[$i]['uid'] = $row['uid'];
-                        $i++;
-                    }
-                    $output['profile'] = $data_array;
-                    
-                    
-
             }
             elseif($content_type == 'note') {
-                    // limit $limit_start,$limit_end
-                    $rslt = mysql_query("select c.content_id,n.note_id,n.note_text,n.visibility,c.timestamp from tbl_notes n
-                                        join tbl_content c on c.content_id=n.content_id
-                                        where n.note_text like '%$query_str%' and n.`uid`='$uid' order by n.note_id desc",$linkid) or $this->print_error(mysql_error($linkid));
-
-                    $i=0;$data_array=array();
-                    while ($row=mysql_fetch_array($rslt)) {
-
-                        $data_array[$i]['content_id'] = $row['content_id'];
-                        $data_array[$i]['note_id'] = $row['note_id'];
-                        $data_array[$i]['note_text'] = $this->format_text($row['note_text']);
-                        $data_array[$i]['visibility'] = $row['visibility'];
-                        $data_array[$i]['timestamp'] = date("Y-m-d H:i:s",$row['timestamp']);
-                        $i++;
-                    }
-                    $output['notes'] = $data_array;
-
+                    $output['notes'] = $this->get_srch_note($query_str,$cond);
             }
             elseif($content_type == 'expense') {
-                    // limit $limit_start,$limit_end
-                    $rslt = mysql_query("select * from tbl_expenses e
-                            join tbl_content c on c.content_id=e.content_id
-                            where (e.title like '%$query_str%' or e.desc like '%$query_str%') and e.uid='$uid' $con order by e.expense_id desc",$linkid) or $this->print_error(mysql_error($linkid));
-                    
-                    
-                    if(mysql_errno($linkid)) {
-                        $this->print_error(mysql_error($linkid));
-                    }
-                    else {
-
-                        $i=0;$data_array=array();
-                        while($row = mysql_fetch_assoc($rslt)) {
-                            $month=date("M",$row['timestamp']);
-                            $data_array[$i]['expense_id']=$row['expense_id'];
-                            $data_array[$i]['content_id']=$row['content_id'];
-                            $data_array[$i]['expense_title']=$this->format_text($row['title']);
-                            $data_array[$i]['expense_amount']=$row['amount'];
-                            $data_array[$i]['month']=$month;
-                            $data_array[$i]['visibility']=$row['visibility'];
-        //                    $data_array[$i]['currency']=$row['currency'];
-        //                    $data_array[$month]['month_total']+=$row['amount'];
-                            $i++;
-                        }
-                        $output['expenses'] = $data_array;
-                    }
+                
+                $output['expenses'] = $this->get_srch_expense($query_str,$cond);
             }
             elseif($content_type == 'reminder') {
-                    // limit $limit_start,$limit_end
-                    $rslt = mysql_query("select c.content_id,r.reminder_id,r.remind_time,r.reminder_name,r.visibility from tbl_reminders r
-                        join tbl_content c on c.content_id=r.content_id
-                        where r.reminder_name like '%$query_str%' and r.`uid`='$uid' order by r.reminder_id desc",$linkid) or $this->print_error(mysql_error($linkid));
-                    $i=0;
-                    while ($row=mysql_fetch_array($rslt)) {
-
-                        $data_array[$i]['content_id'] = $row['content_id'];
-                        $data_array[$i]['reminder_id'] = $row['reminder_id'];
-                        $data_array[$i]['reminder_name'] = $this->format_text($row['reminder_name']);
-                        $data_array[$i]['visibility'] = $row['visibility'];
-                        $data_array[$i]['remind_time'] = date("Y-m-d H:i:s",$row['remind_time']);
-                        $i++;
-                    }
-                    $output['reminders'] = $data_array;
-
+                $output['reminders'] = $this->get_srch_reminder($query_str,$cond);
+                
             }
             elseif($content_type == 'profile') {
-                    $rslt = mysql_query("select p.fname,p.lname,p.img_url,p.uid from generic_profile p 
-                                        where p.fname like '%$query_str%' and p.mname like '%$query_str%' 
-                                            and p.name like '%$query_str%' and p.uname like '%$query_str%'
-                                            order by p.fname desc",$linkid) or $this->print_error(mysql_error($linkid));
-                    $i=0;$data_array=array();
-                    while ($row=mysql_fetch_array($rslt)) {
-
-                        $data_array[$i]['fname'] = $this->format_text($row['fname']);
-                        $data_array[$i]['lname'] = $this->format_text($row['lname']);
-                        $data_array[$i]['uid'] = $row['uid'];
-                        $i++;
-                    }
-                    $output['profile'] = $data_array;
-
+                $output['profile'] = $this->get_srch_profile($query_str,$cond);
             }
             else { $output = $this->unknown(); }
             return $output;
