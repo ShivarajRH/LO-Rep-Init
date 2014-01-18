@@ -8,9 +8,9 @@ function signinCallback(authResult) {
     // Update the app to reflect a signed in user
    
     
-    var access_token=authResult['access_token'];
-    //Get auth user details
-    $.get("https://www.googleapis.com/plus/v1/people/me?access_token="+access_token,{},function(rdata){
+        var access_token=authResult['access_token'];
+        //Get auth user details
+        $.get("https://www.googleapis.com/plus/v1/people/me?access_token="+access_token,{},function(rdata){
         
             var gid=rdata.id;
             var uid=rdata.id;
@@ -52,26 +52,27 @@ function signinCallback(authResult) {
             });
             
             
-    }).fail(fail);
+        }).fail(fail);
     
-     // Hide the sign-in button now that the user is authorized, for example:
-    document.getElementById('signinButton').setAttribute('style', 'display: none');
-    
-    
-    $.each(authResult,function(key,val){
-        console.log(key +' - ' + val);
-        console.log(" \n");
-    });
+        // Hide the sign-in button now that the user is authorized, for example:
+       document.getElementById('signinButton').setAttribute('style', 'display: none');
+
+
+        /*$.each(authResult,function(key,val){
+            console.log(key +' - ' + val);
+            console.log(" \n");
+        });*/
         return true;
-  } else if (authResult['error']) {
-    // Update the app to reflect a signed out user
-    // Possible error values:
-    //   "user_signed_out" - User is signed-out
-    //   "access_denied" - User denied access to your app
-    //   "immediate_failed" - Could not automatically log in the user
-    console.log('Sign-in state: ' + authResult['error']);
-  }
-  return false;
+    }
+    else if (authResult['error']) {
+        // Update the app to reflect a signed out user
+        // Possible error values:
+        //   "user_signed_out" - User is signed-out
+        //   "access_denied" - User denied access to your app
+        //   "immediate_failed" - Could not automatically log in the user
+        console.log('Sign-in state: ' + authResult['error']);
+    }
+    return false;
 }
 function getTimeStamp() {
     var fullDate = new Date($.now());

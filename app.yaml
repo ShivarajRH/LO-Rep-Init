@@ -14,6 +14,9 @@ handlers:
 - url: /includes/generalactions/.*
   script: includes/generalactions.php
   
+- url: /includes/api_process/.*
+  script: includes/api_process.php
+
 #  Apis url
 #- url: /apis/(/?.*?)
 - url: /api/write/.*  
@@ -92,6 +95,16 @@ handlers:
 - url: /manage_reminders
   script: manage_reminders.php
 
+- url: /tag(/?.*?)
+  script: search/tag.php
+
+- url: /search(/?.*?)
+  script: search/search.php
+
+- url: /exampleCharts/.*
+  script: exampleCharts.php
+  
+  
 #- url: /+
 - url: /.*
   script: welcome_page.php

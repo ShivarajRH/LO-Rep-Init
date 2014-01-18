@@ -28,12 +28,14 @@
     $robots_follow='no-follow';
 
     $load_js['global_js'] = 'global_scripts';
-    $load_js['file'] = 'stream';
+    $load_js['jquery.autosize'] = 'jquery.autosize';
+    $load_js['jquery.hashtags'] = 'jquery.hashtags';
+    $load_js['stream'] = 'stream';
+    
+    $load_css['stream'] = 'jquery.hashtags';
     
     include 'paths.php'; 
-    include_once 'head.php';
-?>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    include_once 'head.php'; ?>
 <body>
 	<?php include_once 'header.php'; ?>
 	<div class="center">
@@ -43,16 +45,20 @@
                     <input type="hidden" value="<?=$content_target_src;?>" name="content_target_src" id="content_target_src"/>
                     <input type="hidden" id="max_notes_count" name="max_notes_count" value=""/>
 			<ul id="columns">
-				<?php
+				<?php 
                                         include_once 'cards/card_creator_box.php';
                                         include_once 'cards/card_reminder_box.php'; 
                                         include_once 'cards/card_expenses_box.php'; 
                                         include_once 'cards/card_discovery_box.php';
+                                         
 				?>
                                 <span class="all_note_list_box"></span>
 			</ul>
 		</div>
 	</div>
+    <div>
+        <input type="text" id="tag_text" value=""/>
+    </div>
 	<?php include_once 'footer_reg.php'; ?>
 </body>
 </html>

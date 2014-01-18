@@ -155,28 +155,7 @@ function loadStreamData() {
                                             str_exp='Add Something';
                                     }
                                     if(expen.expenses != null) {
-                                        $.each(expen.expenses,function(i,expense){
-                                                        var expense_name=expense.expense_title;
-                                                        var expense_amount = expense.expense_amount;
-                                                        var content_id = expense.content_id;
-                                                        var content_type='expense';
-                                                        var note_options_req='yes';
-
-                                                        str_exp+="<li class='single_expense'>\n\
-                                                                    <span class=''>"+expense_name+"</span>\n\
-                                                                    <span class='fl_ri'>"+expense_amount+"</span>";
-
-                                                         if(note_options_req == 'yes') {
-                                                                str_exp += "<div>\n\
-                                                                            <ul class='note-options'>\n\
-                                                                                    <li class='note-options-single delete_icon fl_le'><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','expense')\">&nbsp</a></li>\n\
-                                                                                    <li class='note-options-single edit_icon fl_le'>&nbsp</li>\n\
-                                                                            </ul>\n\
-                                                                    </div>";
-                                                        }
-
-                                                        str_exp +="</li>";
-                                        });
+                                        str_exp = get_expense_list(expen.expenses);
                                     }
                                     
                                     $(".expenses_list_container").html("<ul class='expenses_list'>"+str_exp+"</ul>");
@@ -202,34 +181,8 @@ function loadStreamData() {
                 }
                 else {
                 
-                    $.each(rdata.reminders,function(i,reminder){
-
-                        if(i<max_reminder_count) {
-
-                                var reminder_id = reminder.reminder_id;
-                                var reminder_name = reminder.reminder_name;
-                                var reminder_time = showTimeStamp(reminder.remind_time);
-                                var content_id = reminder.content_id;
-                                var content_type = 'reminder';
-                                //$uid;
-                                var note_options_req='yes';
-                                output += "<li class='list_single_reminder'>\n\
-                                        <span class='single_reminder_name'>"+reminder_name+"</span>\n\
-                                        <span class='single_reminder_time fl_ri'>"+reminder_time+"</span>";
-
-
-                                        if(note_options_req=='yes') {
-                                                output += "<div>\n\
-                                                            <ul class='note-options'>\n\
-                                                                    <li class='note-options-single delete_icon fl_le'><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','reminder')\">&nbsp</a></li>\n\
-                                                                    <li class='note-options-single edit_icon fl_le'>&nbsp</li>\n\
-                                                            </ul>\n\
-                                                    </div>";
-                                        }
-
-                                        output += "</li>";
-                            }
-                        });
+                        output += get_reminders_list(rdata.reminders,max_reminder_count);
+                
                         if (content_target_src=='stream' && total_reminders > 4)
                         {
                                 var view_all_target=site_url+'manage_reminders';
@@ -257,7 +210,6 @@ function loadStreamData() {
                                 var note_image='';
                         }
                         else {
-                            
                             //loadNotesInfo(rdata.notes,max_notes_count);
                             
                                 $.each(rdata.notes,function(i,note) {
@@ -270,7 +222,7 @@ function loadStreamData() {
                                             var note_options_req='yes';
                                             note_output += "<li class='pin single_note_card'>\n\
                                                                 <img src='"+note_image+"' />\n\
-                                                                <div class='' id='editor_"+content_id+"'>"+nl2br(note_text)+"</div>";
+                                                                <div class='' id='editor_"+content_id+"'>"+nl2br(linkHashtags(note_text))+"</div>";
                                                                 if(note_options_req=='yes') {
                                                                        note_output += "<div>\n\
                                                                                    <ul class='note-options'>\n\
@@ -293,12 +245,6 @@ function loadStreamData() {
                     }
                     $(".all_note_list_box").html(note_output);
             }
-            
-            
-
-
-                                                
-            
     },"json").fail(fail);
     return false;
 }
@@ -412,87 +358,110 @@ var limit_start = default_entries;
 
 function loadNotesInfo(limit_start,limit_end) {
     var uid = $("#uid").val();
+    console.log("limit_start="+limit_start+"\nlimit_end="+limit_end);
+    var output='';
     
     var apiurl = "&uid="+enco(uid)+"&content_type=note&limit_start="+enco(limit_start)+"&limit_end="+enco(limit_end);
-    
     $.post(site_url+"api/search/?action_object=list_content"+apiurl,{},function(rdata) {
-            var note_output='';
-            //console.log(rdata.notes);
-            $.each(rdata.notes,function(i,note) {
-                       
-                        var content_id= note.content_id;
-                        var note_id= note.note_id;
-                        var note_text = note.note_text;
-                        var note_image='';
-                        var note_options_req='yes';
-                        note_output += "<li class='pin single_note_card'>\n\
-                                            <img src='"+note_image+"' />\n\
-                                            <div class='' id='editor_"+content_id+"'>"+nl2br(note_text)+"</div>";
-
-                                            if(note_options_req=='yes') {
-                                                   note_output += "<div>\n\
-                                                               <ul class='note-options'>\n\
-                                                                        <li class='note-options-single delete_icon fl_le' id=\"deleteBtn_"+content_id+"\"><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','note')\">&nbsp</a></li>\n\
-                                                                        <li class='note-options-single edit_icon fl_le' id=\"editorBtn_"+content_id+"\" onclick=\"edit_this('"+content_id+"')\">&nbsp</li>\n\
-                                                                        \n\
-                                                                        <li class='note-options-single save_tick_icon fl_le hide' id='editor_submit_"+content_id+"' onclick=\"save_edit_text(this,'"+content_id+"','note')\"></li>\n\
-                                                                        <li class='note-options-single cancel_icon fl_le hide' id='editor_cancel_"+content_id+"' onclick=\"cancel_edit_text('"+content_id+"');\"></li>\n\
-                                                                </ul>\n\
-                                                       </div>";
-                                           }
-
-                        note_output +="</li>";
-                        
-                        
-                        scrollInAction=false;
-                        
-            });
-            
-            
-            $(".all_note_list_box").append(note_output);
-    },"json");
-    
+            $(".all_note_list_box").append(get_notes_card(rdata.notes));
+    },"json");  
 }
+
+function get_notes_card(results) {
+    var note_output='';
+    $.each(results,function(i,note) {
+
+        var content_id= note.content_id;
+        var note_id= note.note_id;
+        var note_text = note.note_text;
+        var note_image='';
+        var note_options_req='yes';
+
+        note_output += "<li class='pin single_note_card'>\n\
+                        <img src='"+note_image+"' />\n\
+                        <div class='' id='editor_"+content_id+"'>11111"+nl2br(linkHashtags(note_text))+"</div>";
+
+                        if(note_options_req=='yes') {
+                               note_output += "<div>\n\
+                                           <ul class='note-options'>\n\
+                                                    <li class='note-options-single delete_icon fl_le' id=\"deleteBtn_"+content_id+"\"><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','note')\">&nbsp</a></li>\n\
+                                                    <li class='note-options-single edit_icon fl_le' id=\"editorBtn_"+content_id+"\" onclick=\"edit_this('"+content_id+"')\">&nbsp</li>\n\
+                                                    \n\
+                                                    <li class='note-options-single save_tick_icon fl_le hide' id='editor_submit_"+content_id+"' onclick=\"save_edit_text(this,'"+content_id+"','note')\"></li>\n\
+                                                    <li class='note-options-single cancel_icon fl_le hide' id='editor_cancel_"+content_id+"' onclick=\"cancel_edit_text('"+content_id+"');\"></li>\n\
+                                            </ul>\n\
+                                   </div>";
+                       }
+
+        note_output +="</li>";
+        scrollInAction=false;
+
+    });
+    //console.log(note_output);
+    return note_output;
+}
+
+var hashtag_regexp = /#([a-zA-Z0-9]+)/g;
+function linkHashtags(text) {
+    return text.replace(
+        hashtag_regexp,
+        '<a class="hashtag" target="_blank" href="'+site_url+'tag/?q=$1">#$1</a>'
+    );
+}
+
   $(window).scroll(function(){
-        var max_notes_count= document.getElementById("max_notes_count").value;
+      var elt = document.getElementById("max_notes_count");
+      if(elt != null) {
+            var max_notes_count= elt.value;
         
-        if(max_notes_count > 0) {
+            if(max_notes_count > 0) {
                 //console.log($(window).scrollTop() >= ($(document).height() - $(window).height() - 200));
-                   if  ($(window).scrollTop() >= ($(document).height() - $(window).height() - 200)){
+                if  ($(window).scrollTop() >= ($(document).height() - $(window).height() - 200))
+                {
 
-                         if (scrollInAction)
-                         {
-                             return false;
-                         }
-                         else
-                         {
-                                scrollInAction=true;
-                                //do stuff // load of more content here
-                                //console.log("Down");
-                                
-                                
-                                if(limit_start >= default_entries && limit_start <= max_notes_count) {
-                                        limit_start += 10;
+                      if (scrollInAction)
+                      {
+                          return false;
+                      }
+                      else
+                      {
+                             scrollInAction=true;
+                             //do stuff // load of more content here
+                             //console.log("Down");
 
-                                        if(max_notes_count >= limit_start) {
+                             if(limit_start >= default_entries && limit_start <= max_notes_count) {
+                                     limit_start += 10;
 
-                                            var limit_end=1;
+                                     if(max_notes_count >= limit_start) {
+
+                                         var limit_end=1;
 //                                            console.log(limit_start);
-                                            loadNotesInfo(limit_start,limit_end);
-                                             //scrollInAction=false; // TODO: PUT this scrollInAction=false after ajax loading is completed.
-                                        }
-                                        else { 
-                                            scrollInAction=false;
-                                        }
-                                }
-                         }
-                   }
-        }
+                                         loadNotesInfo(limit_start,limit_end);
+                                          //scrollInAction=false; // TODO: PUT this scrollInAction=false after ajax loading is completed.
+                                     }
+                                     else { 
+                                         scrollInAction=false;
+                                     }
+                             }
+                      }
+                }
+            }
+      }
   });
   
      
 $(document).ready(function() {
+    /*$("textarea,#tag_text,#reminder_title,#expense_title").hashtags();*/
+    
     loadStreamData();
+    
+    $('input.cleanup').blur(function() {
+//        alert("BLUR");
+        var value = $.trim( $(this).val() );
+        //alert(value);
+        $(this).val( value );
+    });
+    
 });
 
     function makeit_public(content_type) {
@@ -503,16 +472,174 @@ $(document).ready(function() {
         }
 
     }
-    function makeit_private(content_type) {
+    
+    function makeit_private(content_type)
+    {
         if(content_type='note') {
             $("#note_visibility").val('pri');
             $("#btn_note_private").hide();
             $("#btn_note_public").show();
         }
-
     }
+    
     function popthis_out(content_id,content_type) {
-            //window.location.target="_blank";
-            //window.parent.location.href=site_url+"note_pop_page/?cid="+enco(content_id);
+            //window.location.target="_blank";window.parent.location.href=site_url+"note_pop_page/?cid="+enco(content_id);
+    }
+    
+    function search_all_stream(elt,content_type,uid) {
+/*        var postData = {'requesting_uid':enco(requesting_uid),'query':enco(query)
+        ,"timestamp":enco(timestamp),'lat':enco(lat),'long':enco(long),'src':enco($src)};*/
+        var query = $("#search_qry",elt).val();
+        var src = 'streamsearch';
+        var output='';
+        
+        var postData = {requesting_uid:enco(uid),query:enco(query),content_type:enco(content_type)
+            ,src:enco(src)};
+    
+        $.post(site_url+'search/',postData,function(resp) {
+            if(resp.status == 'success') {
+                    if(  (resp.notes).length > 0 ) {
+                        output += get_notes_card(resp.notes);
+                        $(".all_note_list_box").html(output);
+                    }
+                    if( resp.expenses.length > 0 ) {
+                        $(".expenses_list_container").html(get_expense_list(resp.expenses));
+                    }
+                    if( resp.reminders.length > 0 ) {
+                        var max_reminder_count=150;
+                        $(".reminders_list").html(get_reminders_list(resp.reminders,max_reminder_count));
+                    }
+
+                    //console.log("\nALL="+resp);
+                    
+            }
+            else {
+                alert(resp.response);
+            }
+        },"json");
+        
+        //search_btn all_note_list_box
+        
+    }
+    function get_expense_list(expenses) {
+        var str_exp = '';
+        $.each(expenses,function(i,expense){
+                        var expense_name=expense.expense_title;
+                        var expense_amount = expense.expense_amount;
+                        var content_id = expense.content_id;
+                        var content_type='expense';
+                        var note_options_req='yes';
+
+                        str_exp+="<li class='single_expense'>\n\
+                                    <span class=''>"+expense_name+"</span>\n\
+                                    <span class='fl_ri'>"+expense_amount+"</span>";
+
+                         if(note_options_req == 'yes') {
+                                str_exp += "<div>\n\
+                                            <ul class='note-options'>\n\
+                                                    <li class='note-options-single delete_icon fl_le'><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','expense')\">&nbsp</a></li>\n\
+                                                    <li class='note-options-single edit_icon fl_le'>&nbsp</li>\n\
+                                            </ul>\n\
+                                    </div>";
+                        }
+
+                        str_exp +="</li>";
+        });
+        return str_exp;
+    }
+    
+    function get_reminders_list(reminders,max_reminder_count) {
+            var output='';
+            $.each(reminders,function(i,reminder){
+
+                if(i<max_reminder_count) {
+
+                    var reminder_id = reminder.reminder_id;
+                    var reminder_name = reminder.reminder_name;
+                    var reminder_time = showTimeStamp(reminder.remind_time);
+                    var content_id = reminder.content_id;
+                    var content_type = 'reminder';
+                    var note_options_req='yes';
+
+                    output += "<li class='list_single_reminder'>\n\
+                            <span class='single_reminder_name'>"+reminder_name+"</span>\n\
+                            <span class='single_reminder_time fl_ri'>"+reminder_time+"</span>";
+
+
+                            if(note_options_req=='yes') {
+                                    output += "<div>\n\
+                                                <ul class='note-options'>\n\
+                                                        <li class='note-options-single delete_icon fl_le'><a href='javascript:void(0)' onclick=\"delete_this(this,'"+content_id+"','reminder')\">&nbsp</a></li>\n\
+                                                        <li class='note-options-single edit_icon fl_le'>&nbsp</li>\n\
+                                                </ul>\n\
+                                        </div>";
+                            }
+
+                            output += "</li>";
+                }
+            });
+            return output;
+    }
+    
+    $('.time_filter:first').trigger('click');
+
+    var isexecuted=0;
+    function plotgraph(interval) {
+            $("body").data('interval',interval);
+            if(isexecuted == 1) {
+                drawChart();
+            }
+            // Load the Visualization API and the piechart package.
+            google.load('visualization', '1.0', {'packages':['corechart']});
+
+            // Set a callback to run when the Google Visualization API is loaded.
+            google.setOnLoadCallback(drawChart);
+            return false;
     }
 
+    // Instantiates the pie chart, passes in the data and draws it.
+    function drawChart() {
+        isexecuted=1;
+        var interval = $("body").data('interval');
+
+        var postData={action:"time_filter",uid:"<?php echo $uid;?>",content_type:"expense",interval:interval};
+
+        $.post(site_url+"includes/api_process/",postData,function(resp){
+    //                console.log(resp.expenses); //return false;
+                // Create and populate the data table.
+                /*var data = google.visualization.arrayToDataTable([
+                  ['Year', 'Austria', 'Bulgaria', 'Denmark', 'Greece'],
+                  ['2003',  1336060,    400361,    1001582,   997974],
+                  ['2004',  1538156,    366849,    1119450,   941795]
+                ]);*/
+
+                if(resp.status == "success") 
+                {
+                    var array_push = [];
+                    // Create the data table.
+                    //var data = new google.visualization.DataTable();
+                    //data.addColumn('string', 'Title');data.addColumn('number', 'Amount');
+
+                    array_push.push(["Title","Amount"]);
+                    $.each(resp.expenses,function(i,row) {
+                            array_push.push([ row.title,parseInt(row.expense_amount)]);
+                            //data.addRows([array_push]);
+                    });
+
+                    var data = new google.visualization.arrayToDataTable(array_push);
+                    // Instantiate and draw our chart, passing in some options.//BarChart,PieChart,LineChart
+                    var chart = new google.visualization.LineChart(document.getElementById('chart_div2'));
+
+                    // Set chart options
+                    var options = { title:'Expenses Chart'
+                                    ,width:300
+                                    ,height:300
+                                    ,hAxis:{title:"Intervals"}
+                                    ,vAxis:{title:"Amount"} };
+                    chart.draw(data, options);
+                }
+                else {
+                        document.getElementById('chart_div').innerHTML = "<div>"+resp+"</div>";
+                }
+         },'json');
+    }

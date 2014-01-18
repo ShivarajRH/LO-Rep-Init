@@ -34,7 +34,7 @@
                 </div>
                 <div id="reminder_creator" class="reminder_creator hide">
                         <form name="reminder_submit_form" id="reminder_submit_form" action="" method="POST" onsubmit="return submit_reminder_data(this);">
-                            <input type="text" name="reminder_title" id="reminder_title" class="fl_le reminder_title" required maxlength="26" placeholder="Reminder Name">
+                            <input type="text" name="reminder_title" id="reminder_title" class="fl_le reminder_title cleanup" required maxlength="26" placeholder="Reminder Name">
                             <input type="date" name="reminder_date" id="reminder_date" class="fl_le reminder_date" required>
                             <input type="time" name="reminder_time" id="reminder_time" class="fl_le reminder_time" required>
                             <input type="submit" class="button fl_ri" value="+">

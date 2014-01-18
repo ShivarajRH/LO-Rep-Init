@@ -42,25 +42,13 @@
                 </br>
                 <div id="wrapper" style="max-width:1400px"> <!-- http://cssdeck.com/labs/css-only-pinterest-style-columns-layout -->
                         <ul id="columns">
-                                <li class="pin single_note_card" style="text-align:center;width:100%;">
+                                <!--<li class="pin single_note_card" style="text-align:center;width:100%;">
                                                                 <h2 style="color:#dd4b39;"">Get your FREE account</h2>
                                                 </br>
-                                                <?php include 'google_plus_signin_button.php'; ?>
+                                                <?php// include 'google_plus_signin_button.php'; ?>
                                                 </br></br>
                                                 <div>
-                                                        <div>
-															<a href="https://play.google.com/store/apps/details?id=com.lyfeon.oneapp">
-															  <span class="google_play_store_icon fl_le" style="width:24px;height:24px;margin-right:5%;" title="Android app on Google Play"></span><span>Download on Google Play</span>
-															</a>
-														</div>
-														<br><br>
-														<div>
-															<span style="cursor:pointer;" onclick="chrome.webstore.install()" id="install-button">
-															  <span class="google_chrome_icon" style="width:24px;height:24px;margin-right:5%;" title="Install on Google Chrome">
-															  	<span>Download on Google Chrome</span>
-															  </span>
-															</span>
-														</div>
+                                                        <div></div>
                                                         <script>
                                                                 if (chrome.app.isInstalled) {
                                                                   $('#install-button img').css({"opacity":0.3});
@@ -69,20 +57,51 @@
                                                         </script>
                                                 </div>
                                                 </br>
+                                </li>-->
+                                
+                                <li class="pin single_note_card">
+                                        <h2 style="color:#dd4b39;"">Get your FREE account</h2>
+                                        </br>
+                                        <?php include 'google_plus_signin_button.php'; ?>
+                                        </br></br>
+                                        <div>
+                                                <div>
+                                                        <a href="https://play.google.com/store/apps/details?id=com.lyfeon.oneapp">
+                                                          <span class="google_play_store_icon fl_le" style="width:24px;height:24px;margin-right:5%;" title="Android app on Google Play"></span>
+                                                          <span style="color:#000000;">Download on Google Play</span>
+                                                        </a>
+                                                </div>
+                                                <br><br>
+                                                <div>
+                                                        <span style="cursor:pointer;" onclick="chrome.webstore.install()" id="install-button">
+                                                          <span class="google_chrome_icon fl_le" style="width:24px;height:24px;margin-right:5%;" title="Install on Google Chrome"></span>
+                                                          <span>Download on Google Chrome</span>
+                                                        </span>
+                                                </div>
+                                                <script>
+                                                        if (chrome.app.isInstalled) {
+                                                          $('#install-button img').css({"opacity":0.3});
+                                                        }
+
+                                                </script>
+                                        </div>
+                                        </br>
+                                </li>
+                                
+                                
+                                <li class="pin single_note_card">
+                                        <img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Freps%2Fmanage_money_rep_427x640.jpg" />
+                                        <h2>Track Expenses and Save Money</h2>
                                 </li>
                                 <li class="pin single_note_card">
-									<img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Freps%2Fmanage_money_rep_427x640.jpg" />
-									<h2>Track Expenses and Save Money</h2>
-								</li>
-								<li class="pin single_note_card">
-									<img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Freps%2Fnote_leaf_rep_427x640.jpg" />
-									<h2>Discover & Share Notes</h2>
-								</li>
-								<li class="pin single_note_card">
-									<img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Freps%2Fshopping_list_rep_427x640.jpg" />
-									<h2>ToDo and Shopping List</h2>
-								</li>
-							</ul><!-- 
+                                        <img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Freps%2Fnote_leaf_rep_427x640.jpg" />
+                                        <h2>Discover & Share Notes</h2>
+                                </li>
+                                <li class="pin single_note_card">
+                                        <img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Freps%2Fshopping_list_rep_427x640.jpg" />
+                                        <h2>ToDo and Shopping List</h2>
+                                </li>
+                        </ul><!-- 
 							<p style="font-size:200%;">For Businesses</p>
 							<ul id="columns">
 								<li class="pin single_note_card">

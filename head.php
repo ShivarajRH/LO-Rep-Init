@@ -106,12 +106,9 @@
                 echo '<script src="/assets/js/'.$js_filenm.'.js" type="text/javascript"></script>';
             }
         }
-        $site_url='http://'.(($_SERVER['HTTP_HOST'] == 'localhost:13080')?"localhost:13080":$_SERVER['HTTP_HOST'])."/";
         ?>
         <script>
             var site_url ="http://"+(document.domain =='localhost'?'localhost:13080':document.domain)+"/";
         </script>
-       
-<!--      <link rel="shortcut icon" type="image/png" href="http://commondatastorage.googleapis.com/lyfeon%2Flogos%2Ffavicon.png">-->
-        
+
     </head>

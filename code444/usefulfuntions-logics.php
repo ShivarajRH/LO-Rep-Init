@@ -222,4 +222,7 @@ $queue->addTasks([$task]);
 //      url: /ingestion.php
 //      schedule: every 2 hours
 
+    //$load_js['jquery.autosize'] = 'jquery.autosize';
+    //$load_js['jquery.hashtags'] = 'jquery.hashtags';
+    //$load_css['file'] = 'jquery.hashtags';
 ?>

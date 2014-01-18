@@ -11,11 +11,7 @@
             <?php if(isset($uid)){ ?>
                 
 		<div class="fl_le search_block">
-	  		<form name="globalsearchform" action="<?=$site_url;?>search/form/" method="post" target="_blank">
-                                <input type="hidden" name="uid" value="<?=$uid;?>" />
-                                <input type="hidden" name="content_type" value="all" />
-                                <input type="hidden" name="lat" value="72" />
-                                <input type="hidden" name="long" value="100" />
+	  		<form name="globalsearchform" action="javascript:void(0);" method="post" onsubmit="search_all_stream(this,'all','<?=$uid;?>')"><!--<?=$site_url;?>search/form/ target="_blank"-->
 		  		<input type="text" class="fl_le search_box" name="search_qry" id="search_qry" placeholder=" Search" autocomplete="off" autofocus required> 
 				<input type="submit" value="" name="search_btn" id="search_btn" class="search_icon search_submit" title="Search">
 			</form>

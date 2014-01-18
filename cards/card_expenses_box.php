@@ -3,17 +3,13 @@
 	<div>
 		<div>
 			<div class="expenses_details">
-				<?php 
-					include_once 'time_filter.php'; 
-					//$filter_from;$filter_to;
-				?>
-                                
+				<?php include_once 'time_filter.php'; ?>
 				</br>
 				<p class="card_heading">
 					<span class="card_heading_text">Expenses</span>
 					<span class="intime_total fl_ri" id="expense_total"><?php//$expenses_filter_total;?></span>
 				</p>
-                                
+                                <div id="chart_div2"></div>
                                 <?php 
 					if($content_target_src == 'manage_expenses')
 					{
