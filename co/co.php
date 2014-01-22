@@ -13,9 +13,9 @@
         
         $robots_index='index';
         $robots_follow='follow';
-?>
 
-<?php include_once '../head.php'; ?>
+        include '../../paths.php';
+        include_once '../head.php'; ?>
 
 <!-- Google+ Signin -->
 <script type="text/javascript">

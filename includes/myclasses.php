@@ -4,9 +4,9 @@
      
      /**
       * GET API Data
-      * @param type $url
-      * @param type $outtype
-      * @param type $post
+      * @param type $url string
+      * @param type $outtype string
+      * @param type $post Array
       * @return type array
       */
     function getApiContent($url,$outtype,$post='') {

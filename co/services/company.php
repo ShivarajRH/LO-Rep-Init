@@ -14,9 +14,9 @@
         $css_arr['services']="services";
         $robots_index='index';
         $robots_follow='follow';
-?>
 
-<?php include_once '../../head.php'; ?>
+        include '../../paths.php';
+        include_once '../../head.php'; ?>
 <body>
 	<?php include_once '../../header.php'; ?>
 	<br />

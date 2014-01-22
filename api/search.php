@@ -334,13 +334,16 @@ class search extends myactions {
          else {
                 foreach ($list_content_info as $type => $data_arr) {
                     if(!empty($data_arr)) {
-                        $output[$type] = array_map("unserialize", array_unique(array_map("serialize", $data_arr)));
+                        //if($type == 'tags')
+                            $output[$type] = array_map("unserialize", array_unique(array_map("serialize", $data_arr)));
+                        //else
+                         //   $output[$type] = $data_arr;
                     }
                     else {
-                        $output[$type] =$data_arr;
+                        $output[$type] = $data_arr;
                     }
                 }
-    //            echo '<pre>';print_r($output); die();
+                echo '<pre>';print_r($output); die();
                 return $output;
         }
     }
@@ -360,39 +363,100 @@ class search extends myactions {
                 || $content_type == 'expense' ) {
             
                     if($content_type == 'all') {
-                        $cond .= '';
+                        //$cond .= '';
                     }
                     else {
-                        $cond .= " and content_type='$content_type' ";
+                        $cond .= " and content_type='$content_type' and ";
                     }
                     
                     // return all pub
                     // if uid => return private content of uid
                     
-                    $cond .= " ( tc.privacy='pub' ) ";
+                    if($cond == '') { $cond .= " and "; }
+                    
+                    $cond .= " tc.privacy='pub' and tc.tag_string like '%$query_str%' ";
+                    
                     if($requesting_uid != '') {
-                        $cond .= " or ( tc.`uid`='".$requesting_uid."' and tc.privacy='pri' ) ";
+                        $cond .= " or ( tc.`uid`='".$requesting_uid."' and tc.privacy='pri' and tc.tag_string like '%$query_str%' ) ";
                     }
                     
-                    //limit $limit_start,$limit_end
-                    $sql = "select * from tbl_tag_content tc
-                                        where tc.tag_string like '%$query_str%' and ( $cond ) ";
+                    if($content_type == 'note' || $content_type == 'all') {
+                            //limit $limit_start,$limit_end
+                            $sql = "select * from tbl_tag_content tc
+                                    join tbl_notes n on n.content_id = tc.content_id
+                                                where tc.tag_string like '%$query_str%' $cond ";
 
-                    $rslt= mysql_query($sql,$linkid) or $this->print_error(mysql_error($linkid));
-                    
-//                    $this->print_error($sql);
-                    $i=0;$data_array=array();
-                    while ($row=mysql_fetch_array($rslt)) {
-                            $data_array[$i]['tag_id'] = $row['tag_id'];
-                            $data_array[$i]['content_id'] = $row['content_id'];
-                            $data_array[$i]['tag_string'] = $this->format_text($row['tag_string']);
-                            $data_array[$i]['uid'] = $this->format_text($row['uid']);
-                            $data_array[$i]['timestamp'] = $row['timestamp'];
-                            $data_array[$i]['privacy'] = $row['privacy'];
-                            $i++;
+                            $rslt= mysql_query($sql,$linkid) or $this->print_error(mysql_error($linkid).' Query='.$sql);
+
+        //                    $this->print_error($sql);
+                            $i=0;$data_array=array();
+                            while ($row=mysql_fetch_array($rslt)) {
+                                    $data_array[$i]['tag_id'] = $row['tag_id'];
+                                    $data_array[$i]['content_id'] = $row['content_id'];
+                                    $data_array[$i]['note_id'] = $row['note_id'];
+                                    $data_array[$i]['note_text'] = $row['note_text'];
+                                    $data_array[$i]['visibility'] = $row['visibility'];
+                                    $data_array[$i]['tag_string'] = $this->format_text($row['tag_string']);
+                                    $data_array[$i]['uid'] = $this->format_text($row['uid']);
+                                    $data_array[$i]['timestamp'] = $row['timestamp'];
+                                    //$data_array[$i]['privacy'] = $row['privacy'];
+                                    $i++;
+                            }
+                            //$output['sql'] = $sql;
+                            $output['notes'] = $data_array;
                     }
-                    $output['tags'] = $data_array;
+                    elseif($content_type == 'expense' || $content_type == 'all') {
+                            //limit $limit_start,$limit_end
+                            $sql = "select * from tbl_tag_content tc
+                                    join tbl_expenses e on e.content_id = tc.content_id
+                                                where tc.tag_string like '%$query_str%' $cond ";
 
+                            $rslt= mysql_query($sql,$linkid) or $this->print_error(mysql_error($linkid).' Query='.$sql);
+
+        //                    $this->print_error($sql);
+                            $i=0;$data_array=array();
+                            while ($row=mysql_fetch_array($rslt)) {
+                                    $data_array[$i]['tag_id'] = $row['tag_id'];
+                                    $data_array[$i]['content_id'] = $row['content_id'];
+                                    $month=date("M",$row['timestamp']);
+                                    $data_array[$i]['expense_id'] = $row['expense_id'];
+                                    $data_array[$i]['content_id'] = $row['content_id'];
+                                    $data_array[$i]['title'] = $this->format_text($row['title']);
+                                    $data_array[$i]['expense_title']=$this->format_text($row['title']);
+                                    $data_array[$i]['desc'] = $this->format_text($row['desc']);
+                                    $data_array[$i]['amount'] = $row['amount'];
+                                    $data_array[$i]['expense_amount']=$row['amount'];
+                                    $data_array[$i]['visibility'] = $row['visibility'];
+                                    $data_array[$i]['uid'] = $row['uid'];
+                                    $data_array[$i]['month']=$month;
+                
+                                    $i++;
+                            }
+                            //$output['sql'] = $sql;
+                            $output['expenses'] = $data_array;
+                    }
+                    elseif($content_type == 'reminder' || $content_type == 'all') {
+                            //limit $limit_start,$limit_end
+                            $sql = "select * from tbl_tag_content tc
+                                    join tbl_reminders r on r.content_id = tc.content_id
+                                                where tc.tag_string like '%$query_str%' $cond ";
+
+                            $rslt= mysql_query($sql,$linkid) or $this->print_error(mysql_error($linkid).' Query='.$sql);
+
+        //                    $this->print_error($sql);
+                            $i=0;$data_array=array();
+                            while ($row=mysql_fetch_array($rslt)) {
+                                    $data_array[$i]['tag_id'] = $row['tag_id'];
+                                    $data_array[$i]['content_id'] = $row['content_id'];
+                                    $data_array[$i]['reminder_id'] = $row['reminder_id'];
+                                    $data_array[$i]['reminder_name'] = $this->format_text($row['reminder_name']);
+                                    $data_array[$i]['visibility'] = $row['visibility'];
+                                    $data_array[$i]['remind_time'] = date("Y-m-d H:i:s",$row['remind_time']);
+                                    $i++;
+                            }
+                            //$output['sql'] = $sql;
+                            $output['reminders'] = $data_array;
+                    }
             }
             else { $output = $this->unknown(); }
             return $output;
@@ -514,7 +578,7 @@ class search extends myactions {
        
     }
     
-    function get_srch_expense($query_str,$cond) {       
+    function get_srch_expense($query_str,$cond) {      
         $linkid=$this->db_conn();
 
         // limit $limit_start,$limit_end

@@ -24,19 +24,22 @@
     $image_url='http://commondatastorage.googleapis.com/lyfeon%2Flogos%2Flyfeon_300x300_center.png';
     $image_width='300';
     $image_height='300';
-        
+
+    $content_target_src='landing_default';
+    
 //    $load_css['css']='global';
     include 'paths.php';
-    include_once 'head.php'; ?>
-<!-- Google+ Signin -->
-<script type="text/javascript">
-  (function() {
-   var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-   po.src = 'https://apis.google.com/js/client:plusone.js';
-   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
- })();
-</script>
+    include_once 'head.php'; 
+    ?>
 <body>
+    <!-- Google+ Signin -->
+    <script type="text/javascript">
+      (function() {
+       var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+       po.src = 'https://apis.google.com/js/client:plusone.js';
+       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+     })();
+    </script>
         <?php include_once 'header.php'; ?>
         <div class="center">
                 </br>
@@ -82,7 +85,6 @@
                                                         if (chrome.app.isInstalled) {
                                                           $('#install-button img').css({"opacity":0.3});
                                                         }
-
                                                 </script>
                                         </div>
                                         </br>
@@ -91,7 +93,7 @@
                                 
                                 <li class="pin single_note_card">
                                         <img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Freps%2Fmanage_money_rep_427x640.jpg" />
-                                        <h2>Track Expenses and Save Money</h2>
+                                        <h2>Manage & Save Money</h2>
                                 </li>
                                 <li class="pin single_note_card">
                                         <img src="http://commondatastorage.googleapis.com/lyfeon%2Fimages%2Freps%2Fnote_leaf_rep_427x640.jpg" />

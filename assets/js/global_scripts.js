@@ -1,13 +1,8 @@
-$(document).ready(function() {
-    $(".header").click(function(){
-       window.scrollTo(0,0); 
-    });
-});
+
 function signinCallback(authResult) {
   if (authResult['access_token']) {
     // Update the app to reflect a signed in user
    
-    
         var access_token=authResult['access_token'];
         //Get auth user details
         $.get("https://www.googleapis.com/plus/v1/people/me?access_token="+access_token,{},function(rdata){
@@ -45,18 +40,14 @@ function signinCallback(authResult) {
             //call profile api
             $.post(site_url+"api/write/?action_object=user_profile"+apiurl,{},function(rdata) {
                 //console.log("API RESPONSE="+rdata);
-                
-                
                 //redirect to streams
                 location.href=site_url+"stream#";
             });
-            
             
         }).fail(fail);
     
         // Hide the sign-in button now that the user is authorized, for example:
        document.getElementById('signinButton').setAttribute('style', 'display: none');
-
 
         /*$.each(authResult,function(key,val){
             console.log(key +' - ' + val);
@@ -74,6 +65,7 @@ function signinCallback(authResult) {
     }
     return false;
 }
+
 function getTimeStamp() {
     var fullDate = new Date($.now());
     //convert month to 2 digits
@@ -81,6 +73,7 @@ function getTimeStamp() {
     var currentDate = fullDate.getFullYear() + "-" + twoDigitMonth + "-" + fullDate.getDate();
     return currentDate+" "+fullDate.getHours()+":"+fullDate.getMinutes()+":"+fullDate.getSeconds();
 }
+
 function showTimeStamp(dateString) {
     dateString.split(' ').join('T');
     var fullDate = new Date(dateString);
@@ -97,6 +90,7 @@ function showTimeStamp(dateString) {
     
     return currentDate+" "+fullDate.getHours()+":"+fullDate.getMinutes();//+":"+fullDate.getSeconds();
 }
+
 function nl2br (str, is_xhtml) {
     var breakTag = '<br>';//(is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    
     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
@@ -105,7 +99,9 @@ function nl2br (str, is_xhtml) {
 function enco(str) {
     return encodeURIComponent(str);
 }
+
 function fail(resp) { console.log("FAIL"); console.log(resp); }
+
 function signOut() {
     
     if(gapi === "undefined") {
@@ -170,6 +166,11 @@ function show_actions(content_type) {
 }
 
 $(document).ready(function() {
+    
+    $(".header").click(function(){
+       window.scrollTo(0,0); 
+    });
+    
     //clearing form fields...
     $.fn.clearForm = function() {
       return this.each(function() {
@@ -181,7 +182,7 @@ $(document).ready(function() {
             else if (type == 'checkbox' || type == 'radio')
               this.checked = false;
             else if (tag == 'select')
-              this.selectedIndex = -1;
+              this.selectedIndex = -1; //0
       });
     };
     
@@ -206,8 +207,6 @@ $(document).ready(function() {
             cls.addClass('hide');
         }
     });*/
-    
-    
 });
 
 function closeMenu(classname) {

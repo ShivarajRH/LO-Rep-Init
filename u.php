@@ -21,7 +21,6 @@
                 $url=$site_url.'api/search/?action_object=user_profile&uid='.$uid;
                 $rprofile = $ob->getApiContent($url,"json");
                 $rprofile=$rprofile[0];
-
             }
         }
         else {
@@ -46,8 +45,6 @@
         }
                 
     }
-
-
     
 //            echo '<pre>';print_r($rprofile); die();
         $gid = $rprofile['gid']; 
@@ -59,9 +56,7 @@
         
         //$uid=$arr_notes['uid'];
         $uid_visit=$uid;
-
-
-    
+   
 //    $fname=isset($_SESSION['fname'])?$_SESSION['fname']:"";
 //    $lname=isset($_SESSION['lname'])?$_SESSION['lname']:"";
 //    $gid = isset($_SESSION['gid'])?$_SESSION['gid']:""; 
@@ -84,9 +79,8 @@
         $load_js['global_js'] = 'global_scripts';
         $load_js['u'] = 'user_profile';
 	
-?>
-<?php include 'paths.php'; ?>
-<?php include_once 'head.php'; ?>
+        include 'paths.php';
+        include_once 'head.php'; ?>
 <body>
 	<?php include_once 'header.php'; ?>
 	<div class="center">

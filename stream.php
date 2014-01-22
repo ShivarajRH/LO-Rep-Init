@@ -30,7 +30,7 @@
     $load_js['global_js'] = 'global_scripts';
     $load_js['file'] = 'stream';
     
-    include 'paths.php'; 
+    include 'paths.php';
     include_once 'head.php';
 ?>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
