@@ -514,7 +514,7 @@
                     }
                     else {
                         $("#ttl_reminders").html(ttl_reminders);
-                        $(".reminders_list").html("No reminders data.");
+                        $(".reminders_list").html("No reminder data.");
                     }
                     //console.log("\nALL="+resp);
             }
@@ -598,11 +598,15 @@
     
     function tag_search(tag) {
         var uid = $("#uid").val();
-        var postData = {uid:uid};
+        var requesting_uid = uid;
+        var privacy="pri";
+        var time = getTimeStamp();
         var output = '';
-        
-        $.post(site_url+"/tag/?q="+tag,postData,function(resp) {
+        var postData = {uid:uid,requesting_uid:requesting_uid,privacy:privacy};
+        //$.post(site_url+"tag/?q="+tag,postData,function(resp) {
+        $.post(site_url+"api/search/?action_object=tag_content&content_type=all&tag="+tag,postData,function(resp) {
               if(resp.status == 'success') {
+                    $(".reset_filters").css({display:'block'});
                     if(  (resp.notes).length > 0 ) {
                         output += get_notes_card(resp.notes);
                         $(".all_note_list_box").html(output);
@@ -636,7 +640,7 @@
                     }
                     else {
                         $("#ttl_reminders").html(ttl_reminders);
-                        $(".reminders_list").html("No reminders data.");
+                        $(".reminders_list").html("No reminder data.");
                     }
                     //console.log("\nALL="+resp);
             }

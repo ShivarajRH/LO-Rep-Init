@@ -343,7 +343,8 @@ class search extends myactions {
                         $output[$type] = $data_arr;
                     }
                 }
-                echo '<pre>';print_r($output); die();
+                $output['status'] = 'success';
+//                echo '<pre>';print_r($output); die();
                 return $output;
         }
     }
@@ -405,7 +406,7 @@ class search extends myactions {
                             //$output['sql'] = $sql;
                             $output['notes'] = $data_array;
                     }
-                    elseif($content_type == 'expense' || $content_type == 'all') {
+                    if($content_type == 'expense' || $content_type == 'all') {
                             //limit $limit_start,$limit_end
                             $sql = "select * from tbl_tag_content tc
                                     join tbl_expenses e on e.content_id = tc.content_id
@@ -435,7 +436,7 @@ class search extends myactions {
                             //$output['sql'] = $sql;
                             $output['expenses'] = $data_array;
                     }
-                    elseif($content_type == 'reminder' || $content_type == 'all') {
+                    if($content_type == 'reminder' || $content_type == 'all') {
                             //limit $limit_start,$limit_end
                             $sql = "select * from tbl_tag_content tc
                                     join tbl_reminders r on r.content_id = tc.content_id
@@ -492,7 +493,6 @@ class search extends myactions {
         $sno = mysql_insert_id(); //"cnt".rand(8,getrandmax());
 
         mysql_query("update `tbl_queries` set `query_id`='$sno' where `sno`=$sno") or $this->print_error(mysql_error($linkid));
-        
         
         // search core query
         $list_content_info =  $this->get_query_content($query_str,$requesting_uid,$content_type);
@@ -573,6 +573,7 @@ class search extends myactions {
                     }
                 }
     //            echo '<pre>';print_r($output); die();
+                $output["status"] = "success";
                 return $output;
         }
        

@@ -46,7 +46,7 @@
                 <div id="wrapper" style="max-width:1400px"> <!-- http://cssdeck.com/labs/css-only-pinterest-style-columns-layout -->
                         <ul id="columns">
                                 <!--<li class="pin single_note_card" style="text-align:center;width:100%;">
-                                                                <h2 style="color:#dd4b39;"">Get your FREE account</h2>
+                                                <h2 style="color:#dd4b39;"">Get your FREE account</h2>
                                                 </br>
                                                 <?php// include 'google_plus_signin_button.php'; ?>
                                                 </br></br>

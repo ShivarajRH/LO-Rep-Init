@@ -3,10 +3,10 @@ $get=($_GET);
 
 $result=array();
 if(isset($get['q'])) {
-//    error_reporting(1);
-//    ob_start();session_start();
+    error_reporting(1);
+    ob_start();session_start();
     //echo ''.$_SESSION['uid'];
-    $post = $_REQUEST;
+    $post = $_SESSION;//$_REQUEST;
 //    print_r($post);    die();
     if(!isset($post['uid'])) {
         //header("Status: 404 Not Found");
@@ -18,11 +18,10 @@ if(isset($get['q'])) {
             $s = microtime(true);
             $uid = isset($post['uid'])?$post['uid']:"104775511952184246952";
             $requesting_uid = $uid;
-            $content_target_src='tags';
-            $timestamp = date("Y-m-d H:i:s");
             $content_type = 'all';
             $tag = $get['q'];
             $privacy='pri';
+            $timestamp = date("Y-m-d H:i:s");
             include 'paths.php';
             include $myclass_url;
             $ob = new myactions();
@@ -39,20 +38,20 @@ if(isset($get['q'])) {
                         
             $rdata = $ob->getApiContent($url, 'json',$postData);
             
-            //print_r($rdata); die();
+            //echo '<pre>';print_r($rdata); die();
             
             $e = microtime(true);
             $ttl_span_time = round($e - $s, 2) . " Sec";
 
             //echo '<h5>Shown in  = '.$result['elapse_time']."</h5>";
-
-            if( isset($rdata['tags']) && !empty($rdata['tags'])) {
+            if( $rdata['status'] == 'success') {
+            //if( isset($rdata['tags']) && !empty($rdata['tags'])) {
                 /*foreach ($result['tags'] as $row) {
                     echo 'Tag ID = '.$row['tag_id'].'<br>';
                     echo '<h4>Tag = '.$row['tag_string'].'</h4>';
                 }*/
                 $result['status'] = 'success';
-                $result['tags'] = $rdata['tags'];
+                $result['response'] = "Total: ".count($rdata['notes'])." notes, ".count($rdata['expenses'])." expenses, ".count($rdata['reminders'])." reminders matched with this tag. ";//$rdata['tags'];
                 $result['elapse_time'] = $ttl_span_time;
             }
             else {
