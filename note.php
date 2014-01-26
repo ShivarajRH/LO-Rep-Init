@@ -1,9 +1,8 @@
 <?php include 'paths.php';
 //print_r($_SERVER['REQUEST_URI']);die();
     error_reporting(1);
-    ob_start();
-    session_start();
-        
+    ob_start();session_start();
+
     include $myclass_url;
     $ob = new myactions();
     
@@ -14,14 +13,15 @@
         $rprofile=$rprofile[0];
         
         if(count($rprofile)>0) {
-            //header("Location:/?resp=Please_Sign_In");
-            //exit();
+            //header("Location:/?resp=Please_Sign_In");exit();
+            $_SESSION['url'] ='';
         }
     }
     else {
         $uid = urldecode($_SESSION['uid']);
         $rprofile=$_SESSION;
 //        echo 'By session';
+        
     }
     //echo '<pre>';print_r($rprofile); die();
     $gid = $rprofile['gid']; 
@@ -107,18 +107,15 @@
 	
         
 	$note_options_req='yes';
-	if($visibility=="pub")
-	{
+	if($visibility=="pub"){
 		$robots_index='index';
 		$robots_follow='follow';
 	}
-	else 
-	{
+	else {
 		$robots_index='no-index';
 		$robots_follow='no-follow';	
 	}
-	if(isset($note_content_image))
-	{
+	if(isset($note_content_image)){
 		$twitter_card_content = 'summary_large_image';
 	}
 	else 
@@ -130,21 +127,19 @@
 <body>
 	<?php include_once 'header.php'; ?>
 	<div class="center mw45em">
-		</br>
-		<img src="<?php echo $note_image; ?>" /> 
-		</br>
-        <p><?php echo $note_text; ?></p>
-        <p>
-        <?=$get_note_options;?>
-        </p>
+            <br/>
+            <img src="<?php echo $note_image; ?>" /> 
+            <br/>
+            <p><?php echo $note_text; ?></p>
+            <p><?=$get_note_options;?></p>
 	</div>
 	</br>
 	<?php include_once 'footer_reg.php'; ?>
 </body>
+</html>
 <?php
 function strip($str)
 {
     return strip_tags($str);
 }
 ?>
-</html>

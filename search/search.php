@@ -11,7 +11,7 @@ if(isset($_GET['query'])) {
         //header("Status: 404 Not Found");//header("Location:/?resp=Please_Sign_In");exit();
         $result = array('status'=>'fail','response'=>'Please sign in.');
     }
-    else 
+    else
     {
             $uid = isset($session['uid']) ? $session['uid'] : "104219296596850018797";
             $requesting_uid = $uid;

@@ -66,14 +66,17 @@
                     // Create the data table.
                     //var data = new google.visualization.DataTable();
                     //data.addColumn('string', 'Title');data.addColumn('number', 'Amount');
-
+                    var ttl_expense = 0;
                     array_push.push(["Title","Amount"]);
                     $.each(resp.expenses,function(i,row) {
+                            ttl_expense += parseFloat(row.expense_amount);
                             array_push.push([ row.title,parseInt(row.expense_amount)]);
                             //data.addRows([array_push]);
                     });
 
+                    $("#expense_total").html(ttl_expense);
                     drawChart(array_push);
+                    //$(".expenses_list_container").html(get_expense_list(resp.expenses));
                 }
                 else {
                         document.getElementById('chart_div').innerHTML = "<div>"+resp+"</div>";
