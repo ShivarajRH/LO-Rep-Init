@@ -1,11 +1,11 @@
 <?php ob_start();
     session_start();
-    if(!isset($_SESSION['uid'])) {
+    /*if(!isset($_SESSION['uid'])) {
         //header("Status: 404 Not Found"); // has effect of returning 404 status for browser no output shoud echo after
         //echo '<script>alert("Please login");</script>';
         header("Location:/?resp=Please_Sign_In");
         exit();
-    }
+    }*/
     $fname=isset($_SESSION['fname'])?$_SESSION['fname']:"";
     $lname=isset($_SESSION['lname'])?$_SESSION['lname']:"";
     $gid = isset($_SESSION['gid'])?$_SESSION['gid']:"";
@@ -26,10 +26,10 @@
 
         $load_js['global_js'] = 'global_scripts';
         $load_js['stream'] = 'stream';
-	
-	
+
+        include_once 'paths.php';
+        include_once 'head.php';
 ?>
-<?php include_once 'head.php'; ?>
 <body>
 	<?php include_once 'header.php'; ?>
 	<div class="center">
@@ -38,7 +38,21 @@
                     <input type="hidden" value="<?=$uid;?>" name="uid" id="uid"/>
                     <input type="hidden" value="<?=$content_target_src;?>" name="content_target_src" id="content_target_src"/>
 			<ul id="columns">
-                            	<?php include_once 'cards/card_reminder_box.php'; ?>
+                            <?php
+                                if(isset($_SESSION['name'])) {
+                                    //echo "<br>Welcome, ".$_SESSION['name'];
+                                    include 'cards/card_reminder_box.php';
+                                }
+                                else { ?>
+                                    <li class="pin single_note_card login_card">
+                                        <h2 style="color:#dd4b39;"">Get your FREE account</h2>
+                                        </br>
+                                        <?php 
+                                        $fn_signin_callback = "signinCallbackGeneral";
+                                        include 'google_plus_signin_button.php'; ?>
+                                        </br>
+                                    </li>
+                                <?php } ?>
 			</ul>
 		</div>
 	</div>

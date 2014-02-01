@@ -1,3 +1,4 @@
+var locationurl= $(location).attr('href'); // get current url
 
 function signinCallback(authResult) {
   if (authResult['access_token']) {
@@ -5,26 +6,74 @@ function signinCallback(authResult) {
    
         var access_token=authResult['access_token'];
         //Get auth user details
+        var redirecturl= site_url+"stream#";
+        getpeopleinfo(access_token,redirecturl); //Get auth user details
+    
+        // Hide the sign-in button now that the user is authorized, for example:
+        document.getElementById('signinButton').setAttribute('style', 'display: none');
+
+        /*$.each(authResult,function(key,val){console.log(key +' - ' + val);console.log(" \n");});*/
+        return false;
+    }
+    else if (authResult['error']) {
+        // Update the app to reflect a signed out user
+        // Possible error values:
+        //   "user_signed_out" - User is signed-out
+        //   "access_denied" - User denied access to your app
+        //   "immediate_failed" - Could not automatically log in the user
+        console.log('Sign-in state: ' + authResult['error']);
+    }
+    return false;
+}
+
+function signinCallbackGeneral(authResult) {
+  if (authResult['access_token']) {
+    // Update the app to reflect a signed in user
+
+        var access_token=authResult['access_token'];
+
+        //var redirecturl= $(location).attr('href'); //site_url+"stream#";
+        getpeopleinfo(access_token,locationurl); //Get auth user details
+
+        // Hide the sign-in button now that the user is authorized, for example:
+       document.getElementById('signinButton').setAttribute('style', 'display: none');
+
+        /*$.each(authResult,function(key,val){console.log(key +' - ' + val);console.log(" \n");});*/
+        return false;
+    }
+    else if (authResult['error']) {
+        // Update the app to reflect a signed out user
+        // Possible error values:
+        //   "user_signed_out" - User is signed-out
+        //   "access_denied" - User denied access to your app
+        //   "immediate_failed" - Could not automatically log in the user
+        console.log('Sign-in state: ' + authResult['error']);
+    }
+    return false;
+}
+
+function getpeopleinfo(access_token,redirecturl) {
+        //Get auth user details
         $.get("https://www.googleapis.com/plus/v1/people/me?access_token="+access_token,{},function(rdata){
-        
+
             var gid=rdata.id;
             var uid=rdata.id;
             var name=rdata.displayName;
-            var emails =rdata.emails;$.each(emails,function(key,val){email=val.value;});
+            var emails =rdata.emails; $.each(emails,function(key,val){email=val.value;});
             var currency='$';
             var fname=rdata.name.givenName;
             var mname='';
             var lname=rdata.name.familyName;
             var img_url=rdata.image.url;
-            
+
             var postData = {gid:gid,uid:uid,name:name,email:email,fname:fname,lname:lname,img_url:enco(img_url),currency:enco(currency)};
             //console.log(postData);
-      
+
             //store into session
             $.post(site_url+"includes/generalactions/?action=sess_create",postData,function(rdata) {
                 console.log("SESSION RESPONSE: "+rdata);
             });
-            
+
             var uname=rdata.name.givenName;
             var phone='';
             var verification=rdata.verified;
@@ -36,34 +85,18 @@ function signinCallback(authResult) {
                 +enco(lname)+"&uname="+enco(uname)+"&phone="+enco(phone)+"&verification="+enco(verification)+"&lat="+enco(lat)+"&long="
                 +enco(long1)+"&time="+timestamp+"&img_url="+img_url+"&currency="+currency;
             //console.log(apiurl);
-            
+
             //call profile api
             $.post(site_url+"api/write/?action_object=user_profile"+apiurl,{},function(rdata) {
                 //console.log("API RESPONSE="+rdata);
                 //redirect to streams
-                location.href=site_url+"stream#";
+                location.href=redirecturl;
             });
-            
-        }).fail(fail);
-    
-        // Hide the sign-in button now that the user is authorized, for example:
-       document.getElementById('signinButton').setAttribute('style', 'display: none');
 
-        /*$.each(authResult,function(key,val){
-            console.log(key +' - ' + val);
-            console.log(" \n");
-        });*/
-        return true;
-    }
-    else if (authResult['error']) {
-        // Update the app to reflect a signed out user
-        // Possible error values:
-        //   "user_signed_out" - User is signed-out
-        //   "access_denied" - User denied access to your app
-        //   "immediate_failed" - Could not automatically log in the user
-        console.log('Sign-in state: ' + authResult['error']);
-    }
-    return false;
+            var welcomemsg = "Welcome, "+name;
+            $(".login_card").html(welcomemsg);
+            return false;
+        }).fail(fail);
 }
 
 function getTimeStamp() {
@@ -83,11 +116,8 @@ function showTimeStamp(dateString) {
     var monthName = monthNameArr[fullDate.getMonth()]; 
 
     var sameyear = new Date($.now()).getFullYear();
-    
     var year = (sameyear != fullDate.getFullYear())? fullDate.getFullYear()+', ' :'';
-    
     var currentDate = year+ monthName +" "+fullDate.getDate()+",";
-    
     return currentDate+" "+fullDate.getHours()+":"+fullDate.getMinutes();//+":"+fullDate.getSeconds();
 }
 
@@ -119,8 +149,7 @@ function signOut() {
     }
 }
 
-/*
-function disconnectUser() {var access_token=gapi.auth.getToken;
+/*function disconnectUser() {var access_token=gapi.auth.getToken;
   var revokeUrl = 'https://accounts.google.com/o/oauth2/revoke?token=' +
       access_token;
 
@@ -186,27 +215,23 @@ $(document).ready(function() {
       });
     };
     
-    
-    $("#btn_apps_grid_icon").click(function() {
+    $("#btn_apps_grid_icon").mouseenter(function() {
         //$(".menu_drop_list").toggleClass('show');
-        closeMenu("menu_drop_list");
-    });
-    
-    /*$("body").click(function(e) {
-        var classname="menu_drop_list";
         //closeMenu("menu_drop_list");
-        var cls = $("#"+classname+"");
-        
-        alert(cls.hasClass('hide'));
 
+        var cls = $("#menu_drop_list");
         if(cls.hasClass('hide')) {
-//            cls.removeClass('hide');
-//            e.stopPropagation();
+            cls.removeClass('hide');
         }
-        else {
+    });
+//,#btn_apps_grid_icon,#menu_drop_list
+    $(".menu_drop").mouseleave(function(e) {
+        var cls = $("#menu_drop_list");
+        if(!cls.hasClass('hide')) {
             cls.addClass('hide');
         }
-    });*/
+    });
+    
 });
 
 function closeMenu(classname) {
@@ -216,13 +241,10 @@ function closeMenu(classname) {
     if(cls.hasClass('hide')) {
         cls.removeClass('hide');
     }
-    else {
-        cls.addClass('hide');
-    }
+    //else {        cls.addClass('hide');    }
     
-    //$(classname).hide(); // hiding popups
-    //$("#nav .selected").removeClass("selected");
-};
+    //$(classname).hide(); // hiding popups //$("#nav .selected").removeClass("selected");
+}
 
 function removeClass(className) {
     // convert the result to an Array object

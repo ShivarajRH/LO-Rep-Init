@@ -98,6 +98,17 @@
     });
     
     // ('^(?:^([0-9]+(\.[0-9]*)?[BKMGT]?))$')
+    
+    $(document).ready(function() {
+        //jquery
+        $(location).attr('href');
+
+        //pure javascript
+        var pathname = window.location.pathname;
+
+        // to show it in an alert window
+        alert(window.location);
+    });
 </script>
 <?php
 /*    include 'includes/myclasses.php';

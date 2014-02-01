@@ -21,7 +21,6 @@
         $uid = urldecode($_SESSION['uid']);
         $rprofile=$_SESSION;
 //        echo 'By session';
-        
     }
     //echo '<pre>';print_r($rprofile); die();
     $gid = $rprofile['gid']; 
@@ -49,7 +48,8 @@
     $file_id = '';
     $note_text=$arr_notes['note_text'];
     $note_image='';
-
+    include_once 'cards/note_options.php'; 
+    
     if ($visibility == 'pri') {
                     
             if(isset($rprofile['email']))
@@ -57,7 +57,6 @@
                     if($uid==$uid_visit) //if owner 
                     {
                         if($note_options_req=='yes') {
-                                include 'cards/note_options.php';
                                 $get_note_options = get_note_options();
                         }
                     }
@@ -80,7 +79,6 @@
                     {
 
                         if($note_options_req=='yes') {
-                                include 'cards/note_options.php'; 
                                 $get_note_options = get_note_options();
                         }
                     }
@@ -88,10 +86,8 @@
             }//User not logged in
             else {                 }
     }
-    
+
         #=================
-//        echo $note_text;
-        
 	$metatitle='LyfeOn - '.strip(substr($note_text, 0, 60)).'';
 	$metadescription='LyfeOn - '.strip(substr($note_text, 0, 170)).'';
 	$metaabstract='LyfeOn - '.strip(substr($note_text, 0, 90)).'';
@@ -123,23 +119,52 @@
     
         include_once 'head.php'; 
 ?>
-
 <body>
 	<?php include_once 'header.php'; ?>
-	<div class="center mw45em">
-            <br/>
-            <img src="<?php echo $note_image; ?>" /> 
-            <br/>
-            <p><?php echo $note_text; ?></p>
-            <p><?=$get_note_options;?></p>
-	</div>
-	</br>
-	<?php include_once 'footer_reg.php'; ?>
+	<div class="center">
+		</br>
+                <div id="wrapper">
+                    <ul id="columns">                        
+                        
+                        <?php
+                        if(isset($_SESSION['name'])) {
+                            //echo "<br>Welcome, ".$_SESSION['name'];
+                        }
+                        else { ?>
+                            <li class="pin single_note_card login_card">
+                                <h2 style="color:#dd4b39;"">Get your FREE account</h2>
+                                </br>
+                                <?php 
+                                $fn_signin_callback = "signinCallbackGeneral";
+                                include 'google_plus_signin_button.php'; ?>
+                                </br>
+                            </li>
+                        <?php } ?>
+                        
+                        
+                        <li class='pin single_note_card'>
+                                <img src='<?=$note_image; ?>' />
+                                <div class='' id='editor_<?=$content_id; ?>'><?=nl2br(linkHashtags($note_text));?></div>
+                                <p><?=$get_note_options;?></p>
+                        </li>
+                    </ul>
+                </div>
+        </div>
+        <?php include_once 'footer_reg.php'; ?>
 </body>
 </html>
 <?php
+
 function strip($str)
 {
     return strip_tags($str);
 }
+
+function linkHashtags($text) {
+    $hashtag_regexp = '/#([a-zA-Z0-9]+)/';
+    return preg_replace($hashtag_regexp
+                        ,'<a class="hashtag" target="_blank" href="'.site_url.'/tag/?q=$1">#$1</a>'
+                        ,$text);
+}
+
 ?>

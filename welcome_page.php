@@ -62,7 +62,7 @@
                                                 </br>
                                 </li>-->
                                 
-                                <li class="pin single_note_card">
+                                <li class="pin single_note_card login_card">
                                         <h2 style="color:#dd4b39;"">Get your FREE account</h2>
                                         </br>
                                         <?php include 'google_plus_signin_button.php'; ?>
