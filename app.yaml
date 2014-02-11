@@ -46,6 +46,9 @@ handlers:
 - url: /worker/tagmodifier/.*
   script: worker/tagmodifier.php
   
+- url: /worker/update_contacts/.*
+  script: worker/update_contacts.php
+    
   # Co url
 - url: /co/analytics/analytics
   script: co/analytics/analytics.php
@@ -101,12 +104,10 @@ handlers:
 - url: /search(/?.*?)
   script: search/search.php
 
-- url: /exampleCharts/.*
-  script: exampleCharts.php
-  
-  
-#- url: /+
-- url: /.*
+
+#------------------------------------------------------  
+- url: /+
+#- url: /.*
   script: welcome_page.php
 
 #error_handlers:
@@ -115,7 +116,7 @@ handlers:
  #- error_code: over_quota
   #  file: over_quota.html
 
-#- url: /.*
-#  script: error_404.php
+- url: /.*
+  script: error_404.php
 
 

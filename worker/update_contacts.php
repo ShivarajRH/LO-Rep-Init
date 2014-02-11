@@ -1,71 +1,16 @@
 <?php
-require_once 'google/appengine/api/taskqueue/PushTask.php';
-use \google\appengine\api\taskqueue\PushTask;
+/**
+ * @author Shivaraj <mrshivaraj123@gmail.com.com>
+ * @uses Create task queue to update contacts
+ */
+$post = ($_REQUEST);
 
-if(isset($_GET['action'])) {
-    $action = $_REQUEST['action'];
-    
-    $post = $_POST;
-    if($action == 'sess_create') {
-        if(!empty($post) and $post!='') {
-            //print_r($post);die();
-            $output=do_create_sess($post);
-        }
-        else {
-            $output="No input data.";
-        }
-    }
-    elseif($action == 'sess_destroy') {
-        $output = do_destroy_session();
-    }
-    elseif($action == 'getAllNotes') {
-        $output = do_getAllNotes();
-    }
-    elseif($action == 'updt_contacts') {
-        $taskname = createTaskQueue($post);
-        //$output = do_updateContacts($post);
-    }
-    else {
-        $output="Invalid URL";
-    }
-    
-}
-echo ''.json_encode($output);
+if(!isset($post['data'])) 
+    print_msg(array("status"=>"fail","response"=>"No input.")); 
 
-function do_getAllNotes() {
-    print_r($_SESSION);
-}
-function do_create_sess($post)  {
-    session_start();
-    $_SESSION['uid']=$post['uid'];
-    $_SESSION['name']=$post['name'];
-    $_SESSION['gid']=$post['gid'];
-    $_SESSION['email']=$post['email'];
-    $_SESSION['fname']=$post['fname'];
-    $_SESSION['lname']=$post['lname'];
-    
-    return "Session is set.";
-}
+$data = do_updateContacts($post);
+print_msg($data);
 
-function do_destroy_session()  {
-    session_start();
-    if(isset($_SESSION['uid'])) {
-        session_destroy();
-        return "Session destroyed.";
-    }
-    else {
-        return "No session to destroy.";
-    }
-    
-}
-   
-function createTaskQueue($post) {
-    $task = new PushTask('/worker/update_contacts/', ['data' => $post['data'],'uid' => $post['uid'] ]);
-    $task_name = $task->add();
-    return $task_name;
-}
-    
-    /*
     // update_contacts.php
     function do_updateContacts($post) {
         include "paths.php";
@@ -108,5 +53,18 @@ function createTaskQueue($post) {
             $result["status"] = 'success';
             return $result;
             //:-) contacts module done
-    }*/
+    }
+    
+function print_msg($error) {
+    if(is_array($error)) {
+        echo json_encode($error);
+    }
+    else {
+        echo json_encode(array("status"=>"fail","response"=>$error));
+    }
+    die();
+}
+function unknown() {
+    return array("status"=>"fail","response"=>"Unknown url");
+}
 ?>

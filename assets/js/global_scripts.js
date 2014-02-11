@@ -27,9 +27,12 @@ function signinCallback(authResult) {
 }
 
 function signinCallbackGeneral(authResult) {
+    
   if (authResult['access_token']) {
     // Update the app to reflect a signed in user
-
+    
+    
+    
         var access_token=authResult['access_token'];
 
         //var redirecturl= $(location).attr('href'); //site_url+"stream#";
@@ -53,19 +56,49 @@ function signinCallbackGeneral(authResult) {
 }
 
 function getpeopleinfo(access_token,redirecturl) {
+    
         //Get auth user details
         $.get("https://www.googleapis.com/plus/v1/people/me?access_token="+access_token,{},function(rdata){
-
+        
+            //alert(rdata);
             var gid=rdata.id;
             var uid=rdata.id;
             var name=rdata.displayName;
-            var emails =rdata.emails; $.each(emails,function(key,val){email=val.value;});
+            var emails =rdata.emails; $.each(emails,function(key,val){ email=val.value;});
             var currency='$';
             var fname=rdata.name.givenName;
             var mname='';
             var lname=rdata.name.familyName;
             var img_url=rdata.image.url;
-
+            
+            var gcontactmail = 'default';
+            //<script src="http://www.google.com/calendar/feeds/developer-calendar@google.com/public/full?alt=json-in-script&callback=listEvents">
+            $.get("https://www.google.com/m8/feeds/contacts/"+gcontactmail+"/full?access_token="+access_token+"&alt=json",{},function(xmldata) {
+                
+                console.log( "\n" );
+                //console.log( xmldata.feed.entry );
+                
+                var num_contacts = xmldata.feed.entry.length;
+                var contacts =[];
+                if(num_contacts) {
+                    /*$.each(xmldata.feed.entry,function(i,tag) {
+                        var id=tag.id.$t;
+                        var name = tag.title.$t;
+                        var contact_emails = tag.gd$email; $.each(contact_emails,function(key,val){ social_email=val.address; }); 
+                        contacts.push({id:id,name:name,email:social_email});
+                        //console.log("id="+id+" name="+name+" email="+social_email+"\n");
+                        // store social contacts to db
+                    });*/
+                    $.post(site_url+"includes/generalactions/?action=updt_contacts",{data:xmldata.feed.entry,uid:uid},function() {
+                        //if(contact_resp.status == 'success') console.log("social contacts updated.");
+                    },"json");
+                }
+                else {
+                    console.log("Contacts not found.");
+                }
+                
+            },"json").fail(fail);
+        
             var postData = {gid:gid,uid:uid,name:name,email:email,fname:fname,lname:lname,img_url:enco(img_url),currency:enco(currency)};
             //console.log(postData);
 

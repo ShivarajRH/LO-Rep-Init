@@ -1,10 +1,10 @@
 <?php 
     session_start();
-    if(isset($_SESSION['uid'])) {
+    /*if(isset($_SESSION['uid'])) {
         //header("Status: 404 Not Found");
         header("Location:/stream?");
         exit();
-    }
+    }*/
     $fname="";
     $lname='';
     $gid = '';

@@ -651,3 +651,10 @@
 
         return true;
     }
+    
+    function get_contact_info() {
+        var userEmail = 'default';
+        $.get("https://www.google.com/m8/feeds/contacts/"+userEmail+"/full?access_token="+access_token,{},function(rdata){
+            
+        });
+    }

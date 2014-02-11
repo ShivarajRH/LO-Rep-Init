@@ -9,10 +9,10 @@
         exit();
     }
 
-    $fname=isset($_SESSION['fname'])?$_SESSION['fname']:"";
-    $lname=isset($_SESSION['lname'])?$_SESSION['lname']:"";
-    $gid = isset($_SESSION['gid'])?$_SESSION['gid']:""; 
-    $uid = isset($_SESSION['uid'])?$_SESSION['uid']:"104219296596850018797";
+    $fname=isset($_SESSION['fname'])?$_SESSION['fname'] : "";
+    $lname=isset($_SESSION['lname'])?$_SESSION['lname'] : "";
+    $gid = isset($_SESSION['gid'])?$_SESSION['gid'] : ""; 
+    $uid = isset($_SESSION['uid'])?$_SESSION['uid'] : "104219296596850018797";
     $content_target_src='stream';
 
     $metatitle='LyfeOn - Your Stuff !';

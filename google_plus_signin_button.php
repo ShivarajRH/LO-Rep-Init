@@ -18,8 +18,12 @@ else $fn_signin_callback = "signinCallback";
 		data-theme="dark"
 		data-width="wide"
 		data-height="tall"
-		data-scope="https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login">
+		data-scope="https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.google.com/m8/feeds https://www.google.com/m8/feeds/user">
 	</span>
+<!--
+https://www.googleapis.com/auth/plus.login    https://www.googleapis.com/auth/plus.me    https://www.googleapis.com/auth/userinfo.email    https://www.googleapis.com/auth/userinfo.profile-->
+<!--https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.google.com/m8/feeds-->
+    
     <!-- data-cookiepolicy="http://lyfeon.com"-->
     <!-- IMP: Change data-height="short" when included in header  -->
 </span>

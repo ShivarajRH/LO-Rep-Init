@@ -11,8 +11,11 @@ $metasubject='Error 404';
 $metapagename='Error 404';
 $metasubtitle='Error 404';
 $metacopyright='LyfeOn';
-?>
-<?php include_once 'head.php '; ?>
+$robots_index = 'no-index';
+$robots_follow = 'no-follow';
+
+include 'paths.php';
+include_once 'head.php'; ?>
 <body>
 <?php include_once 'header.php '; ?>
 <div class="center">
