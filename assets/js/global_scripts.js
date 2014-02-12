@@ -1,10 +1,84 @@
-var locationurl= $(location).attr('href'); // get current url
+    //var clientId = "<?=$client_id;?>";
+    //var apiKey = "<?=$apiKey;?>";
+    //var scopes = 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.google.com/m8/feeds https://www.google.com/m8/feeds/user';////https://www.googleapis.com/auth/plus.me
 
+    var clientId=$("#authorize-button").attr("data-clientid");
+    var apiKey=$("#authorize-button").attr("data-apikey");
+    var apiKey=$("#authorize-button").attr("data-scope");
+    
+    function handleClientLoad() {
+        // Step 2: Reference the API key
+        gapi.client.setApiKey(apiKey);
+        window.setTimeout(checkAuth,1);
+    }
+
+    function checkAuth() {
+      gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
+    }
+
+    function handleAuthClick(event) {
+      // Step 3: get authorization to use private data
+      gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
+      return false;
+    }
+    
+    function handleAuthResult(authResult) {
+      var authorizeButton = document.getElementById('authorize-button');
+      if (authResult && !authResult.error) {
+        authorizeButton.style.visibility = 'hidden';
+        signinCallback(authResult);
+      } else {
+        authorizeButton.style.visibility = '';
+        authorizeButton.onclick = handleAuthClick;
+      }
+    }
+
+
+    // Load the API and make an API call.  Display the results on the screen.
+    function makeApiCall() {
+              // Step 4: Load the Google+ API
+              gapi.client.load('plus', 'v1', function() {
+                 // Step 5: Assemble the API request
+//                      var request = gapi.client.plus.people.get({
+//                        'userId': 'me'
+//                      });
+                  ////////////////////
+                  // This sample assumes a client object has been created.
+                  // To learn more about creating a client, check out the starter:
+                  //  https://developers.google.com/+/quickstart/javascript
+                  var request = gapi.client.plus.people.list({
+                    'userId' : 'me',
+                    'collection' : 'visible'
+                  });
+                  // Step 6: Execute the API request
+                  request.execute(function(resp) {
+                    var numItems = resp.items.length;
+                    for (var i = 0; i < numItems; i++) {
+                      console.log(resp.items[i].displayName);
+                    }
+                  });
+                 ///////////////////////
+
+
+                // Step 6: Execute the API request
+//                      request.execute(function(resp) {
+//                        var heading = document.createElement('h4');
+//                        var image = document.createElement('img');
+//                        image.src = resp.image.url;
+//                        heading.appendChild(image);
+//                        heading.appendChild(document.createTextNode(resp.displayName));
+//            
+//                        document.getElementById('content').appendChild(heading);
+//                      });
+      });
+    }
+//==================================================
 function signinCallback(authResult) {
   if (authResult['access_token']) {
     // Update the app to reflect a signed in user
    
         var access_token=authResult['access_token'];
+        
         //Get auth user details
         var redirecturl= site_url+"stream#";
         getpeopleinfo(access_token,redirecturl); //Get auth user details
@@ -75,7 +149,7 @@ function getpeopleinfo(access_token,redirecturl) {
             //<script src="http://www.google.com/calendar/feeds/developer-calendar@google.com/public/full?alt=json-in-script&callback=listEvents">
             $.get("https://www.google.com/m8/feeds/contacts/"+gcontactmail+"/full?access_token="+access_token+"&alt=json",{},function(xmldata) {
                 
-                console.log( "\n" );
+                //console.log( "\n" );
                 //console.log( xmldata.feed.entry );
                 
                 var num_contacts = xmldata.feed.entry.length;
@@ -93,9 +167,8 @@ function getpeopleinfo(access_token,redirecturl) {
                         //if(contact_resp.status == 'success') console.log("social contacts updated.");
                     },"json");
                 }
-                else {
+                else
                     console.log("Contacts not found.");
-                }
                 
             },"json").fail(fail);
         
@@ -106,6 +179,7 @@ function getpeopleinfo(access_token,redirecturl) {
             $.post(site_url+"includes/generalactions/?action=sess_create",postData,function(rdata) {
                 console.log("SESSION RESPONSE: "+rdata);
             });
+            
 
             var uname=rdata.name.givenName;
             var phone='';
@@ -123,7 +197,7 @@ function getpeopleinfo(access_token,redirecturl) {
             $.post(site_url+"api/write/?action_object=user_profile"+apiurl,{},function(rdata) {
                 //console.log("API RESPONSE="+rdata);
                 //redirect to streams
-                location.href=redirecturl;
+//                location.href=redirecturl;
             });
 
             var welcomemsg = "Welcome, "+name;

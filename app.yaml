@@ -16,7 +16,8 @@ handlers:
   
 - url: /includes/api_process/.*
   script: includes/api_process.php
-
+  
+    
 #  Apis url
 #- url: /apis/(/?.*?)
 - url: /api/write/.*  
@@ -104,6 +105,9 @@ handlers:
 - url: /search(/?.*?)
   script: search/search.php
 
+#testing
+- url: /apiaccess(/?.*?)
+  script: apiaccess.php
 
 #------------------------------------------------------  
 - url: /+
