@@ -1,32 +1,34 @@
-    //var clientId = "<?=$client_id;?>";
-    //var apiKey = "<?=$apiKey;?>";
-    //var scopes = 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.google.com/m8/feeds https://www.google.com/m8/feeds/user';////https://www.googleapis.com/auth/plus.me
 
-    var clientId=$("#authorize-button").attr("data-clientid");
-    var apiKey=$("#authorize-button").attr("data-apikey");
-    var apiKey=$("#authorize-button").attr("data-scope");
-    
     function handleClientLoad() {
         // Step 2: Reference the API key
+        var apiKey=$("#authorize-button").attr("data-apikey");
         gapi.client.setApiKey(apiKey);
         window.setTimeout(checkAuth,1);
     }
-
-    function checkAuth() {
-      gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
-    }
-
+    
     function handleAuthClick(event) {
-      // Step 3: get authorization to use private data
-      gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
-      return false;
+        var clientId=$("#authorize-button").attr("data-clientid");
+        var apiKey=$("#authorize-button").attr("data-apikey");
+        var scopes=$("#authorize-button").attr("data-scope");
+
+        // Step 3: get authorization to use private data
+        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
+        return false;
     }
+    
+    function checkAuth() {
+        var clientId=$("#authorize-button").attr("data-clientid");
+        var apiKey=$("#authorize-button").attr("data-apikey");
+        var scopes=$("#authorize-button").attr("data-scope");
+        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
+    }
+
     
     function handleAuthResult(authResult) {
       var authorizeButton = document.getElementById('authorize-button');
       if (authResult && !authResult.error) {
         authorizeButton.style.visibility = 'hidden';
-        signinCallback(authResult);
+        makeApiCall();
       } else {
         authorizeButton.style.visibility = '';
         authorizeButton.onclick = handleAuthClick;
@@ -36,44 +38,93 @@
 
     // Load the API and make an API call.  Display the results on the screen.
     function makeApiCall() {
-              // Step 4: Load the Google+ API
-              gapi.client.load('plus', 'v1', function() {
-                 // Step 5: Assemble the API request
-//                      var request = gapi.client.plus.people.get({
-//                        'userId': 'me'
-//                      });
-                  ////////////////////
-                  // This sample assumes a client object has been created.
-                  // To learn more about creating a client, check out the starter:
-                  //  https://developers.google.com/+/quickstart/javascript
-                  var request = gapi.client.plus.people.list({
-                    'userId' : 'me',
-                    'collection' : 'visible'
+        
+            // Step 4: Load the Google+ API
+            gapi.client.load('plus', 'v1', function() {
+                
+                // Step 5: Assemble the API request
+                  var request = gapi.client.plus.people.get({
+                    'userId': 'me'
                   });
-                  // Step 6: Execute the API request
-                  request.execute(function(resp) {
-                    var numItems = resp.items.length;
-                    for (var i = 0; i < numItems; i++) {
-                      console.log(resp.items[i].displayName);
-                    }
-                  });
-                 ///////////////////////
-
-
+                  
+                  var uid = 0;
                 // Step 6: Execute the API request
-//                      request.execute(function(resp) {
-//                        var heading = document.createElement('h4');
-//                        var image = document.createElement('img');
-//                        image.src = resp.image.url;
-//                        heading.appendChild(image);
-//                        heading.appendChild(document.createTextNode(resp.displayName));
-//            
-//                        document.getElementById('content').appendChild(heading);
-//                      });
-      });
+                  request.execute(function(resp) {
+
+                        //var heading = document.createElement('h4');var image = document.createElement('img');image.src = resp.image.url;heading.appendChild(image);heading.appendChild(document.createTextNode(resp.displayName));document.getElementById('content').appendChild(heading);
+                        var rdata = resp.result;
+                    
+                        //API WORK
+                        var gid=rdata.id;
+                        uid=rdata.id;
+                        var name=rdata.displayName;
+                        var emails =rdata.emails; $.each(emails,function(key,val){ email=val.value;});
+                        var currency='$';
+                        var fname=rdata.name.givenName;
+                        var mname='';
+                        var lname=rdata.name.familyName;
+                        var img_url=rdata.image.url;
+                        var postData = {gid:gid,uid:uid,name:name,email:email,fname:fname,lname:lname,img_url:enco(img_url),currency:enco(currency)};
+                        console.log(postData);
+
+                        //========STORE TO SESSION==============
+                        $.post(site_url+"includes/generalactions/?action=sess_create",postData,function(rdata) {
+                            console.log("SESSION RESPONSE: "+rdata);
+                        });
+
+                        var welcomemsg = "Welcome, "+name;
+                        $(".login_card").html(welcomemsg);
+                        
+                        
+                        //////PEOPLE INFO/////////////////
+                        // This sample assumes a client object has been created. To learn more about creating a client, check out the starter:https://developers.google.com/+/quickstart/javascript
+                        var request = gapi.client.plus.people.list({
+                          'userId' : 'me',
+                          'collection' : 'visible'
+                        });
+
+                        // Step 6: Execute the API request
+                        request.execute(function(rdata) {
+                            var numItems = rdata.totalItems;
+                            $.post(site_url+"includes/generalactions/?action=updt_people",{data:rdata.result,uid:uid},function(contact_resp) {
+                                //if(contact_resp.status == 'success') console.log("social contacts updated.");
+                                console.log(contact_resp);
+                            },"json");
+                            
+                            /*for (var i = 0; i < numItems; i++) {console.log(rdata.items[i].displayName);}*/
+                          
+                        });
+                        ////////////////////////////////////
+
+                        //////////////PROFILE INFO///////////
+                        var uname=rdata.name.givenName;
+                        var phone='';
+                        var verification=rdata.verified;
+                        var lat='77';
+                        var long1='23';
+                        var timestamp=getTimeStamp(); 
+
+                        var apiurl = "&uid="+enco(uid)+"&gid="+enco(gid)+"&name="+enco(name)+"&email="+enco(email)+"&fname="+enco(fname)+"&mname="+enco(mname)+"&lname="
+                            +enco(lname)+"&uname="+enco(uname)+"&phone="+enco(phone)+"&verification="+enco(verification)+"&lat="+enco(lat)+"&long="
+                            +enco(long1)+"&time="+timestamp+"&img_url="+img_url+"&currency="+currency;
+                        //console.log(apiurl);
+
+                        //call profile api
+                        $.post(site_url+"api/write/?action_object=user_profile"+apiurl,{},function(rdata) {
+                            //console.log("API RESPONSE="+rdata);
+                            //redirect to streams
+            //                location.href=redirecturl;
+                        });
+                        
+                        return false;
+                      // end aspi work
+                  });
+
+            });
     }
+    
 //==================================================
-function signinCallback(authResult) {
+/*function signinCallback(authResult) {
   if (authResult['access_token']) {
     // Update the app to reflect a signed in user
    
@@ -84,9 +135,9 @@ function signinCallback(authResult) {
         getpeopleinfo(access_token,redirecturl); //Get auth user details
     
         // Hide the sign-in button now that the user is authorized, for example:
-        document.getElementById('signinButton').setAttribute('style', 'display: none');
+        //document.getElementById('signinButton').setAttribute('style', 'display: none');
 
-        /*$.each(authResult,function(key,val){console.log(key +' - ' + val);console.log(" \n");});*/
+        //$.each(authResult,function(key,val){console.log(key +' - ' + val);console.log(" \n");});
         return false;
     }
     else if (authResult['error']) {
@@ -113,9 +164,9 @@ function signinCallbackGeneral(authResult) {
         getpeopleinfo(access_token,locationurl); //Get auth user details
 
         // Hide the sign-in button now that the user is authorized, for example:
-       document.getElementById('signinButton').setAttribute('style', 'display: none');
+       //document.getElementById('signinButton').setAttribute('style', 'display: none');
 
-        /*$.each(authResult,function(key,val){console.log(key +' - ' + val);console.log(" \n");});*/
+        //$.each(authResult,function(key,val){console.log(key +' - ' + val);console.log(" \n");});
         return false;
     }
     else if (authResult['error']) {
@@ -128,7 +179,6 @@ function signinCallbackGeneral(authResult) {
     }
     return false;
 }
-
 function getpeopleinfo(access_token,redirecturl) {
     
         //Get auth user details
@@ -145,13 +195,10 @@ function getpeopleinfo(access_token,redirecturl) {
             var lname=rdata.name.familyName;
             var img_url=rdata.image.url;
             
-            var gcontactmail = 'default';
+            /*var gcontactmail = 'default';
             //<script src="http://www.google.com/calendar/feeds/developer-calendar@google.com/public/full?alt=json-in-script&callback=listEvents">
             $.get("https://www.google.com/m8/feeds/contacts/"+gcontactmail+"/full?access_token="+access_token+"&alt=json",{},function(xmldata) {
-                
-                //console.log( "\n" );
                 //console.log( xmldata.feed.entry );
-                
                 var num_contacts = xmldata.feed.entry.length;
                 var contacts =[];
                 if(num_contacts) {
@@ -163,15 +210,12 @@ function getpeopleinfo(access_token,redirecturl) {
                         //console.log("id="+id+" name="+name+" email="+social_email+"\n");
                         // store social contacts to db
                     });*/
-                    $.post(site_url+"includes/generalactions/?action=updt_contacts",{data:xmldata.feed.entry,uid:uid},function() {
+                    /*$.post(site_url+"includes/generalactions/?action=updt_contacts",{data:xmldata.feed.entry,uid:uid},function() {
                         //if(contact_resp.status == 'success') console.log("social contacts updated.");
                     },"json");
-                }
-                else
-                    console.log("Contacts not found.");
-                
-            },"json").fail(fail);
-        
+                } else console.log("Contacts not found.");
+            },"json").fail(fail);*/
+        /*
             var postData = {gid:gid,uid:uid,name:name,email:email,fname:fname,lname:lname,img_url:enco(img_url),currency:enco(currency)};
             //console.log(postData);
 
@@ -204,7 +248,7 @@ function getpeopleinfo(access_token,redirecturl) {
             $(".login_card").html(welcomemsg);
             return false;
         }).fail(fail);
-}
+}*/
 
 function getTimeStamp() {
     var fullDate = new Date($.now());

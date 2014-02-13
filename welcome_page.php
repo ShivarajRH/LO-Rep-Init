@@ -34,11 +34,11 @@
 <body>
     <!-- Google+ Signin -->
     <script type="text/javascript">
-      (function() {
+      /*(function() {
        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
        po.src = 'https://apis.google.com/js/client:plusone.js';
        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-     })();
+     })();*/
     </script>
         <?php include_once 'header.php'; ?>
         <div class="center">
@@ -63,8 +63,8 @@
                                 </li>-->
                                 
                                 <li class="pin single_note_card login_card">
-                                        <h2 style="color:#dd4b39;"">Get your FREE account</h2>
-                                        </br>
+                                        <h2 style="color:#dd4b39;">Get your FREE account</h2>
+                                        <br />
                                         <?php include 'google_plus_signin_button.php'; ?>
                                         </br></br>
                                         <div>

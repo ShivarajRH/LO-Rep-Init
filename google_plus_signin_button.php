@@ -33,7 +33,7 @@ $apiKey = 'AIzaSyBt514eUceQLLd8b_KI2XKD_tsaVtwm4E8';
 
 
 <!--Add a button for the user to click to initiate auth sequence -->
-<button id="authorize-button" style="visibility: hidden" 
+<button id="authorize-button" style="visibility: hidden;" 
                 class="g-signin"
 		data-callback="<?=$fn_signin_callback;?>"
 		data-clientid="<?=$client_id;?>"
@@ -44,3 +44,6 @@ $apiKey = 'AIzaSyBt514eUceQLLd8b_KI2XKD_tsaVtwm4E8';
 		data-width="wide"
 		data-height="tall"
 		data-scope="https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.google.com/m8/feeds https://www.google.com/m8/feeds/user">Authorize</button>
+
+<!--// Step 1: Load JavaScript client library-->
+<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>

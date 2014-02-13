@@ -1,0 +1,148 @@
+URL:POST https://content.googleapis.com/rpc?key=AIzaSyBt514eUceQLLd8b_KI2XKD_tsaVtwm4E8
+	
+RESPONSE:
+[
+ {
+  "id": "gapiRpc",
+  "result": {
+   "kind": "plus#person",
+   "etag": "\"KmFlUTDKo0bNqNhpeBygvIv8XvA/CGpmy0n2AkSRFPffbBWv2f1cm_Q\"",
+   "occupation": "Engineering Director",
+   "skills": "Engineering",
+   "birthday": "0000-03-31",
+   "gender": "female",
+   "emails": [
+    {
+     "value": "publish@lyfeon.com",
+     "type": "account"
+    }
+   ],
+   "urls": [
+    {
+     "value": "http://blog.lyfeon.com",
+     "type": "contributor",
+     "label": "LyfeOn Blog"
+    }
+   ],
+   "objectType": "person",
+   "id": "110936693132595308509",
+   "displayName": "Sarah Collin",
+   "name": {
+    "familyName": "Collin",
+    "givenName": "Sarah"
+   },
+   "tagline": "Living life in HD",
+   "relationshipStatus": "in_a_relationship",
+   "url": "https://plus.google.com/110936693132595308509",
+   "image": {
+    "url": "https://lh5.googleusercontent.com/-r67Gkiq5xig/AAAAAAAAAAI/AAAAAAAAAG4/S6WsortVVNU/photo.jpg?sz=50"
+   },
+   "organizations": [
+    {
+     "name": "City College of New York",
+     "title": "Master of Science",
+     "type": "school",
+     "startDate": "2006",
+     "endDate": "2009",
+     "primary": false
+    },
+    {
+     "name": "LyfeOn",
+     "title": "Director of Engineering",
+     "type": "work",
+     "startDate": "2013",
+     "primary": true
+    }
+   ],
+   "placesLived": [
+    {
+     "value": "New York",
+     "primary": true
+    }
+   ],
+   "isPlusUser": true,
+   "language": "en",
+   "ageRange": {
+    "min": 21
+   },
+   "circledByCount": 0,
+   "verified": false,
+   "cover": {
+    "layout": "banner",
+    "coverPhoto": {
+     "url": "https://lh4.googleusercontent.com/-HzXtdN0IHlA/UcojOf549nI/AAAAAAAABl0/RRy6DGYZecA/s630-fcrop64=1,00002732ff2dffff/%25C2%25A9%2BVincent%2BMo_Latte.jpg",
+     "height": 626,
+     "width": 940
+    },
+    "coverInfo": {
+     "topImageOffset": 0,
+     "leftImageOffset": 0
+    }
+   },
+   "domain": "lyfeon.com"
+  }
+ }
+]
+
+2. People list
+URL:
+
+Response:
+
+[
+    {
+        "id": "gapiRpc",
+        "result": {
+            "kind": "plus#peopleFeed",
+            "etag": "\"KmFlUTDKo0bNqNhpeBygvIv8XvA/Z2uO-vlWb5RAjxvdYxc68TJgAp4\"",
+            "title": "Google+ List of Visible People",
+            "totalItems": 4,
+            "items": [
+                {
+                    "kind": "plus#person",
+                    "etag": "\"KmFlUTDKo0bNqNhpeBygvIv8XvA/kdAGZtyhBI1nCyWlcx1u6jOZgFg\"",
+                    "objectType": "page",
+                    "id": "118335972259503633372",
+                    "displayName": "LyfeOn .",
+                    "url": "https://plus.google.com/+LyfeOn",
+                    "image": {
+                        "url": "https://lh5.googleusercontent.com/-q9JYuCC-pKU/AAAAAAAAAAI/AAAAAAAAAEc/BM0kKuzVP3E/photo.jpg?sz=50"
+                    }
+                },
+                {
+                    "kind": "plus#person",
+                    "etag": "\"KmFlUTDKo0bNqNhpeBygvIv8XvA/fSDMYBX-Jw64vNdoA8mCb1gNT9Q\"",
+                    "objectType": "person",
+                    "id": "109243820562492001894",
+                    "displayName": "Namratha Vishwananda",
+                    "url": "https://plus.google.com/109243820562492001894",
+                    "image": {
+                        "url": "https://lh5.googleusercontent.com/-_z8YFC9mZHM/AAAAAAAAAAI/AAAAAAAAAGQ/WWBInHABbn8/photo.jpg?sz=50"
+                    }
+                },
+                {
+                    "kind": "plus#person",
+                    "etag": "\"KmFlUTDKo0bNqNhpeBygvIv8XvA/Xa_E3nAxthJoYZbX8QNOZXCamJo\"",
+                    "objectType": "person",
+                    "id": "101651219808545508511",
+                    "displayName": "Neal Smith",
+                    "url": "https://plus.google.com/101651219808545508511",
+                    "image": {
+                        "url": "https://lh4.googleusercontent.com/-SmOV1CZKit4/AAAAAAAAAAI/AAAAAAAAACI/Mw7SLLczXqg/photo.jpg?sz=50"
+                    }
+                },
+                {
+                    "kind": "plus#person",
+                    "etag": "\"KmFlUTDKo0bNqNhpeBygvIv8XvA/cnGCrjHMHcA17iDGeQ3uzaua0P0\"",
+                    "objectType": "person",
+                    "id": "102551492162357281309",
+                    "displayName": "Taraka Anil Sabbineni",
+                    "url": "https://plus.google.com/+TarakaAnilSabbineni",
+                    "image": {
+                        "url": "https://lh6.googleusercontent.com/-L1w4vFpn5qg/AAAAAAAAAAI/AAAAAAABIkU/PX9BTd83qio/photo.jpg?sz=50"
+                    }
+                }
+            ]
+        }
+    }
+]
