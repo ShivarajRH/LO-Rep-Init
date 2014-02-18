@@ -50,9 +50,9 @@
         isexecuted=1;
         var interval = $("body").data('interval');
         var postData={action:"time_filter",uid:'<?php echo $uid;?>',content_type:"expense",interval:interval};
-        //print(interval+"...2");
+//        print(interval+"...2");
         $.post(site_url+"includes/api_process/",postData,function(resp){
-//                console.log(resp.expenses); //return false;
+                //console.log(resp.expenses); return false;
                 // Create and populate the data table.
                 /*var data = google.visualization.arrayToDataTable([
                   ['Year', 'Austria', 'Bulgaria', 'Denmark', 'Greece'],
@@ -62,27 +62,37 @@
 
                 if(resp.status == "success") 
                 {
-                    var array_push = [];
-                    // Create the data table.
-                    //var data = new google.visualization.DataTable();
-                    //data.addColumn('string', 'Title');data.addColumn('number', 'Amount');
-                    var ttl_expense = 0;
-                    array_push.push(["Title","Amount"]);
-                    $.each(resp.expenses,function(i,row) {
-                            ttl_expense += parseFloat(row.expense_amount);
-                            array_push.push([ row.title,parseInt(row.expense_amount)]);
-                            //data.addRows([array_push]);
-                    });
+                    //alert( ( resp.expenses).length);
+                    if( (resp.expenses).length > 0  )
+                    {
+                            var array_push = [];
+                            // Create the data table.
+                            //var data = new google.visualization.DataTable();
+                            //data.addColumn('string', 'Title');data.addColumn('number', 'Amount');
+                            var ttl_expense = 0;
+                            array_push.push(["Title","Amount"]);
+                            $.each(resp.expenses,function(i,row) {
+                                    ttl_expense += parseFloat(row.expense_amount);
+                                    array_push.push([ row.title,parseInt(row.expense_amount)]);
+                                    //data.addRows([array_push]);
+                            });
 
-                    $("#expense_total").html(ttl_expense);
-                    drawChart(array_push);
-                    //$(".expenses_list_container").html(get_expense_list(resp.expenses));
+                            $("#expense_total").html(ttl_expense);
+                            drawChart(array_push);
+                            //$(".expenses_list_container").html(get_expense_list(resp.expenses));
+                    }
+                    else
+                    {
+                        $("#expense_total").html(0);
+                    }
                 }
-                else {
+                else
+                {
                         document.getElementById('chart_div').innerHTML = "<div>"+resp+"</div>";
                 }
          },'json');
     }
+    
     function drawChart(array_push) {
         
         var data = new google.visualization.arrayToDataTable(array_push);

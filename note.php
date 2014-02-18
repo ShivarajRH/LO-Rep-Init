@@ -132,10 +132,10 @@
                         }
                         else { ?>
                             <li class="pin single_note_card login_card">
-                                <h2 style="color:#dd4b39;"">Get your FREE account</h2>
+                                <h2 style="color:#dd4b39;">Get your FREE account</h2>
                                 </br>
                                 <?php 
-                                $fn_signin_callback = "signinCallbackGeneral";
+                                $fn_signin_callback = "samepage";//signinCallbackGeneral
                                 include 'google_plus_signin_button.php'; ?>
                                 </br>
                             </li>

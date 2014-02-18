@@ -67,7 +67,7 @@ function createTaskQueue($post) {
     
     
     // update_contacts.php
-    function do_updatePeople($post) {
+    /*function do_updatePeople($post) {
             include "paths.php";
             include $db_file_url;
             // call task queue
@@ -113,5 +113,5 @@ function createTaskQueue($post) {
             }
             return $result;
             //:-) contacts module done
-    }
+    }*/
 ?>

@@ -5,6 +5,7 @@ if(isset($_GET['query'])) {
     ob_start();session_start();
     $session = $_SESSION;
     $post = $_REQUEST;
+    $result=array();
    
     $s = microtime(true);
     if(!isset($session['uid'])) {
@@ -36,8 +37,9 @@ if(isset($_GET['query'])) {
 
             $url = $site_url.'api/search/?action_object=search_content&content_type='.urlencode($content_type);
             $rdata = $ob->getApiContent($url, 'json',$post);
-
-//            echo '<pre>';print_r($rdata);die();
+            
+            $result = array_merge($result,$rdata);
+            //echo '<pre>';print_r($result);die();
             $e = microtime(true);
             $ttl_span_time = round($e - $s, 2) . " Sec";
             

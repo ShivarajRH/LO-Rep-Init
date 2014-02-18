@@ -469,32 +469,47 @@
     }
     
     function search_all_stream(elt,content_type,uid) {
-/*        var postData = {'requesting_uid':enco(requesting_uid),'query':enco(query)
-        ,"timestamp":enco(timestamp),'lat':enco(lat),'long':enco(long),'src':enco($src)};*/
+/*        var postData = {'requesting_uid':enco(requesting_uid),'query':enco(query),"timestamp":enco(timestamp),'lat':enco(lat),'long':enco(long),'src':enco($src)};*/
         $(".reset_filters").css({display:'block'});
         var query = $("#search_qry",elt).val();
         var src = 'streamsearch';
         var output='';
         
-        var postData = {requesting_uid:enco(uid),query:enco(query),content_type:enco(content_type)
-            ,src:enco(src)};
-    
-        $.post(site_url+'search/',postData,function(resp) {
+        var postData = {requesting_uid:enco(uid),query:enco(query),content_type:enco(content_type),src:enco(src)};
+
+        $.post(site_url+'search/?query='+enco(query),postData,function(resp) {
             if(resp.status == 'success') {
-                    if(  (resp.notes).length > 0 ) {
+                    // Notes
+                    if(  (resp.notes) != undefined ) {
                         output += get_notes_card(resp.notes);
                         $(".all_note_list_box").html(output);
                     }
                     else {
                         $(".all_note_list_box").html("&nbsp;");
                     }
+                    
+                    // Reminders
+                    
+                    if( resp.reminders != undefined ) {
+                        var ttl_reminders = (resp.reminders).length;
+                        var max_reminder_count=150;
+                        $("#ttl_reminders").html(ttl_reminders);
+                        $(".reminders_list").html(get_reminders_list(resp.reminders,max_reminder_count));
+                    }
+                    else {
+                        $("#ttl_reminders").html(0);
+                        $(".reminders_list").html("No reminder data.");
+                    }
+                    
+                    // EXPENSES
                     var array_push = [];
                     array_push.push(["Title","Amount"]);
                     if( (resp.expenses).length > 0 ) {
                         ttl_expense = 0;
                         $.each(resp.expenses,function(i,row) {
-                                ttl_expense += parseFloat(row.expense_amount);
-                                array_push.push([ row.expense_title,parseFloat(row.expense_amount)]);
+                                var exp_amount = parseFloat(row.expense_amount);
+                                ttl_expense += exp_amount;
+                                array_push.push([ row.expense_title,exp_amount]);
                         });
                         drawChart(array_push);
                         $("#expense_total").html(ttl_expense);
@@ -506,16 +521,7 @@
                         drawChart(array_push);
                         $(".expenses_list_container").html("No results");
                     }
-                    var ttl_reminders = (resp.reminders).length;
-                    if( ttl_reminders > 0 ) {
-                        var max_reminder_count=150;
-                        $("#ttl_reminders").html(ttl_reminders);
-                        $(".reminders_list").html(get_reminders_list(resp.reminders,max_reminder_count));
-                    }
-                    else {
-                        $("#ttl_reminders").html(ttl_reminders);
-                        $(".reminders_list").html("No reminder data.");
-                    }
+                    
                     //console.log("\nALL="+resp);
             }
             else {
@@ -592,8 +598,8 @@
     function linkHashtags(text) {
         return text.replace(
             hashtag_regexp,
-            '<a class="hashtag" target="_blank" href="javascript:void(0);" onclick="tag_search(\'$1\')">#$1</a>'
-        );// href="'+site_url+'tag/?q=$1"
+            '<a class="hashtag" href="javascript:void(0);" onclick="tag_search(\'$1\')">#$1</a>'
+        );// href="'+site_url+'tag/?q=$1" target="_blank"
     }
     
     function tag_search(tag) {
@@ -649,12 +655,5 @@
             }
         },"json");
 
-        return true;
-    }
-    
-    function get_contact_info() {
-        var userEmail = 'default';
-        $.get("https://www.google.com/m8/feeds/contacts/"+userEmail+"/full?access_token="+access_token,{},function(rdata){
-            
-        });
+        return false;
     }

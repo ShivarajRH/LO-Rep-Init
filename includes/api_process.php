@@ -25,22 +25,22 @@ class api_actions extends myactions {
         
         //if 1 week  -7days
         if($interval == '1w') {
-            $filter_from = date('Y-m-d H:i:s',$s - (60*60*24*7) );
-            $filter_to = date('Y-m-d H:i:s',$s);
+            $filter_from = date('Y-m-d 23:59:59',$s - (60*60*24*7) );
+            $filter_to = date('Y-m-d 23:59:59',$s);
             $sel_cond .= " c.timestamp,from_unixtime(c.timestamp,'%Y-%m-%d') as day,sum(e.amount) as amount ";
             $group_con .=' group by day ';
             $cond .= ' and c.timestamp between unix_timestamp("'.$filter_from.'") and unix_timestamp("'.$filter_to.'")';
         }
         elseif($interval == '1m') {
-            $filter_from = date('Y-m-d H:i:s',$s - (60*60*24*7*4) );
-            $filter_to = date('Y-m-d H:i:s',$s );
+            $filter_from = date('Y-m-d 23:59:59',$s - (60*60*24*7*4) );
+            $filter_to = date('Y-m-d 23:59:59',$s );
             $sel_cond .= " from_unixtime(c.timestamp,'%Y-%m') as day,sum(e.amount) as amount ";
             $group_con .=' group by day ';
             $cond .= ' and c.timestamp between unix_timestamp("'.$filter_from.'") and unix_timestamp("'.$filter_to.'")';
         }
         elseif($interval == '1q') {
             $filter_from = 
-            date('Y-m-d H:i:s',$s - ( 
+            date('Y-m-d 23:59:59',$s - ( 
                                         ( 
                                             ( 
                                                 ( 60*60*24*7 ) * 4
@@ -49,35 +49,35 @@ class api_actions extends myactions {
                                     ) 
                 );
             
-            $filter_to = date('Y-m-d H:i:s',$s );
+            $filter_to = date('Y-m-d 23:59:59',$s );
             $sel_cond .= " from_unixtime(c.timestamp,'%Y-%m') as day,sum(e.amount) as amount ";
             $group_con .=' group by day ';
             $cond .= ' and c.timestamp between unix_timestamp("'.$filter_from.'") and unix_timestamp("'.$filter_to.'")';
         }
         elseif($interval == '1y') {
-            $filter_from = date('Y-m-d H:i:s',$s - ( 60*60*24*7*4*12 ) );
-            $filter_to = date('Y-m-d H:i:s',$s );
+            $filter_from = date('Y-m-d 23:59:59',$s - ( 60*60*24*7*4*12 ) );
+            $filter_to = date('Y-m-d 23:59:59',$s );
             $sel_cond .= " from_unixtime(c.timestamp,'%Y-%m') as day,sum(e.amount) as amount ";
             $group_con .=' group by day ';
             $cond .= ' and c.timestamp between unix_timestamp("'.$filter_from.'") and unix_timestamp("'.$filter_to.'")';
         }
         elseif($interval == '2y') {
-            $filter_from = date('Y-m-d H:i:s',$s - ( 60*60*24*7*4*24 ) );
-            $filter_to = date('Y-m-d H:i:s',$s );
+            $filter_from = date('Y-m-d 23:59:59',$s - ( 60*60*24*7*4*24 ) );
+            $filter_to = date('Y-m-d 23:59:59',$s );
             $sel_cond .= " from_unixtime(c.timestamp,'%Y-%m') as day,sum(e.amount) as amount ";
             $group_con .=' group by day ';
             $cond .= ' and c.timestamp between unix_timestamp("'.$filter_from.'") and unix_timestamp("'.$filter_to.'")';
         }
         elseif($interval == '5y') {
-            $filter_from = date('Y-m-d H:i:s',$s - ( 60*60*24*7*4*60 ) );
-            $filter_to = date('Y-m-d H:i:s',$s );
+            $filter_from = date('Y-m-d 23:59:59',$s - ( 60*60*24*7*4*60 ) );
+            $filter_to = date('Y-m-d 23:59:59',$s );
             $sel_cond .= " from_unixtime(c.timestamp,'%Y-%m') as day,sum(e.amount) as amount ";
             $group_con .=' group by day ';
             $cond .= ' and c.timestamp between unix_timestamp("'.$filter_from.'") and unix_timestamp("'.$filter_to.'")';
         }
         else { //max-no filter
-            $filter_from = date('Y-m-d H:i:s',$s - (60*60*24*7*4) );
-            $filter_to = date('Y-m-d H:i:s',$s );
+            $filter_from = date('Y-m-d 23:59:59',$s - (60*60*24*7*4) );
+            $filter_to = date('Y-m-d 23:59:59',$s );
             $sel_cond .= " from_unixtime(c.timestamp,'%Y-%m') as day,sum(e.amount) as amount ";
             $group_con .=' group by day ';
             $cond .= '';

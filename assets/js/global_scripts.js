@@ -50,7 +50,6 @@
                   var uid = 0;
                 // Step 6: Execute the API request
                   request.execute(function(resp) {
-
                         //var heading = document.createElement('h4');var image = document.createElement('img');image.src = resp.image.url;heading.appendChild(image);heading.appendChild(document.createTextNode(resp.displayName));document.getElementById('content').appendChild(heading);
                         var rdata = resp.result;
                     
@@ -75,8 +74,7 @@
                         var welcomemsg = "Welcome, "+name;
                         $(".login_card").html(welcomemsg);
                         
-                        
-                        //////PEOPLE INFO/////////////////
+                        ////// PEOPLE INFO/////////////////
                         // This sample assumes a client object has been created. To learn more about creating a client, check out the starter:https://developers.google.com/+/quickstart/javascript
                         var request = gapi.client.plus.people.list({
                           'userId' : 'me',
@@ -90,9 +88,6 @@
                                 //if(contact_resp.status == 'success') console.log("social contacts updated.");
                                 console.log(contact_resp);
                             },"json");
-                            
-                            /*for (var i = 0; i < numItems; i++) {console.log(rdata.items[i].displayName);}*/
-                          
                         });
                         ////////////////////////////////////
 
@@ -107,13 +102,21 @@
                         var apiurl = "&uid="+enco(uid)+"&gid="+enco(gid)+"&name="+enco(name)+"&email="+enco(email)+"&fname="+enco(fname)+"&mname="+enco(mname)+"&lname="
                             +enco(lname)+"&uname="+enco(uname)+"&phone="+enco(phone)+"&verification="+enco(verification)+"&lat="+enco(lat)+"&long="
                             +enco(long1)+"&time="+timestamp+"&img_url="+img_url+"&currency="+currency;
-                        //console.log(apiurl);
-
-                        //call profile api
+                            //console.log(apiurl);
+                        
+                        // Redirection code
+                        //var pageredirect=<?=$fn_signin_callback;?>; //$("#authorize-button").attr("pageredirect"); alert(pageredirect);
+                        if(pageredirect == 'defaultpg') //: defaultpg, samepage
+                            var redirecturl= site_url+"stream#";
+                        else
+                            var redirecturl= $(location).attr('href'); //site_url+"stream#";
+                        
+                        //Call profile api
                         $.post(site_url+"api/write/?action_object=user_profile"+apiurl,{},function(rdata) {
                             //console.log("API RESPONSE="+rdata);
+                            
                             //redirect to streams
-            //                location.href=redirecturl;
+                            window.location.href=redirecturl;
                         });
                         
                         return false;
